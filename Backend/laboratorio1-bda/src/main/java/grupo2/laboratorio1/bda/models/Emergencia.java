@@ -3,7 +3,7 @@ package grupo2.laboratorio1.bda.models;
 import java.io.Serial;
 import java.sql.Date;
 
-public class Emergencias {
+public class Emergencia {
     private Serial id_emergencia;
     private String nombre;
     private String descripcion;
