@@ -89,3 +89,21 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.estado_tarea (
     descripcion VARCHAR(200),
     PRIMARY KEY(id_estado_tarea)
 );
+
+CREATE TABLE IF NOT EXISTS desastresdb.public.vol_habilidad(
+    id_vol_habilidad SERIAL NOT NULL,
+    id_voluntario INT,
+    id_habilidad INT,
+    PRIMARY KEY(id_vol_habilidad),
+    FOREIGN KEY (id_voluntario) REFERENCES desastresdb.public.voluntario(id_voluntario),
+    FOREIGN KEY (id_habilidad) REFERENCES desastresdb.public.habilidad(id_habilidad)
+);
+
+CREATE TABLE IF NOT EXISTS desastresdb.public.eme_habilidad(
+    id_eme_habilidad SERIAL NOT NULL,
+    id_emergencia INT,
+    id_habilidad INT,
+    PRIMARY KEY(id_eme_habilidad),
+    FOREIGN KEY (id_emergencia) REFERENCES desastresdb.public.emergencia(id_emergencia),
+    FOREIGN KEY (id_habilidad) REFERENCES desastresdb.public.habilidad(id_habilidad)
+);
