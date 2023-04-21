@@ -18,25 +18,22 @@ COMMENT ON DATABASE desastresdb
 ---  \c desastresdb
 --- O ingresar una query en pgAdmin
 
-CREATE TABLE IF NOT EXISTS desastresdb.public.instituciones (
+CREATE TABLE IF NOT EXISTS desastresdb.public.institucion (
     id_institucion SERIAL NOT NULL,
     nombre varchar(50),
-    direccion varchar(50),
     PRIMARY KEY (id_institucion)
 );
 
-CREATE TABLE IF NOT EXISTS desastresdb.public.emergencias (
+CREATE TABLE IF NOT EXISTS desastresdb.public.emergencia (
     id_emergencia SERIAL NOT NULL,
+    id_institucion INT,
     nombre varchar(50),
     descripcion varchar(250),
-    fecha date,
-    --- Tengo dudas si requerimientos debe ser una clase aparte o si se puede dejar como varchar
-    --- ya que nos piden que se puede saleccionar como requerimiento
-    requerimientos varchar(250),
-    --- "Activa" o "Inactiva
-    estado varchar(50),
-    PRIMARY KEY (id_emergencia),
-    FOREIGN KEY (id_institucion) REFERENCES desastresdb.public.instituciones(id_institucion)
+    fecha_inicio date,
+    fecha_termino date,
+    activo BOOLEAN,
+    CONSTRAINT PRIMARY KEY (id_emergencia),
+    CONSTRAINT FOREIGN KEY (id_institucion) REFERENCES desastresdb.public.institucion(id_institucion)
 );
 
 CREATE TABLE IF NOT EXISTS desastresdb.public.voluntario (
