@@ -27,20 +27,35 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.institucion (
 CREATE TABLE IF NOT EXISTS desastresdb.public.emergencia (
     id_emergencia SERIAL NOT NULL,
     id_institucion INT,
-    nombre varchar(50),
-    descripcion varchar(250),
-    fecha_inicio date,
-    fecha_termino date,
+    nombre VARCHAR(50),
+    descripcion VARCHAR(250),
+    fecha_inicio DATE,
+    fecha_termino DATE,
     activo BOOLEAN,
-    CONSTRAINT PRIMARY KEY (id_emergencia),
-    CONSTRAINT FOREIGN KEY (id_institucion) REFERENCES desastresdb.public.institucion(id_institucion)
+    PRIMARY KEY (id_emergencia),
+    FOREIGN KEY (id_institucion) REFERENCES desastresdb.public.institucion(id_institucion)
+);
+
+CREATE TABLE IF NOT EXISTS desastresdb.public.tarea(
+    id_tarea SERIAL NOT NULL,
+    id_emergencia INT,
+    nombre VARCHAR(50),
+    descripcion VARCHAR(100),
+    cant_vol_requeridos INT,
+    cant_vol_inscritos INT,
+    direccion VARCHAR(50),
+    fecha_inicio DATE,
+    fecha_fin DATE,
+    --- estado_actual
+    PRIMARY KEY (id_tarea),
+    FOREIGN KEY (id_emergencia) REFERENCES desastresdb.public.emergencia(id_emergencia)
 );
 
 CREATE TABLE IF NOT EXISTS desastresdb.public.voluntario (
     id_voluntario SERIAL NOT NULL,
     nombre VARCHAR(50),
     PRIMARY KEY(id_voluntario)
-)
+);
 
 CREATE TABLE IF NOT EXISTS desastresdb.public.ranking (
     id_ranking SERIAL NOT NULL,
@@ -49,7 +64,20 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.ranking (
     puntaje INT,
     flg_invitado BOOLEAN,
     flg_participa BOOLEAN,
-    CONSTRAINT PRIMARY KEY (id_ranking),
-    CONSTRAINT FOREIGN KEY (id_voluntario) REFERENCES desastresdb.public.voluntario,
-    CONSTRAINT FOREIGN KEY (id_tarea) REFERENCES desastresdb.public.tarea
-)
+    PRIMARY KEY (id_ranking),
+    FOREIGN KEY (id_voluntario) REFERENCES desastresdb.public.voluntario(id_voluntario),
+    FOREIGN KEY (id_tarea) REFERENCES desastresdb.public.tarea(id_tarea)
+);
+
+CREATE TABLE IF NOT EXISTS desastresdb.public.tarea_habilidad (
+    id_tarea_habilidad SERIAL NOT NULL,
+    id_emergencia INT,
+    id_habilidad INT,
+    id_tarea INT,
+    PRIMARY KEY(id_tarea_habilidad),
+    FOREIGN KEY (id_emergencia) REFERENCES desastresdb.public.emergencia(id_emergencia),
+    FOREIGN KEY (id_habilidad) REFERENCES desastresdb.public.habilidad(id_habilidad),
+    FOREIGN KEY (id_tarea) REFERENCES desastresdb.public.tarea(id_tarea)
+);
+
+
