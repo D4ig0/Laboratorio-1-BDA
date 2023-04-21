@@ -14,11 +14,11 @@ COMMENT ON DATABASE desastresdb
 
 --- Escribir el siguiente comando en el SQL Shell, para utilizar la base de datos creada:
 ---  \c desastresdb
---- O ingresar una query en pgAdmin
+--- O ingresar una query en pgAdmin para la base de datos desastresdb
 
 CREATE TABLE IF NOT EXISTS desastresdb.public.institucion (
     id_institucion SERIAL NOT NULL,
-    nombre varchar(50),
+    nombre VARCHAR(50),
     PRIMARY KEY (id_institucion)
 );
 
@@ -44,7 +44,6 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.tarea(
     direccion VARCHAR(50),
     fecha_inicio DATE,
     fecha_fin DATE,
-    --- estado_actual
     PRIMARY KEY (id_tarea),
     FOREIGN KEY (id_emergencia) REFERENCES desastresdb.public.emergencia(id_emergencia)
 );
