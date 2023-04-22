@@ -6,6 +6,6 @@ import lombok.Data;
 
 @Data
 public class Institucion {
-    private Serial id_institucion;
+    private Integer id_institucion;
     private String nombre;
 }
