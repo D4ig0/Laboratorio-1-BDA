@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface IRankingRepository {
     void createRanking(Ranking ranking);
+    Ranking getRanking(Integer idRanking);
+    List<Ranking> getAllRankings();
 }

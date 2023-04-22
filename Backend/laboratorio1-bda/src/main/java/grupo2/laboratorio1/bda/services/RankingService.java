@@ -29,4 +29,12 @@ public class RankingService {
             throw new IllegalArgumentException("El puntaje ingresado no es valido");
         }
     }
+
+    public Ranking getRanking(@NonNull Integer idRanking){
+        return rankingRepository.getRanking(idRanking);
+    }
+
+    public List<Ranking> getAllRankings(){
+        return rankingRepository.getAllRankings();
+    }
 }

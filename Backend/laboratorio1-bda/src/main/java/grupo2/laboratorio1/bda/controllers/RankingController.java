@@ -15,7 +15,7 @@ public class RankingController {
     @Autowired
     RankingService rankingService;
 
-    @PostMapping("/ranking")
+    @PostMapping("/rankings")
     public void createRanking(@RequestParam Integer idVoluntario,
                               @RequestParam Integer idTarea,
                               @RequestParam Integer puntaje,
@@ -30,5 +30,15 @@ public class RankingController {
         catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
+    }
+
+    @GetMapping("/rankings/{id}")
+    public Ranking getRanking(@PathVariable("id") Integer idRanking){
+        return rankingService.getRanking(idRanking);
+    }
+
+    @GetMapping("/rankings")
+    public List<Ranking> getAllRankings(){
+        return rankingService.getAllRankings();
     }
 }
