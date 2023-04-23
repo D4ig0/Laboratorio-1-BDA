@@ -8,4 +8,6 @@ public interface IRankingRepository {
     void createRanking(Ranking ranking);
     Ranking getRanking(Integer idRanking);
     List<Ranking> getAllRankings();
+    void updateRanking(Ranking ranking);
+    boolean existsRanking(Integer idRanking);
 }

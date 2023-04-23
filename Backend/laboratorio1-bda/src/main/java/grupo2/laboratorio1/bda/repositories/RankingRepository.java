@@ -72,4 +72,39 @@ public class RankingRepository implements IRankingRepository{
             throw new RuntimeException("Ocurrio un error al obtener los rankings");
         }
     }
+
+    @Override
+    public void updateRanking(Ranking ranking) {
+        String queryText = "UPDATE ranking SET " +
+                "puntaje = COALESCE(:puntaje, puntaje), " +
+                "flg_invitado = COALESCE(:flgInvitado, flg_invitado), " +
+                "flg_participa = COALESCE(:flgParticipa, flg_participa) " +
+                "WHERE id_ranking = :idRanking";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("puntaje", ranking.getPuntaje())
+                    .addParameter("flgInvitado", ranking.getFlgInvitado())
+                    .addParameter("flgParticipa", ranking.getFlgParticipa())
+                    .addParameter("idRanking", ranking.getIdRanking());
+            query.executeUpdate();
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al actualizar el ranking");
+        }
+    }
+
+    public boolean existsRanking(Integer idRanking){
+        String queryText = "SELECT EXISTS(SELECT * FROM ranking WHERE id_ranking = :idRanking)";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idRanking", idRanking);
+            boolean exists = query.executeAndFetchFirst(Boolean.class);
+            return exists;
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al realizar la query");
+        }
+    }
 }

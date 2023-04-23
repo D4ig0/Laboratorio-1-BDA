@@ -41,4 +41,17 @@ public class RankingController {
     public List<Ranking> getAllRankings(){
         return rankingService.getAllRankings();
     }
+
+    @PutMapping("/rankings/{id}")
+    public void updateRanking(@PathVariable("id") Integer idRanking, @RequestBody Ranking ranking){
+        try {
+            rankingService.updateRanking(idRanking, ranking);
+        }
+        catch (IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+        catch (RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
 }

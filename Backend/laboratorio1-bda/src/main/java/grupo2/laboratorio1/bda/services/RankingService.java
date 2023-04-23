@@ -24,7 +24,12 @@ public class RankingService {
     }
 
     private void validarRanking(Ranking ranking){
+        Integer idRanking = ranking.getIdRanking();
         Integer puntaje = ranking.getPuntaje();
+        if(idRanking != null && !rankingRepository.existsRanking(idRanking)){
+            throw new IllegalArgumentException("El ranking ingresado no existe");
+        }
+
         if (puntaje != null && !(puntaje >= 0 && puntaje <= 10)){
             throw new IllegalArgumentException("El puntaje ingresado no es valido");
         }
@@ -36,5 +41,11 @@ public class RankingService {
 
     public List<Ranking> getAllRankings(){
         return rankingRepository.getAllRankings();
+    }
+
+    public void updateRanking(Integer idRanking, Ranking ranking){
+        ranking.setIdRanking(idRanking);
+        validarRanking(ranking);
+        rankingRepository.updateRanking(ranking);
     }
 }
