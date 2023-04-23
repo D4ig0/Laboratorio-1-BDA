@@ -4,6 +4,9 @@ import grupo2.laboratorio1.bda.models.Eme_Habilidad;
 import grupo2.laboratorio1.bda.models.Emergencia;
 import grupo2.laboratorio1.bda.repositories.Eme_HabilidadRepository;
 import grupo2.laboratorio1.bda.repositories.EmergenciaRepository;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +32,17 @@ public class Eme_HabilidadService {
         }
         Eme_Habilidad eme_habilidad = new Eme_Habilidad(idEmergencia, idHabilidad);
         eme_habilidadRepository.createEme_Habilidad(eme_habilidad);
+    }
+
+    public Eme_Habilidad getEme_Habilidad(Integer idEmeHabilidad){
+        try{
+            eme_habilidadRepository.getEme_Habilidad(idEmeHabilidad);
+        } catch (Exception e){
+            throw new RuntimeException("No se ha encontrado en la base de datos la Eme_Habilidad");
+        }
+    }
+
+    public List<Eme_Habilidad> getAllEme_Habilidad(){
+        return eme_habilidadRepository.getAllEme_Habilidad();
     }
 }
