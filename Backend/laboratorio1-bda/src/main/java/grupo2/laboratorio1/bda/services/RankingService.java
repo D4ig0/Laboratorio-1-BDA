@@ -50,6 +50,9 @@ public class RankingService {
     }
 
     public void deleteRanking(@NonNull Integer idRanking){
+        Ranking ranking = new Ranking();
+        ranking.setIdRanking(idRanking);
+        validarRanking(ranking);
         rankingRepository.deleteRanking(idRanking);
     }
 

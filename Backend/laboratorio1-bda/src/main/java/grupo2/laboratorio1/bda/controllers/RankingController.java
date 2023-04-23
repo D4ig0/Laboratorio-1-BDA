@@ -57,6 +57,14 @@ public class RankingController {
 
     @DeleteMapping("/rankings/{id}")
     public void deleteRanking(@PathVariable("id") Integer idRanking){
-        rankingService.deleteRanking(idRanking);
+        try {
+            rankingService.deleteRanking(idRanking);
+        }
+        catch (IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+        catch (RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
     }
 }
