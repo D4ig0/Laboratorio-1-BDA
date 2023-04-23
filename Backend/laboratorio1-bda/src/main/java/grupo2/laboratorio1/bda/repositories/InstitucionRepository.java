@@ -19,6 +19,10 @@ public class InstitucionRepository implements IInstitucionRepository{
     @Override
     public Institucion createInstitucion(Institucion institucion) {
         try(Connection conn = sql2o.open()){
+            // El returnGeneratedKeys() es para que devuelva el id que se genero
+            // automaticamente en la base de datos
+            // se guarda en insertedId y se obtiene con getKey()
+            // luego se asigna a la institucion
             Integer insertedId = (Integer) conn.createQuery("INSERT INTO institucion (nombre) values (:institucionNombre)", true)
                     .addParameter("institucionNombre", institucion.getNombre())
                     .executeUpdate().getKey();
