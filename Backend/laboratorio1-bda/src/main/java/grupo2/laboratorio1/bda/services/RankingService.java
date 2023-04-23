@@ -26,7 +26,7 @@ public class RankingService {
     private void validarRanking(Ranking ranking){
         Integer idRanking = ranking.getIdRanking();
         Integer puntaje = ranking.getPuntaje();
-        if(idRanking != null && !rankingRepository.existsRanking(idRanking)){
+        if(idRanking != null && !existsRanking(idRanking)){
             throw new IllegalArgumentException("El ranking ingresado no existe");
         }
 
@@ -47,5 +47,13 @@ public class RankingService {
         ranking.setIdRanking(idRanking);
         validarRanking(ranking);
         rankingRepository.updateRanking(ranking);
+    }
+
+    public void deleteRanking(@NonNull Integer idRanking){
+        rankingRepository.deleteRanking(idRanking);
+    }
+
+    public boolean existsRanking(Integer idRanking){
+        return rankingRepository.existsRanking(idRanking);
     }
 }

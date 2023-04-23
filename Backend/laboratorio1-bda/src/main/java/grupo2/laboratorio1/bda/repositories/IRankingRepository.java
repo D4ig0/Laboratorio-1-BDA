@@ -9,5 +9,6 @@ public interface IRankingRepository {
     Ranking getRanking(Integer idRanking);
     List<Ranking> getAllRankings();
     void updateRanking(Ranking ranking);
+    void deleteRanking(Integer idRanking);
     boolean existsRanking(Integer idRanking);
 }

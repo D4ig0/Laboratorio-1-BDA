@@ -94,6 +94,21 @@ public class RankingRepository implements IRankingRepository{
         }
     }
 
+    @Override
+    public void deleteRanking(Integer idRanking) {
+        String queryText = "DELETE FROM ranking WHERE id_ranking = :idRanking";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idRanking", idRanking);
+            query.executeUpdate();
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al eliminar el ranking");
+        }
+    }
+
+    @Override
     public boolean existsRanking(Integer idRanking){
         String queryText = "SELECT EXISTS(SELECT * FROM ranking WHERE id_ranking = :idRanking)";
 
