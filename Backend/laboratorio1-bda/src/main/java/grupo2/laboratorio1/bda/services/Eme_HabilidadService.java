@@ -54,4 +54,14 @@ public class Eme_HabilidadService {
         }
         eme_habilidadRepository.updateEme_Habilidad(idEmeHabilidad, eme_habilidad);
     }
+
+    public void deleteEme_Habilidad(Integer idEmeHabilidad){
+        try{
+            getEme_Habilidad(idEmeHabilidad);
+        } catch (Exception e){
+            throw new RuntimeException("No se ha encontrado en la base de datos la Eme_Habilidad");
+        }
+        // Falta verificar que esten eliminadas las tablas habilidad y emergencia
+        eme_habilidadRepository.deleteEme_Habilidad(idEmeHabilidad);
+    }
 }

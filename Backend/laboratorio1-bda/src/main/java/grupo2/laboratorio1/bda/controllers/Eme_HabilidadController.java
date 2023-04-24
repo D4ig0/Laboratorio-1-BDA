@@ -66,4 +66,17 @@ public class Eme_HabilidadController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
+
+    @DeleteMapping("/eme_habilidad/{id}")
+    public void deleteEme_Habilidad(@PathVariable("id") Integer idEmeHabilidad){
+        try{
+            eme_habilidadService.deleteEme_Habilidad(idEmeHabilidad);
+        }
+        catch (IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+        catch (RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
 }

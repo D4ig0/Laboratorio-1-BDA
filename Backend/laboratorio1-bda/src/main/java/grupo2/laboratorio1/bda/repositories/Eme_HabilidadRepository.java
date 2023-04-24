@@ -17,7 +17,7 @@ public class Eme_HabilidadRepository implements IEme_HabilidadRepository {
 
     @Override
     public void createEme_Habilidad(Eme_Habilidad eme_habilidad){
-        String queryText = "INSERT INTO Eme_Habilidad (id_emergencia, id_habilidad) VALUES (:id_emergencia, :id_habilidad)";
+        String queryText = "INSERT INTO eme_habilidad (id_emergencia, id_habilidad) VALUES (:id_emergencia, :id_habilidad)";
         try( Connection connection = sql2o.open()){
             connection.createQuery(queryText)
                     .addParameter("id_emergencia", eme_habilidad.getIdEmergencia())
@@ -30,7 +30,7 @@ public class Eme_HabilidadRepository implements IEme_HabilidadRepository {
     }
 
     public Eme_Habilidad getEme_Habilidad(Integer idEmeHabilidad){
-        String queryText = "SELECT * FROM Eme_Habilidad WHERE id_eme_habilidad = :idEmeHabilidad";
+        String queryText = "SELECT * FROM eme_habilidad WHERE id_eme_habilidad = :idEmeHabilidad";
         try (Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
                     .addParameter("idEmeHabilidad", idEmeHabilidad)
@@ -47,7 +47,7 @@ public class Eme_HabilidadRepository implements IEme_HabilidadRepository {
     }
 
     public List<Eme_Habilidad> getAllEme_Habilidad(){
-        String queryText = "SELECT * FROM Eme_Habilidad";
+        String queryText = "SELECT * FROM eme_habilidad";
         try (Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
                     .addColumnMapping("ID_EME_HABILIDAD", "idEmeHabilidad")
@@ -63,7 +63,7 @@ public class Eme_HabilidadRepository implements IEme_HabilidadRepository {
     }
 
     public Eme_Habilidad updateEme_Habilidad(Integer idEmeHabilidad, Eme_Habilidad eme_Habilidad){
-        String queryText = "UPDATE Eme_Habilidad SET id_emergencia = :id_emergencia, id_habilidad = :id_habilidad WHERE id_eme_habilidad = :id_eme_habilidad";
+        String queryText = "UPDATE eme_habilidad SET id_emergencia = :id_emergencia, id_habilidad = :id_habilidad WHERE id_eme_habilidad = :id_eme_habilidad";
         try (Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
                     .addParameter("id_emergencia", eme_Habilidad.getIdEmergencia())
@@ -75,6 +75,18 @@ public class Eme_HabilidadRepository implements IEme_HabilidadRepository {
         }
         catch (Exception e){
             throw new RuntimeException("No se pudo actualizar la tabla relacion entre emergencia y habilidad");
+        }
+    }
+
+    public void deleteEme_Habilidad(Integer idEmeHabilidad){
+        String queryText = "DELETE FROM eme_habilidad WHERE id_eme_habilidad = :idEmeHabilidad";
+        try (Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idEmeHabilidad", idEmeHabilidad);
+            query.executeUpdate();
+        }
+        catch (Exception e){
+            throw new RuntimeException("No se pudo eliminar la tabla relacion entre emergencia y habilidad");
         }
     }
 }
