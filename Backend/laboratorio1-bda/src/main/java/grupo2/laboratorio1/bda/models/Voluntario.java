@@ -1,5 +1,6 @@
 package grupo2.laboratorio1.bda.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,8 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Voluntario {
-    Integer idVoluntario;
-    String nombre;
-    String correo;
-    String password;
+    private Integer idVoluntario;
+    private String nombre;
+    private String correo;
+    @JsonProperty(value = "password", access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
 }

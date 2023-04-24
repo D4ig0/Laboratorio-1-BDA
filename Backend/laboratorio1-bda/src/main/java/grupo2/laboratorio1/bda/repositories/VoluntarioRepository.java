@@ -7,6 +7,8 @@ import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
+import java.util.List;
+
 @Repository
 public class VoluntarioRepository implements IVoluntarioRepository{
     @Autowired
@@ -28,6 +30,53 @@ public class VoluntarioRepository implements IVoluntarioRepository{
         }
     }
 
+    @Override
+    public Voluntario getVoluntario(Integer idVoluntario) {
+        String queryText = "SELECT id_voluntario, nombre, correo FROM voluntario WHERE id_voluntario = :idVoluntario";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idVoluntario", idVoluntario)
+                    .addColumnMapping("ID_VOLUNTARIO", "idVoluntario");
+            Voluntario voluntario = query.executeAndFetchFirst(Voluntario.class);
+            return voluntario;
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al obtener el voluntario");
+        }
+    }
+
+    @Override
+    public boolean existsVoluntario(Integer idVoluntario){
+        String queryText = "SELECT EXISTS(SELECT id_voluntario FROM voluntario WHERE id_voluntario = :idVoluntario)";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idVoluntario", idVoluntario);
+            boolean exists = query.executeAndFetchFirst(Boolean.class);
+            return exists;
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al realizar la query");
+        }
+    }
+
+    @Override
+    public List<Voluntario> getAllVoluntarios() {
+        String queryText = "SELECT id_voluntario, nombre, correo FROM voluntario";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addColumnMapping("ID_VOLUNTARIO", "idVoluntario");
+            List<Voluntario> voluntarios = query.executeAndFetch(Voluntario.class);
+            return voluntarios;
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al obtener los voluntarios");
+        }
+    }
+
+    @Override
     public String getEncodedPassword(String password) {
         String queryText = "SELECT CRYPT(:password, GEN_SALT('md5'))";
 

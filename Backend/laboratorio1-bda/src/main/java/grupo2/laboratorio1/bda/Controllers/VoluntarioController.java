@@ -1,13 +1,13 @@
 package grupo2.laboratorio1.bda.Controllers;
 
 import grupo2.laboratorio1.bda.Services.VoluntarioService;
+import grupo2.laboratorio1.bda.models.Voluntario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -23,5 +23,23 @@ public class VoluntarioController {
         catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
+    }
+
+    @GetMapping("/voluntarios/{id}")
+    public Voluntario getVoluntario(@PathVariable("id") Integer idRanking){
+        try {
+            return voluntarioService.getVoluntario(idRanking);
+        }
+        catch (IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+        catch (RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    @GetMapping("/voluntarios")
+    public List<Voluntario> getAllVoluntarios(){
+        return voluntarioService.getAllVoluntarios();
     }
 }
