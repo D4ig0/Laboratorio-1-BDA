@@ -50,7 +50,9 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.tarea(
 
 CREATE TABLE IF NOT EXISTS desastresdb.public.voluntario (
     id_voluntario SERIAL NOT NULL,
-    nombre VARCHAR(50),
+    nombre VARCHAR(50) NOT NULL,
+    correo VARCHAR(150) NOT NULL,
+    password VARCHAR(50) NOT NULL,
     PRIMARY KEY(id_voluntario)
 );
 
@@ -106,3 +108,5 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.eme_habilidad(
     FOREIGN KEY (id_emergencia) REFERENCES desastresdb.public.emergencia(id_emergencia),
     FOREIGN KEY (id_habilidad) REFERENCES desastresdb.public.habilidad(id_habilidad)
 );
+
+CREATE EXTENSION pgcrypto;
