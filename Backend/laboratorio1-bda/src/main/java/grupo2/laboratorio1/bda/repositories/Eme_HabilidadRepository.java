@@ -62,5 +62,19 @@ public class Eme_HabilidadRepository implements IEme_HabilidadRepository {
         }
     }
 
+    public Eme_Habilidad updateEme_Habilidad(Integer idEmeHabilidad, Eme_Habilidad eme_Habilidad){
+        String queryText = "UPDATE Eme_Habilidad SET id_emergencia = :id_emergencia, id_habilidad = :id_habilidad WHERE id_eme_habilidad = :id_eme_habilidad";
+        try (Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("id_emergencia", eme_Habilidad.getIdEmergencia())
+                    .addParameter("id_habilidad", eme_Habilidad.getIdHabilidad())
+                    .addParameter("id_eme_habilidad", idEmeHabilidad);
+            Eme_Habilidad eme_habilidad = query.executeAndFetchFirst(Eme_Habilidad.class);
+            return eme_habilidad;
 
+        }
+        catch (Exception e){
+            throw new RuntimeException("No se pudo actualizar la tabla relacion entre emergencia y habilidad");
+        }
+    }
 }

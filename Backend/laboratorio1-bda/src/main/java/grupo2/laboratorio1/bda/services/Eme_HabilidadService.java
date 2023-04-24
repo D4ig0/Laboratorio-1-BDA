@@ -45,4 +45,13 @@ public class Eme_HabilidadService {
     public List<Eme_Habilidad> getAllEme_Habilidad(){
         return eme_habilidadRepository.getAllEme_Habilidad();
     }
+
+    public Eme_Habilidad updateEme_Habilidad(Integer idEmeHabilidad, Eme_Habilidad eme_habilidad){
+        try{
+            getEme_Habilidad(idEmeHabilidad);
+        } catch (Exception e){
+            throw new RuntimeException("No se ha encontrado en la base de datos la Eme_Habilidad");
+        }
+        eme_habilidadRepository.updateEme_Habilidad(idEmeHabilidad, eme_habilidad);
+    }
 }

@@ -7,12 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
@@ -53,6 +48,19 @@ public class Eme_HabilidadController {
     public List<Eme_Habilidad> getAllEme_Habilidad(){
         try{
             return eme_habilidadService.getAllEme_Habilidad();
+        }
+        catch (RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    @PutMapping("/eme_habilidad/all/{id}")
+    public Eme_Habilidad updateEme_Habilidad(@PathVariable("id") Integer idEmeHabilidad, @RequestBody Eme_Habilidad eme_habilidad){
+        try{
+            return eme_habilidadService.updateEme_Habilidad(idEmeHabilidad,eme_habilidad);
+        }
+        catch (IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
         catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
