@@ -55,4 +55,17 @@ public class VoluntarioController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
+
+    @DeleteMapping("/voluntarios/{id}")
+    public void deleteVoluntario(@PathVariable("id") Integer idVoluntario){
+        try {
+            voluntarioService.deleteVoluntario(idVoluntario);
+        }
+        catch (IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+        catch (RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
 }

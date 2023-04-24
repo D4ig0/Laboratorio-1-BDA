@@ -83,6 +83,20 @@ public class VoluntarioRepository implements IVoluntarioRepository{
     }
 
     @Override
+    public void deleteVoluntario(Integer idVoluntario) {
+        String queryText = "DELETE FROM voluntario WHERE id_voluntario = :idVoluntario";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idVoluntario", idVoluntario);
+            query.executeUpdate();
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al eliminar el voluntario");
+        }
+    }
+
+    @Override
     public boolean existsVoluntario(Integer idVoluntario){
         String queryText = "SELECT EXISTS(SELECT id_voluntario FROM voluntario WHERE id_voluntario = :idVoluntario)";
 

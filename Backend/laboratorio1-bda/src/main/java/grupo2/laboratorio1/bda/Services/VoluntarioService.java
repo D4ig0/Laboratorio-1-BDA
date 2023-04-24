@@ -45,6 +45,14 @@ public class VoluntarioService {
         voluntarioRepository.updateVoluntario(voluntario);
     }
 
+    public void deleteVoluntario(Integer idVoluntario){
+        if(!existsVoluntario(idVoluntario)){
+            throw new IllegalArgumentException("No existe el voluntario");
+        }
+
+        voluntarioRepository.deleteVoluntario(idVoluntario);
+    }
+
     public boolean existsVoluntario(Integer idVoluntario){
         return voluntarioRepository.existsVoluntario(idVoluntario);
     }
