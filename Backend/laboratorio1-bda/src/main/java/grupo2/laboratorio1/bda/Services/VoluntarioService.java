@@ -19,15 +19,30 @@ public class VoluntarioService {
         voluntarioRepository.createVoluntario(voluntario);
     }
 
-    public Voluntario getVoluntario(@NonNull Integer idRanking){
-        if(!existsVoluntario(idRanking)){
+    public Voluntario getVoluntario(@NonNull Integer idVoluntario){
+        if(!existsVoluntario(idVoluntario)){
             throw new IllegalArgumentException("No existe el voluntario");
         }
-        return voluntarioRepository.getVoluntario(idRanking);
+        return voluntarioRepository.getVoluntario(idVoluntario);
     }
 
     public List<Voluntario> getAllVoluntarios(){
         return voluntarioRepository.getAllVoluntarios();
+    }
+
+    public void updateVoluntario(Integer idVoluntario, Voluntario voluntario){
+        if(!existsVoluntario(idVoluntario)){
+            throw new IllegalArgumentException("No existe el voluntario");
+        }
+
+        String password = voluntario.getPassword();
+        if(password != null){
+            String encodedPasssword = generateEncodedPassword(voluntario.getPassword());
+            voluntario.setPassword(encodedPasssword);
+        }
+
+        voluntario.setIdVoluntario(idVoluntario);
+        voluntarioRepository.updateVoluntario(voluntario);
     }
 
     public boolean existsVoluntario(Integer idVoluntario){

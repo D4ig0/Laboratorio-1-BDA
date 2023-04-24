@@ -26,9 +26,9 @@ public class VoluntarioController {
     }
 
     @GetMapping("/voluntarios/{id}")
-    public Voluntario getVoluntario(@PathVariable("id") Integer idRanking){
+    public Voluntario getVoluntario(@PathVariable("id") Integer idVoluntario){
         try {
-            return voluntarioService.getVoluntario(idRanking);
+            return voluntarioService.getVoluntario(idVoluntario);
         }
         catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -41,5 +41,18 @@ public class VoluntarioController {
     @GetMapping("/voluntarios")
     public List<Voluntario> getAllVoluntarios(){
         return voluntarioService.getAllVoluntarios();
+    }
+
+    @PutMapping("/voluntarios/{id}")
+    public void updateVoluntario(@PathVariable("id") Integer idVoluntario, @RequestBody Voluntario voluntario){
+        try {
+            voluntarioService.updateVoluntario(idVoluntario, voluntario);
+        }
+        catch (IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+        catch (RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
     }
 }

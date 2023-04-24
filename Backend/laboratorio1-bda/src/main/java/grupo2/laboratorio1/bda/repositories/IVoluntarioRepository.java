@@ -8,6 +8,7 @@ public interface IVoluntarioRepository {
     void createVoluntario(Voluntario voluntario);
     Voluntario getVoluntario(Integer idVoluntario);
     List<Voluntario> getAllVoluntarios();
+    void updateVoluntario(Voluntario ranking);
     boolean existsVoluntario(Integer idVoluntario);
     String getEncodedPassword(String password);
 }

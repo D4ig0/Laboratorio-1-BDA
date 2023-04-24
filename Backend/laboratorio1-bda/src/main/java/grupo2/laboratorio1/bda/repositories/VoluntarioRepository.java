@@ -47,21 +47,6 @@ public class VoluntarioRepository implements IVoluntarioRepository{
     }
 
     @Override
-    public boolean existsVoluntario(Integer idVoluntario){
-        String queryText = "SELECT EXISTS(SELECT id_voluntario FROM voluntario WHERE id_voluntario = :idVoluntario)";
-
-        try(Connection connection = sql2o.open()){
-            Query query = connection.createQuery(queryText)
-                    .addParameter("idVoluntario", idVoluntario);
-            boolean exists = query.executeAndFetchFirst(Boolean.class);
-            return exists;
-        }
-        catch (Exception e){
-            throw new RuntimeException("Ocurrio un error al realizar la query");
-        }
-    }
-
-    @Override
     public List<Voluntario> getAllVoluntarios() {
         String queryText = "SELECT id_voluntario, nombre, correo FROM voluntario";
 
@@ -73,6 +58,42 @@ public class VoluntarioRepository implements IVoluntarioRepository{
         }
         catch (Exception e){
             throw new RuntimeException("Ocurrio un error al obtener los voluntarios");
+        }
+    }
+
+    @Override
+    public void updateVoluntario(Voluntario voluntario) {
+        String queryText = "UPDATE voluntario SET " +
+                "nombre = COALESCE(:nombre, nombre), " +
+                "correo = COALESCE(:correo, correo), " +
+                "password = COALESCE(:password, password) " +
+                "WHERE id_voluntario = :idVoluntario";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("nombre", voluntario.getNombre())
+                    .addParameter("correo", voluntario.getCorreo())
+                    .addParameter("password", voluntario.getPassword())
+                    .addParameter("idVoluntario", voluntario.getIdVoluntario());
+            query.executeUpdate();
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al actualizar el voluntario");
+        }
+    }
+
+    @Override
+    public boolean existsVoluntario(Integer idVoluntario){
+        String queryText = "SELECT EXISTS(SELECT id_voluntario FROM voluntario WHERE id_voluntario = :idVoluntario)";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idVoluntario", idVoluntario);
+            boolean exists = query.executeAndFetchFirst(Boolean.class);
+            return exists;
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al realizar la query");
         }
     }
 
