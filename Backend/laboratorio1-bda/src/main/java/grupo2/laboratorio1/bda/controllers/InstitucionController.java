@@ -25,8 +25,8 @@ public class InstitucionController {
     }
 
     @PostMapping("/institucion/create")
-    public Institucion createInstitucion(@RequestBody Institucion institucion){
-        return institucionService.createInstitucion(institucion);
+    public Institucion createInstitucion(@RequestParam String nombre){
+        return institucionService.createInstitucion(nombre);
     }
 
     @PutMapping("/institucion/update")

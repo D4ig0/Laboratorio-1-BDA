@@ -22,7 +22,9 @@ public class InstitucionService {
         return institucionRepository.getInstitucion(id_institucion);
     }
 
-    public Institucion createInstitucion(Institucion institucion){
+    public Institucion createInstitucion(String nombre){
+        Institucion institucion = new Institucion();
+        institucion.setNombre(nombre);
         return institucionRepository.createInstitucion(institucion);
     }
 

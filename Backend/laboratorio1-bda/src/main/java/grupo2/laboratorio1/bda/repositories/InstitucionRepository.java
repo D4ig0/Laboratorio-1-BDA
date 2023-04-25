@@ -62,7 +62,7 @@ public class InstitucionRepository implements IInstitucionRepository{
     @Override
     public Institucion updateInstitucion(Institucion institucion) {
         try(Connection conn = sql2o.open()){
-            conn.createQuery("UPDATE institucion SET nombre = :nombre WHERE id_institucion = :id_institucion")
+            conn.createQuery("UPDATE institucion SET nombre = COALESCE(:nombre,nombre) WHERE id_institucion = :id_institucion")
                     .addParameter("nombre", institucion.getNombre())
                     .addParameter("id_institucion", institucion.getId_institucion())
                     .executeUpdate();
