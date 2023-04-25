@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.tarea(
 CREATE TABLE IF NOT EXISTS desastresdb.public.voluntario (
     id_voluntario SERIAL NOT NULL,
     nombre VARCHAR(50) NOT NULL,
-    correo VARCHAR(150) NOT NULL,
+    correo VARCHAR(150) UNIQUE NOT NULL,
     password VARCHAR(50) NOT NULL,
     PRIMARY KEY(id_voluntario)
 );

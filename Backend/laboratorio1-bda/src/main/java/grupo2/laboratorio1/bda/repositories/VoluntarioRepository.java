@@ -112,6 +112,21 @@ public class VoluntarioRepository implements IVoluntarioRepository{
     }
 
     @Override
+    public boolean existsVoluntarioByCorreo(String correo){
+        String queryText = "SELECT EXISTS(SELECT id_voluntario FROM voluntario WHERE correo = :correo)";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("correo", correo);
+            boolean exists = query.executeAndFetchFirst(Boolean.class);
+            return exists;
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al realizar la query");
+        }
+    }
+
+    @Override
     public String getEncodedPassword(String password) {
         String queryText = "SELECT CRYPT(:password, GEN_SALT('md5'))";
 
