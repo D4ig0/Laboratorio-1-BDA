@@ -34,7 +34,15 @@ public class RankingController {
 
     @GetMapping("/rankings/{id}")
     public Ranking getRanking(@PathVariable("id") Integer idRanking){
-        return rankingService.getRanking(idRanking);
+        try {
+            return rankingService.getRanking(idRanking);
+        }
+        catch (IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+        catch (RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
     }
 
     @GetMapping("/rankings")

@@ -49,7 +49,6 @@ public class RankingRepository implements IRankingRepository{
             return ranking;
         }
         catch (Exception e){
-            String msg = e.getMessage();
             throw new RuntimeException("Ocurrio un error al obtener el ranking");
         }
     }

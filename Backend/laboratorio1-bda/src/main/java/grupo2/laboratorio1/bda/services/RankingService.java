@@ -36,6 +36,9 @@ public class RankingService {
     }
 
     public Ranking getRanking(@NonNull Integer idRanking){
+        Ranking ranking = new Ranking();
+        ranking.setIdRanking(idRanking);
+        validarRanking(ranking);
         return rankingRepository.getRanking(idRanking);
     }
 
