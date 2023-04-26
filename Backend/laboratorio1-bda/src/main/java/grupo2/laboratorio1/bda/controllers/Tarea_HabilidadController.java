@@ -53,8 +53,18 @@ public class Tarea_HabilidadController {
     }
 
 
-
-
+    @PutMapping("/tarea_habilidades/all/{id}")
+    public Tarea_Habilidad updateTarea_Habilidad(@PathVariable("id") Integer idTareaHabilidad, @RequestBody Tarea_Habilidad tareaHabilidad){
+        try{
+            return tarea_HabilidadService.updateTarea_Habilidad(idTareaHabilidad,tareaHabilidad);
+        }
+        catch (IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+        catch (RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
 
 
 

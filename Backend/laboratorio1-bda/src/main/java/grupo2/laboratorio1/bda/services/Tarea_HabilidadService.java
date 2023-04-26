@@ -27,17 +27,17 @@ public class Tarea_HabilidadService {
 
     public void createTarea_Habilidad(Integer idEmergencia, Integer idHabilidad, Integer idTarea){
         try{
-            emergenciaRepository.getEmergencia(idEmergencia);
+            getEmergencia(idEmergencia);
         } catch ( Exception e){
             throw new RuntimeException("No se ha encontrado en la base de datos la Emergencia");
         }
         try {
-            habilidadRepository.getHabilidad(idHabilidad);
+            getHabilidad(idHabilidad);
         } catch (Exception e ){
             throw new RuntimeException("No se ha encontrado en la base de datos la Habilidad");
         }
         try{
-            tareaRepository.getTarea(idTarea);
+            getTarea(idTarea);
         } catch ( Exception e){
             throw new RuntimeException("No se ha encontrado en la base de datos la Tarea");
         }
@@ -56,6 +56,16 @@ public class Tarea_HabilidadService {
 
     public List<Tarea_Habilidad> getAllTarea_Habilidad(){
         return tarea_HabilidadRepository.getAllTarea_Habilidad();
+    }
+
+
+    public Tarea_Habilidad updateTarea_Habilidad(Integer idTareaHabilidad, Tarea_Habilidad tarea_habilidad){
+        try{
+            getTarea_Habilidad(idTareaHabilidad);
+        } catch (Exception e){
+            throw new RuntimeException("No se ha encontrado en la base de datos la Tarea_Habilidad");
+        }
+        tarea_HabilidadRepository.updateTarea_Habilidad(idTareaHabilidad, tarea_habilidad);
     }
 
 

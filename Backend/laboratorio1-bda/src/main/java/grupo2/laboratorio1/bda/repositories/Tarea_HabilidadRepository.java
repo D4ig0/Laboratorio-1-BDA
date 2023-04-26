@@ -66,6 +66,26 @@ public class Tarea_HabilidadRepository implements ITarea_HabilidadRepository {
             throw new RuntimeException("No se pudo obtener la tabla relacion entre tarea y habilidad");
         }}
 
+        public Tarea_Habilidad updateTarea_Habilidad(Integer idTareaHabilidad, Tarea_Habilidad tarea_Habilidad){
+            String queryText = "UPDATE Tarea_Habilidad SET id_emergencia = :id_emergencia, id_habilidad = :id_habilidad, id_tarea = :id_tarea WHERE id_tarea_habilidad = :id_tarea_habilidad";
+            try (Connection connection = sql2o.open()){
+                Query query = connection.createQuery(queryText)
+                        .addParameter("id_emergencia", tarea_Habilidad.getIdEmergencia())
+                        .addParameter("id_habilidad", tarea_Habilidad.getIdHabilidad())
+                        .addParameter("id_tarea", tarea_Habilidad.getIdTarea())
+                        .addParameter("id_tarea_habilidad", idTareaHabilidad);
+                Tarea_Habilidad tarea_habilidad = query.executeAndFetchFirst(Tarea_Habilidad.class);
+                return tarea_habilidad;
+    
+            }
+            catch (Exception e){
+                throw new RuntimeException("No se pudo actualizar la tabla relacion entre tarea y habilidad");
+            }
+        }
+
+    
+
+    }
 
 
-}
+
