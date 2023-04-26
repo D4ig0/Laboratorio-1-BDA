@@ -1,6 +1,9 @@
 package grupo2.laboratorio1.bda.repositories;
 
 import grupo2.laboratorio1.bda.models.Tarea;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
@@ -33,6 +36,59 @@ public class TareaRepository implements ITareaRepository{
         }
         catch (Exception e){
             throw new RuntimeException("Ocurrio un error al generar la tarea");
+        }}
+
+    
+    @Override
+    public Tarea getTarea(Integer idTarea) {
+        String queryText = "SELECT * FROM tarea WHERE id_tarea = :idTarea";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idTarea", idTarea)
+                    .addColumnMapping("id_tarea", "idTarea")
+                    .addColumnMapping("id_emergencia", "idEmergencia")
+                    .addColumnMapping("nombre", "nombre")
+                    .addColumnMapping("descripcion", "descripcion")
+                    .addColumnMapping("cant_vol_requeridos", "cantVolRequeridos")
+                    .addColumnMapping("cant_vol_inscritos", "cantVolInscritos")
+                    .addColumnMapping("fecha_inicio", "fechaInicio")
+                    .addColumnMapping("fecha_fin", "fechaFin")
+                    .addColumnMapping("estado_actual", "estadoActual");
+            Tarea tarea = query.executeAndFetchFirst(Tarea.class);
+            return tarea;
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al obtener la tarea");
         }
     }
+
+    @Override
+    public List<Tarea> getAllTareas() {
+        String queryText = "SELECT * FROM tarea";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+        
+            .addColumnMapping("id_tarea", "idTarea")
+            .addColumnMapping("id_emergencia", "idEmergencia")
+            .addColumnMapping("nombre", "nombre")
+            .addColumnMapping("descripcion", "descripcion")
+            .addColumnMapping("cant_vol_requeridos", "cantVolRequeridos")
+            .addColumnMapping("cant_vol_inscritos", "cantVolInscritos")
+            .addColumnMapping("fecha_inicio", "fechaInicio")
+            .addColumnMapping("fecha_fin", "fechaFin")
+            .addColumnMapping("estado_actual", "estadoActual");
+            List<Tarea> tareas = query.executeAndFetch(Tarea.class);
+            return tareas;}
+
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al obtener todas las tareas");
+        }
+    }
+
+
+    
+
+
 }

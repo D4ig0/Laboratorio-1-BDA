@@ -20,10 +20,24 @@ public class TareaService {
         validarTarea(tarea);
         tareaRepository.createTarea(tarea);}
 
+    private void validarTarea(Tarea tarea){
+        
+    }
 
-    private void validarTarea(Tarea ranking){
-        
-        
-    }}
+    public Tarea getTarea(@NonNull Integer idTarea){
+        Tarea tarea = new Tarea();
+        tarea.setIdTarea(idTarea);
+        validarTarea(tarea);
+        return tareaRepository.getTarea(idTarea);
+    }
+
+    public List<Tarea> getAllTareas(){
+        return tareaRepository.getAllTareas();
+    }
+
+   
+
+
+   }
 
    

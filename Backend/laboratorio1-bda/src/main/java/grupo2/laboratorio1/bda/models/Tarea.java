@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class Tarea {
 
     private Integer idTarea;
-    private Integer idEmergencia; //FK
+    private Integer idEmergencia; 
 
     private String nombre;
     private String descripcion;
