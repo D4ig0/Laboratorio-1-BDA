@@ -48,7 +48,7 @@ public class TareaController {
     }
 
 
-    @PutMapping("/rankings/{id}")
+    @PutMapping("/tareas/{id}")
     public void updateTarea(@PathVariable("id") Integer idTarea, @RequestBody Tarea tarea){
         try {
             tareaService.updateTarea(idTarea, tarea);
@@ -60,5 +60,16 @@ public class TareaController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
+    @DeleteMapping("/tareas/{id}")
+    public void deleteTarea(@PathVariable("id") Integer idTarea){
+        tareaService.deleteTarea(idTarea);
+    }
+
+  
+
+
+
+
+
 
 }

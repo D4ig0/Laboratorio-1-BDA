@@ -115,6 +115,7 @@ public class TareaRepository implements ITareaRepository{
         catch (Exception e){
             throw new RuntimeException("Ocurrio un error al actualizar la tarea");
         }
+
     }
 
     public boolean existsTarea(Integer idTarea){
@@ -131,6 +132,21 @@ public class TareaRepository implements ITareaRepository{
         }
     }
 
+    @Override
+    public void deleteTarea(Integer idTarea) {
+        String queryText = "DELETE FROM tarea WHERE id_tarea = :idTarea";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idTarea", idTarea);
+            query.executeUpdate();
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al eliminar la tarea");
+        }
+    }
+}
+
 
 
 
@@ -140,4 +156,3 @@ public class TareaRepository implements ITareaRepository{
     
 
 
-}

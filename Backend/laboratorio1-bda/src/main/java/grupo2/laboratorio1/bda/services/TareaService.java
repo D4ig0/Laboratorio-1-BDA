@@ -41,6 +41,10 @@ public class TareaService {
         tareaRepository.updateTarea(tarea);
     }
 
+    public void deleteTarea(@NonNull Integer idTarea){
+        tareaRepository.deleteTarea(idTarea);
+    }
+
 
    
 

@@ -9,4 +9,5 @@ public interface ITareaRepository {
      List<Tarea> getAllTareas();    
      void updateTarea(Tarea tarea);
      boolean existsTarea(Integer idTarea);
+     void deleteTarea(Integer idTarea) ;
 }
