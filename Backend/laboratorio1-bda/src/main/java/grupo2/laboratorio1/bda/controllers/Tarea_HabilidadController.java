@@ -67,6 +67,19 @@ public class Tarea_HabilidadController {
     }
 
 
+    @DeleteMapping("/tarea_habilidades/{id}")
+    public void deleteTarea_Habilidad(@PathVariable("id") Integer idTareaHabilidad){
+        try{
+            tarea_HabilidadService.deleteTarea_Habilidad(idTareaHabilidad);
+        }
+        catch (IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+        catch (RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
 
 
 }

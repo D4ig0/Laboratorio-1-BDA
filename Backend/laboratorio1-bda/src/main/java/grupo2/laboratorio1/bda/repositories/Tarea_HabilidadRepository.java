@@ -18,7 +18,7 @@ public class Tarea_HabilidadRepository implements ITarea_HabilidadRepository {
 
     @Override
     public void createTarea_Habilidad(Tarea_Habilidad tarea_Habilidad){
-        String queryText = "INSERT INTO Tarea_Habilidad (id_emergencia, id_habilidad, id_tarea) VALUES (:id_emergencia, :id_habilidad, :id_tarea)";
+        String queryText = "INSERT INTO tarea_habilidad (id_emergencia, id_habilidad, id_tarea) VALUES (:id_emergencia, :id_habilidad, :id_tarea)";
         try( Connection Connection = sql2o.open()){
             Connection.createQuery(queryText)
                     .addParameter("id_emergencia", tarea_Habilidad.getIdEmergencia())
@@ -33,7 +33,7 @@ public class Tarea_HabilidadRepository implements ITarea_HabilidadRepository {
 
     
     public Tarea_Habilidad getTarea_Habilidad(Integer idTareaHabilidad){
-        String queryText = "SELECT * FROM Tarea_Habilidad WHERE id_tarea_habilidad = :idTareaHabilidad";
+        String queryText = "SELECT * FROM tarea_habilidad WHERE id_tarea_habilidad = :idTareaHabilidad";
         try (Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
                     .addParameter("idTareaHabilidad", idTareaHabilidad)
@@ -51,7 +51,7 @@ public class Tarea_HabilidadRepository implements ITarea_HabilidadRepository {
 
  
     public List<Tarea_Habilidad> getAllTarea_Habilidad(){
-        String queryText = "SELECT * FROM Tarea_Habilidad";
+        String queryText = "SELECT * FROM tarea_habilidad";
         try (Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
                     .addColumnMapping("ID_TAREA_HABILIDAD", "idTareaHabilidad")
@@ -67,7 +67,7 @@ public class Tarea_HabilidadRepository implements ITarea_HabilidadRepository {
         }}
 
         public Tarea_Habilidad updateTarea_Habilidad(Integer idTareaHabilidad, Tarea_Habilidad tarea_Habilidad){
-            String queryText = "UPDATE Tarea_Habilidad SET id_emergencia = :id_emergencia, id_habilidad = :id_habilidad, id_tarea = :id_tarea WHERE id_tarea_habilidad = :id_tarea_habilidad";
+            String queryText = "UPDATE tarea_habilidad SET id_emergencia = :id_emergencia, id_habilidad = :id_habilidad, id_tarea = :id_tarea WHERE id_tarea_habilidad = :id_tarea_habilidad";
             try (Connection connection = sql2o.open()){
                 Query query = connection.createQuery(queryText)
                         .addParameter("id_emergencia", tarea_Habilidad.getIdEmergencia())
@@ -82,6 +82,19 @@ public class Tarea_HabilidadRepository implements ITarea_HabilidadRepository {
                 throw new RuntimeException("No se pudo actualizar la tabla relacion entre tarea y habilidad");
             }
         }
+
+        public void deleteTarea_Habilidad(Integer idTareaHabilidad){
+            String queryText = "DELETE FROM tarea_habilidad WHERE id_tarea_habilidad = :idTareaHabilidad";
+            try (Connection connection = sql2o.open()){
+                Query query = connection.createQuery(queryText)
+                        .addParameter("idTareaHabilidad", idTareaHabilidad);
+                query.executeUpdate();
+            }
+            catch (Exception e){
+                throw new RuntimeException("No se pudo eliminar la tabla relacion entre tarea y habilidad");
+            }
+        }
+
 
     
 

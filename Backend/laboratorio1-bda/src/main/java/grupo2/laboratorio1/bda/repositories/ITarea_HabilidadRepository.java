@@ -9,6 +9,7 @@ public interface ITarea_HabilidadRepository {
     List<Tarea_Habilidad> getAllTarea_Habilidad();
     Tarea_Habilidad getTarea_Habilidad(Integer idTareaHabilidad);
     Tarea_Habilidad updateTarea_Habilidad(Integer idTareaHabilidad, Tarea_Habilidad tarea_Habilidad);
+    void deleteTarea_Habilidad(Integer idTareaHabilidad);
 
 }
 
