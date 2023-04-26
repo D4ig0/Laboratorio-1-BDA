@@ -1,7 +1,7 @@
 package grupo2.laboratorio1.bda.services;
 
 import grupo2.laboratorio1.bda.models.Ranking;
-import grupo2.laboratorio1.bda.repositories.RankingRepository;
+import grupo2.laboratorio1.bda.repositories.IRankingRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class RankingService {
     @Autowired
-    RankingRepository rankingRepository;
+    IRankingRepository rankingRepository;
 
     public void createRanking(@NonNull Integer idVoluntario,
                               @NonNull Integer idTarea,
