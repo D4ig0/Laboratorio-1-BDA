@@ -1,6 +1,6 @@
-package grupo2.laboratorio1.bda.Controllers;
+package grupo2.laboratorio1.bda.controllers;
 
-import grupo2.laboratorio1.bda.Services.VoluntarioService;
+import grupo2.laboratorio1.bda.services.VoluntarioService;
 import grupo2.laboratorio1.bda.models.Voluntario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

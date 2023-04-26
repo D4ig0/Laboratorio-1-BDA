@@ -1,4 +1,4 @@
-package grupo2.laboratorio1.bda.Services;
+package grupo2.laboratorio1.bda.services;
 
 import grupo2.laboratorio1.bda.models.Voluntario;
 import grupo2.laboratorio1.bda.repositories.IVoluntarioRepository;
