@@ -41,9 +41,9 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.tarea(
     descripcion VARCHAR(200),
     cant_vol_requeridos INT,
     cant_vol_inscritos INT,
-    direccion VARCHAR(50),
     fecha_inicio DATE,
     fecha_fin DATE,
+    estado_actual VARCHAR(100),
     PRIMARY KEY (id_tarea),
     FOREIGN KEY (id_emergencia) REFERENCES desastresdb.public.emergencia(id_emergencia)
 );
