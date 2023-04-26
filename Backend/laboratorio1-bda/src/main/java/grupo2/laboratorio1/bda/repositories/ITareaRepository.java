@@ -7,4 +7,6 @@ public interface ITareaRepository {
     void createTarea(Tarea tarea);
      Tarea getTarea(Integer idTarea);
      List<Tarea> getAllTareas();    
+     void updateTarea(Tarea tarea);
+     boolean existsTarea(Integer idTarea);
 }

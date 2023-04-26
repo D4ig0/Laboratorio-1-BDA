@@ -47,4 +47,18 @@ public class TareaController {
         return tareaService.getAllTareas();
     }
 
+
+    @PutMapping("/rankings/{id}")
+    public void updateTarea(@PathVariable("id") Integer idTarea, @RequestBody Tarea tarea){
+        try {
+            tareaService.updateTarea(idTarea, tarea);
+        }
+        catch (IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+        catch (RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
 }

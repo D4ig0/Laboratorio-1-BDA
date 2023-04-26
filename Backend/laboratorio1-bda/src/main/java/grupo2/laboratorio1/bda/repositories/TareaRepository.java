@@ -87,6 +87,55 @@ public class TareaRepository implements ITareaRepository{
         }
     }
 
+    @Override
+    public void updateTarea(Tarea tarea) {
+        String queryText = "UPDATE tarea SET " +
+                "id_emergencia = COALESCE(:idEmergencia, id_emergencia), " +
+                "nombre = COALESCE(:nombre, nombre), " +
+                "descripcion = COALESCE(:descripcion, descripcion), " +
+                "cant_vol_requeridos = COALESCE(:cantVolRequeridos, cant_vol_requeridos), " +
+                "cant_vol_inscritos = COALESCE(:cantVolInscritos, cant_vol_inscritos), " +
+                "fecha_inicio = COALESCE(:fechaInicio, fecha_inicio), " +
+                "fecha_fin = COALESCE(:fechaFin, fecha_fin), " +
+                "estado_actual = COALESCE(:estadoActual, estado_actual) " +
+                "WHERE id_tarea = :idTarea";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idEmergencia", tarea.getIdEmergencia())
+                    .addParameter("nombre", tarea.getNombre())
+                    .addParameter("descripcion", tarea.getDescripcion())
+                    .addParameter("cantVolRequeridos", tarea.getCantVolRequeridos())
+                    .addParameter("cantVolInscritos", tarea.getCantVolInscritos())
+                    .addParameter("fechaInicio", tarea.getFechaInicio())
+                    .addParameter("fechaFin", tarea.getFechaFin())
+                    .addParameter("estadoActual", tarea.getEstadoActual());
+            query.executeUpdate();
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al actualizar la tarea");
+        }
+    }
+
+    public boolean existsTarea(Integer idTarea){
+        String queryText = "SELECT EXISTS(SELECT * FROM tarea WHERE id_tarea = :idTarea)";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idTarea", idTarea);
+            boolean exists = query.executeAndFetchFirst(Boolean.class);
+            return exists;
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al realizar la query");
+        }
+    }
+
+
+
+
+
+
 
     
 

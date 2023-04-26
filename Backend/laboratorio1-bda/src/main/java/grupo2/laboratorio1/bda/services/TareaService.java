@@ -35,6 +35,13 @@ public class TareaService {
         return tareaRepository.getAllTareas();
     }
 
+    public void updateTarea(Integer idTarea, Tarea tarea){
+        tarea.setIdTarea(idTarea);
+        validarTarea(tarea);
+        tareaRepository.updateTarea(tarea);
+    }
+
+
    
 
 
