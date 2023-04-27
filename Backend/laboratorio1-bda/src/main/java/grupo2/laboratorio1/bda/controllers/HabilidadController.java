@@ -46,4 +46,30 @@ public class HabilidadController {
     public List<Habilidad> getAllHabilidades(){
         return habilidadService.getAllHabilidades();
     }
+
+    @PutMapping("/voluntarios/{id}")
+    public void updateHabilidad(@PathVariable("id") Integer idHabilidad, @RequestBody Habilidad habilidad){
+        try {
+            habilidadService.updateHabilidad(idHabilidad, habilidad);
+        }
+        catch (IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+        catch (RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/habilidades/{id}")
+    public void deleteHabilidad(@PathVariable("id") Integer idHabilidad){
+        try {
+            habilidadService.deleteHabilidad(idHabilidad);
+        }
+        catch (IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+        catch (RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
 }

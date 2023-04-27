@@ -9,4 +9,5 @@ public interface IHabilidadRepository {
     Habilidad getHabilidad(Integer idHabilidad);
     List<Habilidad> getAllHabilidades();
     void updateHabilidad(Habilidad habilidad);
+    void deleteHabilidad(Integer idHabilidad);
 }

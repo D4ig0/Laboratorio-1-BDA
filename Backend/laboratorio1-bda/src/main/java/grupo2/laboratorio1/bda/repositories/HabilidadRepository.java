@@ -80,4 +80,18 @@ public class HabilidadRepository implements IHabilidadRepository{
             throw new RuntimeException("Ocurrio un error al actualizar la habilidad");
         }
     }
+
+    @Override
+    public void deleteHabilidad(Integer idHabilidad) {
+        String queryText = "DELETE FROM habilidad WHERE id_habilidad = :idHabilidad";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idHabilidad", idHabilidad);
+            query.executeUpdate();
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al eliminar la habilidad");
+        }
+    }
 }

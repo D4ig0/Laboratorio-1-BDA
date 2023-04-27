@@ -36,4 +36,12 @@ public class HabilidadService {
 
         habilidadRepository.updateHabilidad(habilidad);
     }
+
+    public void deleteHabilidad(Integer idHabilidad){
+        //if(!existsHabilidad(idHabilidad)){
+        //    throw new IllegalArgumentException("No existe la habilidad");
+        //}
+
+        habilidadRepository.deleteHabilidad(idHabilidad);
+    }
 }
