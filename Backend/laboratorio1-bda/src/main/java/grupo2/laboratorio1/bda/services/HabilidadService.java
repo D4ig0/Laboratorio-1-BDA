@@ -19,4 +19,14 @@ public class HabilidadService {
         habilidadRepository.createHabilidad(habilidad);
     }
 
+    public Habilidad getHabilidad(@NonNull Integer idHabilidad){
+        //if(!existsHabilidad(idHabilidad)){
+          //  throw new IllegalArgumentException("No existe la habilidad");
+        //}
+        return habilidadRepository.getHabilidad(idHabilidad);
+    }
+
+    public List<Habilidad> getAllHabilidades(){
+        return habilidadRepository.getAllHabilidades();
+    }
 }

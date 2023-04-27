@@ -29,4 +29,21 @@ public class HabilidadController {
         }
     }
 
+    @GetMapping("/habilidades/{id}")
+    public Habilidad getHabilidad(@PathVariable("id") Integer idHabilidad){
+        try {
+            return habilidadService.getHabilidad(idHabilidad);
+        }
+        catch (IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+        catch (RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    @GetMapping("/habilidades")
+    public List<Habilidad> getAllHabilidades(){
+        return habilidadService.getAllHabilidades();
+    }
 }

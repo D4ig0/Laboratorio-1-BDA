@@ -32,4 +32,35 @@ public class HabilidadRepository implements IHabilidadRepository{
             throw new RuntimeException("Ocurrio un error al registrar el ranking");
         }
     }
+
+    @Override
+    public Habilidad getHabilidad(Integer idHabilidad) {
+        String queryText = "SELECT id_habilidad, descripcion FROM habilidad WHERE id_habilidad = :idHabilidad";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idHabilidad", idHabilidad)
+                    .addColumnMapping("ID_HABILIDAD", "idHabilidad");
+            Habilidad habilidad = query.executeAndFetchFirst(Habilidad.class);
+            return habilidad;
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al obtener la habilidad");
+        }
+    }
+
+    @Override
+    public List<Habilidad> getAllHabilidades() {
+        String queryText = "SELECT id_habilidad, descripcion FROM habilidad";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addColumnMapping("ID_HABILIDAD", "idHabilidad");
+            List<Habilidad> habilidades = query.executeAndFetch(Habilidad.class);
+            return habilidades;
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al obtener los voluntarios");
+        }
+    }
 }
