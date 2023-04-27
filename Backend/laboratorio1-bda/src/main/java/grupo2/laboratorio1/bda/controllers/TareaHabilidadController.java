@@ -1,7 +1,7 @@
 package grupo2.laboratorio1.bda.controllers;
 
-import grupo2.laboratorio1.bda.models.Tarea_Habilidad;
-import grupo2.laboratorio1.bda.services.Tarea_HabilidadService;
+import grupo2.laboratorio1.bda.models.TareaHabilidad;
+import grupo2.laboratorio1.bda.services.TareaHabilidadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -11,14 +11,15 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-public class Tarea_HabilidadController {
+public class TareaHabilidadController {
+
     @Autowired
-    Tarea_HabilidadService tarea_HabilidadService;
+    TareaHabilidadService tarea_HabilidadService;
 
     @PostMapping("/tarea_habilidades")
-    public void createTarea_Habilidad(@RequestParam Integer idEmergencia, @RequestParam Integer idHabilidad, @RequestParam Integer idTarea){
+    public void createTareaHabilidad(@RequestParam Integer idEmergencia, @RequestParam Integer idHabilidad, @RequestParam Integer idTarea){
         try{
-            tarea_HabilidadService.createTarea_Habilidad(idEmergencia,  idHabilidad, idTarea);
+            tarea_HabilidadService.createTareaHabilidad(idEmergencia,  idHabilidad, idTarea);
         }
         catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -30,9 +31,9 @@ public class Tarea_HabilidadController {
 
 
     @GetMapping("/tarea_habilidades/{id}")
-    public Tarea_Habilidad getTarea_Habilidad(@PathVariable("id") Integer idTarea_Habilidad){
+    public TareaHabilidad getTareaHabilidad(@PathVariable("id") Integer idTareaHabilidad){
         try{
-            return tarea_HabilidadService.getTarea_Habilidad(idTarea_Habilidad);
+            return tarea_HabilidadService.getTareaHabilidad(idTareaHabilidad);
         }
         catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -43,9 +44,9 @@ public class Tarea_HabilidadController {
     }
     
     @GetMapping("/tarea_habilidades/all")
-    public List<Tarea_Habilidad> getAllTarea_Habilidad(){
+    public List<TareaHabilidad> getAllTareaHabilidad(){
         try{
-            return tarea_HabilidadService.getAllTarea_Habilidad();
+            return tarea_HabilidadService.getAllTareaHabilidad();
         }
         catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
@@ -54,9 +55,9 @@ public class Tarea_HabilidadController {
 
 
     @PutMapping("/tarea_habilidades/all/{id}")
-    public Tarea_Habilidad updateTarea_Habilidad(@PathVariable("id") Integer idTareaHabilidad, @RequestBody Tarea_Habilidad tareaHabilidad){
+    public TareaHabilidad updateTareaHabilidad(@PathVariable("id") Integer idTareaHabilidad, @RequestBody TareaHabilidad tareaHabilidad){
         try{
-            return tarea_HabilidadService.updateTarea_Habilidad(idTareaHabilidad,tareaHabilidad);
+            return tarea_HabilidadService.updateTareaHabilidad(idTareaHabilidad,tareaHabilidad);
         }
         catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -68,9 +69,9 @@ public class Tarea_HabilidadController {
 
 
     @DeleteMapping("/tarea_habilidades/{id}")
-    public void deleteTarea_Habilidad(@PathVariable("id") Integer idTareaHabilidad){
+    public void deleteTareaHabilidad(@PathVariable("id") Integer idTareaHabilidad){
         try{
-            tarea_HabilidadService.deleteTarea_Habilidad(idTareaHabilidad);
+            tarea_HabilidadService.deleteTareaHabilidad(idTareaHabilidad);
         }
         catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());

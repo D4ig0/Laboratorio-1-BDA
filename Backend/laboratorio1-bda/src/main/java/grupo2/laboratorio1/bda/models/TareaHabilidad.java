@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Tarea_Habilidad {
+public class TareaHabilidad {
 
     private Integer idTareaHabilidad;
     private Integer idEmergencia;
