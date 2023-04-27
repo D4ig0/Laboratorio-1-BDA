@@ -8,4 +8,5 @@ public interface IHabilidadRepository {
     void createHabilidad(Habilidad habilidad);
     Habilidad getHabilidad(Integer idHabilidad);
     List<Habilidad> getAllHabilidades();
+    void updateHabilidad(Habilidad habilidad);
 }

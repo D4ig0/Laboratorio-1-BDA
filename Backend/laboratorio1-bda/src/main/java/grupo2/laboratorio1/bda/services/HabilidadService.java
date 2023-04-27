@@ -29,4 +29,11 @@ public class HabilidadService {
     public List<Habilidad> getAllHabilidades(){
         return habilidadRepository.getAllHabilidades();
     }
+
+    public void updateHabilidad(Integer idHabilidad, Habilidad habilidad){
+        habilidad.setIdHabilidad(idHabilidad);
+        //vaildateHabilidad(habilidad);
+
+        habilidadRepository.updateHabilidad(habilidad);
+    }
 }

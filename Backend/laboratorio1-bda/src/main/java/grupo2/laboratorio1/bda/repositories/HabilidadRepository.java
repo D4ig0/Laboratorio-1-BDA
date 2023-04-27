@@ -60,7 +60,24 @@ public class HabilidadRepository implements IHabilidadRepository{
             return habilidades;
         }
         catch (Exception e){
-            throw new RuntimeException("Ocurrio un error al obtener los voluntarios");
+            throw new RuntimeException("Ocurrio un error al obtener las habilidades");
+        }
+    }
+
+    @Override
+    public void updateHabilidad(Habilidad habilidad) {
+        String queryText = "UPDATE habilidad SET " +
+                "nombre = COALESCE(:descripcion, descripcion), " +
+                "WHERE id_habilidad = :idHabilidad";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("descripcion", habilidad.getDescripcion())
+                    .addParameter("idHabilidad", habilidad.getIdHabilidad());
+            query.executeUpdate();
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al actualizar la habilidad");
         }
     }
 }
