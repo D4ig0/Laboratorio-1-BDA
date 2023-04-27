@@ -40,10 +40,6 @@ public class TareaService {
         tareaRepository.deleteTarea(idTarea);
     }
 
-
-   
-
-
    }
 
    
