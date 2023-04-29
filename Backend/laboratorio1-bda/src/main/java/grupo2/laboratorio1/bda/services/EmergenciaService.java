@@ -1,4 +1,4 @@
-package grupo2.laboratorio1.bda.servicies;
+package grupo2.laboratorio1.bda.services;
 
 import java.sql.Date;
 import java.util.List;
