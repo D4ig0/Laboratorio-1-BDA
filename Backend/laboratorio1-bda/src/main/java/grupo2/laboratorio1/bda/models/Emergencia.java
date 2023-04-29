@@ -1,17 +1,20 @@
 package grupo2.laboratorio1.bda.models;
 
-import java.io.Serial;
 import java.sql.Date;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Emergencia {
-    private Serial id_emergencia;
+    private Integer id_emergencia;
     private String nombre;
     private String descripcion;
     private Date fecha_inicio;
-    private Date fecha_fin;
+    private Date fecha_termino;
     private Boolean activo;
-    private Serial id_institucion;
+    private Integer id_institucion;
 }
