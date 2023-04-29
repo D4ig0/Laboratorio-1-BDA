@@ -1,7 +1,7 @@
 package grupo2.laboratorio1.bda.controllers;
 
-import grupo2.laboratorio1.bda.models.Estado_Tarea;
-import grupo2.laboratorio1.bda.services.Estado_TareaService;
+import grupo2.laboratorio1.bda.models.EstadoTarea;
+import grupo2.laboratorio1.bda.services.EstadoTareaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -11,15 +11,15 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-public class Estado_TareaController {
+public class EstadoTareaController {
     @Autowired
-    Estado_TareaService estado_tareaService;
+    EstadoTareaService estadoTareaService;
 
-    @PostMapping("/habilidades")
-    public void createEstado_Tarea(@RequestParam Integer idEstado_Tarea,
+    @PostMapping("/estadoTarea")
+    public void createEstadoTarea(@RequestParam Integer idEstadoTarea,
                                 @RequestParam String descripcion){
         try{
-            estado_tareaService.createEstado_Tarea(idEstado_Tarea, descripcion);
+            estadoTareaService.createEstadoTarea(idEstadoTarea, descripcion);
         }
         catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -29,10 +29,10 @@ public class Estado_TareaController {
         }
     }
 
-    @GetMapping("/habilidades/{id}")
-    public Estado_Tarea getEstado_Tarea(@PathVariable("id") Integer idEstado_Tarea){
+    @GetMapping("/estadoTareas/{id}")
+    public EstadoTarea getEstadoTarea(@PathVariable("id") Integer idEstadoTarea){
         try {
-            return estado_tareaService.getEstado_Tarea(idEstado_Tarea);
+            return estadoTareaService.getEstadoTarea(idEstadoTarea);
         }
         catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -42,15 +42,15 @@ public class Estado_TareaController {
         }
     }
 
-    @GetMapping("/habilidades")
-    public List<Estado_Tarea> getAllEstado_Tareas(){
-        return estado_tareaService.getAllEstado_Tareas();
+    @GetMapping("/estadoTareas")
+    public List<EstadoTarea> getAllEstadoTareas(){
+        return estadoTareaService.getAllEstadoTareas();
     }
 
-    @PutMapping("/voluntarios/{id}")
-    public void updateEstado_Tarea(@PathVariable("id") Integer idEstado_Tarea, @RequestBody Estado_Tarea estado_tarea){
+    @PutMapping("/estadoTareas/{id}")
+    public void updateEstadoTarea(@PathVariable("id") Integer idEstadoTarea, @RequestBody EstadoTarea estadoTarea){
         try {
-            estado_tareaService.updateEstado_Tarea(idEstado_Tarea, estado_tarea);
+            estadoTareaService.updateEstadoTarea(idEstadoTarea, estadoTarea);
         }
         catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -60,10 +60,10 @@ public class Estado_TareaController {
         }
     }
 
-    @DeleteMapping("/habilidades/{id}")
-    public void deleteEstado_Tarea(@PathVariable("id") Integer idEstado_Tarea){
+    @DeleteMapping("/estadoTareas/{id}")
+    public void deleteEstadoTarea(@PathVariable("id") Integer idEstadoTarea){
         try {
-            estado_tareaService.deleteEstado_Tarea(idEstado_Tarea);
+            estadoTareaService.deleteEstadoTarea(idEstadoTarea);
         }
         catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());

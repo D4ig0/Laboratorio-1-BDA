@@ -1,6 +1,6 @@
 package grupo2.laboratorio1.bda.repositories;
 
-import grupo2.laboratorio1.bda.models.Estado_Tarea;
+import grupo2.laboratorio1.bda.models.EstadoTarea;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
@@ -10,19 +10,19 @@ import java.util.List;
 
 
 @Repository
-public class Estado_TareaRepository implements IEstado_TareaRepository{
+public class EstadoTareaRepository implements IEstadoTareaRepository {
     @Autowired
     private Sql2o sql2o;
 
     @Override
-    public void createEstado_Tarea(Estado_Tarea estado_tarea) {
-        String queryText = "INSERT INTO ranking (id_estado_tarea, descripcion) " +
-                "VALUES (:idEstado_Tarea, :descripcion)";
+    public void createEstadoTarea(EstadoTarea estadoTarea) {
+        String queryText = "INSERT INTO estado_tarea (id_estado_tarea, descripcion) " +
+                "VALUES (:idEstadoTarea, :descripcion)";
 
         try(Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
-                    .addParameter("idEstado_Tarea", estado_tarea.getIdEstado_Tarea())
-                    .addParameter("descripcion", estado_tarea.getDescripcion());
+                    .addParameter("idEstadoTarea", estadoTarea.getIdEstadoTarea())
+                    .addParameter("descripcion", estadoTarea.getDescripcion());
             query.executeUpdate();
         }
         catch (Exception e){
@@ -31,15 +31,15 @@ public class Estado_TareaRepository implements IEstado_TareaRepository{
     }
 
     @Override
-    public Estado_Tarea getEstado_Tarea(Integer idEstado_Tarea) {
-        String queryText = "SELECT id_estado_tarea, descripcion FROM estado_tarea WHERE id_estado_tarea = :idEstado_Tarea";
+    public EstadoTarea getEstadoTarea(Integer idEstadoTarea) {
+        String queryText = "SELECT id_estado_tarea, descripcion FROM estado_tarea WHERE id_estado_tarea = :idEstadoTarea";
 
         try(Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
-                    .addParameter("idEstado_Tarea", idEstado_Tarea)
-                    .addColumnMapping("ID_ESTADO_TAREA", "idEstado_Tarea");
-            Estado_Tarea estado_tarea = query.executeAndFetchFirst(Estado_Tarea.class);
-            return estado_tarea;
+                    .addParameter("idEstadoTarea", idEstadoTarea)
+                    .addColumnMapping("ID_ESTADO_TAREA", "idEstadoTarea");
+            EstadoTarea estadoTarea = query.executeAndFetchFirst(EstadoTarea.class);
+            return estadoTarea;
         }
         catch (Exception e){
             throw new RuntimeException("Ocurrio un error al obtener el estado de la tarea");
@@ -47,13 +47,13 @@ public class Estado_TareaRepository implements IEstado_TareaRepository{
     }
 
     @Override
-    public List<Estado_Tarea> getAllEstado_Tareas() {
+    public List<EstadoTarea> getAllEstadoTareas() {
         String queryText = "SELECT id_estado_tarea, descripcion FROM estado_tarea";
 
         try(Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
-                    .addColumnMapping("ID_ESTADO_TAREA", "idEstado_Tarea");
-            List<Estado_Tarea> estados_tareas = query.executeAndFetch(Estado_Tarea.class);
+                    .addColumnMapping("ID_ESTADO_TAREA", "idEstadoTarea");
+            List<EstadoTarea> estados_tareas = query.executeAndFetch(EstadoTarea.class);
             return estados_tareas;
         }
         catch (Exception e){
@@ -62,15 +62,15 @@ public class Estado_TareaRepository implements IEstado_TareaRepository{
     }
 
     @Override
-    public void updateEstado_Tarea(Estado_Tarea habilidad) {
-        String queryText = "UPDATE habilidad SET " +
-                "nombre = COALESCE(:descripcion, descripcion), " +
-                "WHERE id_estado_tarea = :idEstado_Tarea";
+    public void updateEstadoTarea(EstadoTarea estadoTarea) {
+        String queryText = "UPDATE estado_tarea SET " +
+                "nombre = COALESCE(:descripcion, descripcion) " +
+                "WHERE id_estado_tarea = :idEstadoTarea";
 
         try(Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
-                    .addParameter("descripcion", habilidad.getDescripcion())
-                    .addParameter("idEstado_Tarea", habilidad.getIdEstado_Tarea());
+                    .addParameter("descripcion", estadoTarea.getDescripcion())
+                    .addParameter("idEstadoTarea", estadoTarea.getIdEstadoTarea());
             query.executeUpdate();
         }
         catch (Exception e){
@@ -79,12 +79,12 @@ public class Estado_TareaRepository implements IEstado_TareaRepository{
     }
 
     @Override
-    public void deleteEstado_Tarea(Integer idEstado_Tarea) {
-        String queryText = "DELETE FROM estado_tarea WHERE id_estado_tarea = :idEstado_Tarea";
+    public void deleteEstadoTarea(Integer idEstadoTarea) {
+        String queryText = "DELETE FROM estado_tarea WHERE id_estado_tarea = :idEstadoTarea";
 
         try(Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
-                    .addParameter("idEstado_Tarea", idEstado_Tarea);
+                    .addParameter("idEstadoTarea", idEstadoTarea);
             query.executeUpdate();
         }
         catch (Exception e){

@@ -15,7 +15,7 @@ public class HabilidadRepository implements IHabilidadRepository{
 
     @Override
     public void createHabilidad(Habilidad habilidad) {
-        String queryText = "INSERT INTO ranking (id_habilidad, descripcion) " +
+        String queryText = "INSERT INTO habilidad (id_habilidad, descripcion) " +
                 "VALUES (:idHabilidad, :descripcion)";
 
         try(Connection connection = sql2o.open()){
@@ -63,7 +63,7 @@ public class HabilidadRepository implements IHabilidadRepository{
     @Override
     public void updateHabilidad(Habilidad habilidad) {
         String queryText = "UPDATE habilidad SET " +
-                "nombre = COALESCE(:descripcion, descripcion), " +
+                "nombre = COALESCE(:descripcion, descripcion) " +
                 "WHERE id_habilidad = :idHabilidad";
 
         try(Connection connection = sql2o.open()){

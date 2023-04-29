@@ -1,6 +1,6 @@
 package grupo2.laboratorio1.bda.repositories;
 
-import grupo2.laboratorio1.bda.models.Eme_Habilidad;
+import grupo2.laboratorio1.bda.models.EmeHabilidad;
 
 import java.util.List;
 
@@ -11,17 +11,17 @@ import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
 @Repository
-public class Eme_HabilidadRepository implements IEme_HabilidadRepository {
+public class EmeHabilidadRepository implements IEmeHabilidadRepository {
     @Autowired
     private Sql2o sql2o;
 
     @Override
-    public void createEme_Habilidad(Eme_Habilidad eme_habilidad){
+    public void createEmeHabilidad(EmeHabilidad emeHabilidad){
         String queryText = "INSERT INTO eme_habilidad (id_emergencia, id_habilidad) VALUES (:id_emergencia, :id_habilidad)";
         try( Connection connection = sql2o.open()){
             connection.createQuery(queryText)
-                    .addParameter("id_emergencia", eme_habilidad.getIdEmergencia())
-                    .addParameter("id_habilidad", eme_habilidad.getIdHabilidad())
+                    .addParameter("id_emergencia", emeHabilidad.getIdEmergencia())
+                    .addParameter("id_habilidad", emeHabilidad.getIdHabilidad())
                     .executeUpdate();
         }
         catch (Exception e){
@@ -29,7 +29,7 @@ public class Eme_HabilidadRepository implements IEme_HabilidadRepository {
         }
     }
 
-    public Eme_Habilidad getEme_Habilidad(Integer idEmeHabilidad){
+    public EmeHabilidad getEmeHabilidad(Integer idEmeHabilidad){
         String queryText = "SELECT * FROM eme_habilidad WHERE id_eme_habilidad = :idEmeHabilidad";
         try (Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
@@ -37,8 +37,8 @@ public class Eme_HabilidadRepository implements IEme_HabilidadRepository {
                     .addColumnMapping("ID_EME_HABILIDAD", "idEmeHabilidad")
                     .addColumnMapping("ID_EMERGENCIA", "idEmergencia")
                     .addColumnMapping("ID_HABILIDAD", "idHabilidad");
-            Eme_Habilidad eme_habilidad = query.executeAndFetchFirst(Eme_Habilidad.class);
-            return eme_habilidad;
+            EmeHabilidad emeHabilidad = query.executeAndFetchFirst(EmeHabilidad.class);
+            return emeHabilidad;
 
         }
         catch (Exception e){
@@ -46,15 +46,15 @@ public class Eme_HabilidadRepository implements IEme_HabilidadRepository {
         }
     }
 
-    public List<Eme_Habilidad> getAllEme_Habilidad(){
+    public List<EmeHabilidad> getAllEmeHabilidad(){
         String queryText = "SELECT * FROM eme_habilidad";
         try (Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
                     .addColumnMapping("ID_EME_HABILIDAD", "idEmeHabilidad")
                     .addColumnMapping("ID_EMERGENCIA", "idEmergencia")
                     .addColumnMapping("ID_HABILIDAD", "idHabilidad");
-            List<Eme_Habilidad> eme_habilidad = query.executeAndFetch(Eme_Habilidad.class);
-            return eme_habilidad;
+            List<EmeHabilidad> emeHabilidad = query.executeAndFetch(EmeHabilidad.class);
+            return emeHabilidad;
 
         }
         catch (Exception e){
@@ -62,15 +62,15 @@ public class Eme_HabilidadRepository implements IEme_HabilidadRepository {
         }
     }
 
-    public Eme_Habilidad updateEme_Habilidad(Integer idEmeHabilidad, Eme_Habilidad eme_Habilidad){
-        String queryText = "UPDATE eme_habilidad SET id_emergencia = :id_emergencia, id_habilidad = :id_habilidad WHERE id_eme_habilidad = :id_eme_habilidad";
+    public EmeHabilidad updateEmeHabilidad(Integer idEmeHabilidad, EmeHabilidad emeHabilidad){
+        String queryText = "UPDATE eme_habilidad SET id_emergencia = :id_emergencia, id_habilidad = :id_habilidad WHERE id_eme_habilidad = :idEmeHabilidad";
         try (Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
-                    .addParameter("id_emergencia", eme_Habilidad.getIdEmergencia())
-                    .addParameter("id_habilidad", eme_Habilidad.getIdHabilidad())
+                    .addParameter("id_emergencia", emeHabilidad.getIdEmergencia())
+                    .addParameter("id_habilidad", emeHabilidad.getIdHabilidad())
                     .addParameter("id_eme_habilidad", idEmeHabilidad);
-            Eme_Habilidad eme_habilidad = query.executeAndFetchFirst(Eme_Habilidad.class);
-            return eme_habilidad;
+            EmeHabilidad emeHabilidad2 = query.executeAndFetchFirst(EmeHabilidad.class);
+            return emeHabilidad2;
 
         }
         catch (Exception e){
@@ -78,11 +78,11 @@ public class Eme_HabilidadRepository implements IEme_HabilidadRepository {
         }
     }
 
-    public void deleteEme_Habilidad(Integer idEmeHabilidad){
+    public void deleteEmeHabilidad(Integer idEmeHabilidad){
         String queryText = "DELETE FROM eme_habilidad WHERE id_eme_habilidad = :idEmeHabilidad";
         try (Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
-                    .addParameter("idEmeHabilidad", idEmeHabilidad);
+                    .addParameter("id_eme_habilidad", idEmeHabilidad);
             query.executeUpdate();
         }
         catch (Exception e){

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Vol_Emergencia {
+public class VolEmergencia {
 
     private Integer idVolEmergencia;
     private Integer idVoluntario;

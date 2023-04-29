@@ -1,7 +1,7 @@
 package grupo2.laboratorio1.bda.controllers;
 
-import grupo2.laboratorio1.bda.models.Eme_Habilidad;
-import grupo2.laboratorio1.bda.services.Eme_HabilidadService;
+import grupo2.laboratorio1.bda.models.EmeHabilidad;
+import grupo2.laboratorio1.bda.services.EmeHabilidadService;
 
 import java.util.List;
 
@@ -12,15 +12,15 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @CrossOrigin
-public class Eme_HabilidadController {
+public class EmeHabilidadController {
     @Autowired
-    private Eme_HabilidadService eme_habilidadService;
+    private EmeHabilidadService emeHabilidadService;
 
-    @PostMapping("/eme_habilidad")
-    public void createEme_Habilidad(@RequestParam("idEmergencia") Integer idEmergencia,
+    @PostMapping("/emeHabilidad")
+    public void createEmeHabilidad(@RequestParam("idEmergencia") Integer idEmergencia,
                                     @RequestParam("idHabilidad") Integer idHabilidad){
         try{
-            eme_habilidadService.createEme_Habilidad(idEmergencia, idHabilidad);
+            emeHabilidadService.createEmeHabilidad(idEmergencia, idHabilidad);
         }
         catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -31,10 +31,10 @@ public class Eme_HabilidadController {
 
     }
 
-    @GetMapping("/eme_habilidad/{id}")
-    public Eme_Habilidad getEme_Habilidad(@PathVariable("id") Integer idEmeHabilidad){
+    @GetMapping("/emeHabilidad/{id}")
+    public EmeHabilidad getEmeHabilidad(@PathVariable("id") Integer idEmeHabilidad){
         try{
-            return eme_habilidadService.getEme_Habilidad(idEmeHabilidad);
+            return emeHabilidadService.getEmeHabilidad(idEmeHabilidad);
         }
         catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -44,20 +44,20 @@ public class Eme_HabilidadController {
         }
     }
     
-    @GetMapping("/eme_habilidad/all")
-    public List<Eme_Habilidad> getAllEme_Habilidad(){
+    @GetMapping("/emeHabilidad/all")
+    public List<EmeHabilidad> getAllEmeHabilidad(){
         try{
-            return eme_habilidadService.getAllEme_Habilidad();
+            return emeHabilidadService.getAllEmeHabilidad();
         }
         catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
-    @PutMapping("/eme_habilidad/all/{id}")
-    public Eme_Habilidad updateEme_Habilidad(@PathVariable("id") Integer idEmeHabilidad, @RequestBody Eme_Habilidad eme_habilidad){
+    @PutMapping("/emeHabilidad/all/{id}")
+    public EmeHabilidad updateEmeHabilidad(@PathVariable("id") Integer idEmeHabilidad, @RequestBody EmeHabilidad emehabilidad){
         try{
-            return eme_habilidadService.updateEme_Habilidad(idEmeHabilidad,eme_habilidad);
+            return emeHabilidadService.updateEmeHabilidad(idEmeHabilidad,emehabilidad);
         }
         catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -67,10 +67,10 @@ public class Eme_HabilidadController {
         }
     }
 
-    @DeleteMapping("/eme_habilidad/{id}")
-    public void deleteEme_Habilidad(@PathVariable("id") Integer idEmeHabilidad){
+    @DeleteMapping("/emeHabilidad/{id}")
+    public void deleteEmeHabilidad(@PathVariable("id") Integer idEmeHabilidad){
         try{
-            eme_habilidadService.deleteEme_Habilidad(idEmeHabilidad);
+            emeHabilidadService.deleteEmeHabilidad(idEmeHabilidad);
         }
         catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());

@@ -47,7 +47,7 @@ public class HabilidadController {
         return habilidadService.getAllHabilidades();
     }
 
-    @PutMapping("/voluntarios/{id}")
+    @PutMapping("/habilidades/{id}")
     public void updateHabilidad(@PathVariable("id") Integer idHabilidad, @RequestBody Habilidad habilidad){
         try {
             habilidadService.updateHabilidad(idHabilidad, habilidad);

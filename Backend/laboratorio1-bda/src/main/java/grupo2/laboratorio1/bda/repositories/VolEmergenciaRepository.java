@@ -8,69 +8,69 @@ import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
-import grupo2.laboratorio1.bda.models.Vol_Emergencia;
+import grupo2.laboratorio1.bda.models.VolEmergencia;
 
 @Repository
-public class Vol_EmergenciaRepository implements IVol_EmergenciaRepository{
+public class VolEmergenciaRepository implements IVolEmergenciaRepository {
     @Autowired
     private Sql2o sql2o;
 
     @Override
-    public void createVol_Emergencia(Vol_Emergencia vol_Emergencia) {
-        String query = "INSERT INTO Vol_Emergencia (idVoluntario, idEmergencia) VALUES (:idVoluntario, :idEmergencia)";
+    public void createVolEmergencia(VolEmergencia volEmergencia) {
+        String query = "INSERT INTO vol_emergencia (idVoluntario, idEmergencia) VALUES (:idVoluntario, :idEmergencia)";
         try (org.sql2o.Connection con = sql2o.open()) {
             con.createQuery(query)
-                    .addParameter("idVoluntario", vol_Emergencia.getIdVoluntario())
-                    .addParameter("idEmergencia", vol_Emergencia.getIdEmergencia())
+                    .addParameter("idVoluntario", volEmergencia.getIdVoluntario())
+                    .addParameter("idEmergencia", volEmergencia.getIdEmergencia())
                     .executeUpdate();
         } catch(Exception e){
             throw new RuntimeException("No se pudo crear la relación entre el voluntario y la emergencia");
         }
     }
 
-    public Vol_Emergencia getVol_Emergencia(Integer idVolEmergencia){
-        String queryTxt = "SELECT * FROM Vol_Emergencia WHERE idVolEmergencia = :idVolEmergencia";
+    public VolEmergencia getVolEmergencia(Integer idVolEmergencia){
+        String queryTxt = "SELECT * FROM vol_emergencia WHERE idVolEmergencia = :idVolEmergencia";
         try (Connection connection = sql2o.open()) {
             Query query = connection.createQuery(queryTxt)
                     .addParameter("idVolEmergencia", idVolEmergencia)
                     .addColumnMapping("ID_VOL_EMERGENCIA", "idVolEmergencia")
                     .addColumnMapping("ID_VOLUNTARIO", "idVoluntario")
                     .addColumnMapping("ID_EMERGENCIA", "idEmergencia");
-            Vol_Emergencia vol_Emergencia = query.executeAndFetchFirst(Vol_Emergencia.class);
-            return vol_Emergencia;
+            VolEmergencia volEmergencia = query.executeAndFetchFirst(VolEmergencia.class);
+            return volEmergencia;
 
         } catch(Exception e){
             throw new RuntimeException("No se pudo obtener la relación entre el voluntario y la emergencia");
         }
     }
 
-    public List<Vol_Emergencia> getAllVol_Emergencia(){
-        String queryTxt = "SELECT * FROM Vol_Emergencia";
+    public List<VolEmergencia> getAllVolEmergencia(){
+        String queryTxt = "SELECT * FROM vol_emergencia";
         try (Connection connection = sql2o.open()) {
             Query query = connection.createQuery(queryTxt)
                     .addColumnMapping("ID_VOL_EMERGENCIA", "idVolEmergencia")
                     .addColumnMapping("ID_VOLUNTARIO", "idVoluntario")
                     .addColumnMapping("ID_EMERGENCIA", "idEmergencia");
-            List<Vol_Emergencia> vol_Emergencia = query.executeAndFetch(Vol_Emergencia.class);
-            return vol_Emergencia;
+            List<VolEmergencia> volEmergencia = query.executeAndFetch(VolEmergencia.class);
+            return volEmergencia;
 
         } catch(Exception e){
             throw new RuntimeException("No se pudo obtener la relación entre el voluntario y la emergencia");
         }
     }
 
-    public Vol_Emergencia updateVol_Emergencia(Integer idVolEmergencia, Vol_Emergencia vol_Emergencia){
-        String queryTxt = "UPDATE Vol_Emergencia SET idVoluntario = :idVoluntario, idEmergencia = :idEmergencia WHERE idVolEmergencia = :idVolEmergencia";
+    public VolEmergencia updateVolEmergencia(Integer idVolEmergencia, VolEmergencia volEmergencia){
+        String queryTxt = "UPDATE vol_emergencia SET idVoluntario = :idVoluntario, idEmergencia = :idEmergencia WHERE id_vol_emergencia = :idVolEmergencia";
         try (Connection connection = sql2o.open()) {
             Query query = connection.createQuery(queryTxt)
                     .addParameter("idVolEmergencia", idVolEmergencia)
-                    .addParameter("idVoluntario", vol_Emergencia.getIdVoluntario())
-                    .addParameter("idEmergencia", vol_Emergencia.getIdEmergencia())
+                    .addParameter("idVoluntario", volEmergencia.getIdVoluntario())
+                    .addParameter("idEmergencia", volEmergencia.getIdEmergencia())
                     .addColumnMapping("ID_VOL_EMERGENCIA", "idVolEmergencia")
                     .addColumnMapping("ID_VOLUNTARIO", "idVoluntario")
                     .addColumnMapping("ID_EMERGENCIA", "idEmergencia");
-            Vol_Emergencia vol_Emergencia1 = query.executeAndFetchFirst(Vol_Emergencia.class);
-            return vol_Emergencia1;
+            VolEmergencia volEmergencia1 = query.executeAndFetchFirst(VolEmergencia.class);
+            return volEmergencia1;
 
         } catch(Exception e){
             throw new RuntimeException("No se pudo actualizar la relación entre el voluntario y la emergencia");
@@ -78,8 +78,8 @@ public class Vol_EmergenciaRepository implements IVol_EmergenciaRepository{
 
     }
 
-    public void deleteVol_Emergencia(Integer idVolEmergencia){
-        String queryTxt = "DELETE FROM Vol_Emergencia WHERE idVolEmergencia = :idVolEmergencia";
+    public void deleteVolEmergencia(Integer idVolEmergencia){
+        String queryTxt = "DELETE FROM vol_emergencia WHERE id_vol_emergencia = :idVolEmergencia";
         try (Connection connection = sql2o.open()) {
             Query query = connection.createQuery(queryTxt)
                     .addParameter("idVolEmergencia", idVolEmergencia);
