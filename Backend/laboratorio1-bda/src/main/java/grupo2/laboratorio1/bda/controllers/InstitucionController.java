@@ -1,7 +1,8 @@
 package grupo2.laboratorio1.bda.controllers;
 
 import grupo2.laboratorio1.bda.models.Institucion;
-import grupo2.laboratorio1.bda.servicies.InstitucionService;
+import grupo2.laboratorio1.bda.services.InstitucionService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,5 @@
 package grupo2.laboratorio1.bda.repositories;
 
-import java.io.Serial;
 import java.util.List;
 
 import grupo2.laboratorio1.bda.models.Institucion;

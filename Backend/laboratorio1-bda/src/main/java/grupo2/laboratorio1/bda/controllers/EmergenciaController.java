@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import grupo2.laboratorio1.bda.models.Emergencia;
-import grupo2.laboratorio1.bda.servicies.EmergenciaService;
+import grupo2.laboratorio1.bda.services.EmergenciaService;
 
 @RestController
 @CrossOrigin

@@ -6,11 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
-import org.sql2o.Sql2oException;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class HabilidadRepository implements IHabilidadRepository{

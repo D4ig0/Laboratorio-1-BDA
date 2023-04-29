@@ -1,9 +1,9 @@
 package grupo2.laboratorio1.bda.services;
 
 import grupo2.laboratorio1.bda.models.Eme_Habilidad;
-import grupo2.laboratorio1.bda.models.Emergencia;
 import grupo2.laboratorio1.bda.repositories.Eme_HabilidadRepository;
 import grupo2.laboratorio1.bda.repositories.EmergenciaRepository;
+import grupo2.laboratorio1.bda.repositories.HabilidadRepository;
 
 import java.util.List;
 
@@ -21,12 +21,12 @@ public class Eme_HabilidadService {
 
     public void createEme_Habilidad(Integer idEmergencia, Integer idHabilidad){
         try{
-            getEmergencia(idEmergencia);
+            emergenciaRepository.getEmergencia(idEmergencia);
         } catch ( Exception e){
             throw new RuntimeException("No se ha encontrado en la base de datos la Emergencia");
         }
         try {
-            getHabilidad(idHabilidad);
+            habilidadRepository.getHabilidad(idHabilidad);
         } catch (Exception e ){
             throw new RuntimeException("No se ha encontrado en la base de datos la Habilidad");
         }
@@ -36,7 +36,7 @@ public class Eme_HabilidadService {
 
     public Eme_Habilidad getEme_Habilidad(Integer idEmeHabilidad){
         try{
-            eme_habilidadRepository.getEme_Habilidad(idEmeHabilidad);
+           return  eme_habilidadRepository.getEme_Habilidad(idEmeHabilidad);
         } catch (Exception e){
             throw new RuntimeException("No se ha encontrado en la base de datos la Eme_Habilidad");
         }
@@ -52,7 +52,7 @@ public class Eme_HabilidadService {
         } catch (Exception e){
             throw new RuntimeException("No se ha encontrado en la base de datos la Eme_Habilidad");
         }
-        eme_habilidadRepository.updateEme_Habilidad(idEmeHabilidad, eme_habilidad);
+        return eme_habilidadRepository.updateEme_Habilidad(idEmeHabilidad, eme_habilidad);
     }
 
     public void deleteEme_Habilidad(Integer idEmeHabilidad){
