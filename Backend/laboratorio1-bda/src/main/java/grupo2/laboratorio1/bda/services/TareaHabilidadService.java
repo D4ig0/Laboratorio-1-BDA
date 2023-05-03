@@ -16,13 +16,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class TareaHabilidadService {
     @Autowired
-    private ITareaHabilidadRepository tareaHabilidadRepository;
+    ITareaHabilidadRepository tareaHabilidadRepository;
     @Autowired
-    private ITareaRepository tareaRepository;
+    ITareaRepository tareaRepository;
     @Autowired
-    private IHabilidadRepository habilidadRepository;
+    IHabilidadRepository habilidadRepository;
     @Autowired
-    private IEmergenciaRepository emergenciaRepository;
+    IEmergenciaRepository emergenciaRepository;
 
     public void createTareaHabilidad(Integer idEmergencia, Integer idHabilidad, Integer idTarea){
         try{

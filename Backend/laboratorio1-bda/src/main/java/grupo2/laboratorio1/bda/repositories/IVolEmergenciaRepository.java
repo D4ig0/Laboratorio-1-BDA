@@ -11,4 +11,6 @@ public interface IVolEmergenciaRepository {
     List<VolEmergencia> getAllVolEmergencia();
     VolEmergencia updateVolEmergencia(Integer idVolEmergencia, VolEmergencia volEmergencia);
     void deleteVolEmergencia(Integer idVolEmergencia);
+    List<VolEmergencia> getVolEmergenciaByVoluntario(Integer idVoluntario);
+    List<VolEmergencia> getVolEmergenciaByEmergencia(Integer idEmergencia);
 }

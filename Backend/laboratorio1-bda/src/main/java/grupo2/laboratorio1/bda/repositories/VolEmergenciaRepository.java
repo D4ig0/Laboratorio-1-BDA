@@ -90,5 +90,35 @@ public class VolEmergenciaRepository implements IVolEmergenciaRepository {
         }
     }
 
+    public List<VolEmergencia> getVolEmergenciaByVoluntario(Integer id_voluntario){
+        String queryTxt = "SELECT * FROM vol_emergencia WHERE id_voluntario = :id_voluntario";
+        try (Connection connection = sql2o.open()) {
+            Query query = connection.createQuery(queryTxt)
+                    .addParameter("id_voluntario", id_voluntario)
+                    .addColumnMapping("ID_VOL_EMERGENCIA", "idVolEmergencia")
+                    .addColumnMapping("ID_VOLUNTARIO", "idVoluntario")
+                    .addColumnMapping("ID_EMERGENCIA", "idEmergencia");
+            List<VolEmergencia> volEmergencia = query.executeAndFetch(VolEmergencia.class);
+            return volEmergencia;
 
+        } catch(Exception e){
+            throw new RuntimeException("No se pudo obtener la relación entre el voluntario y la emergencia");
+        }    
+    }
+
+    public List<VolEmergencia> getVolEmergenciaByEmergencia(Integer id_emergencia){
+        String queryTxt = "SELECT * FROM vol_emergencia WHERE id_emergencia = :id_emergencia";
+        try (Connection connection = sql2o.open()) {
+            Query query = connection.createQuery(queryTxt)
+                    .addParameter("id_emergencia", id_emergencia)
+                    .addColumnMapping("ID_VOL_EMERGENCIA", "idVolEmergencia")
+                    .addColumnMapping("ID_VOLUNTARIO", "idVoluntario")
+                    .addColumnMapping("ID_EMERGENCIA", "idEmergencia");
+            List<VolEmergencia> volEmergencia = query.executeAndFetch(VolEmergencia.class);
+            return volEmergencia;
+
+        } catch(Exception e){
+            throw new RuntimeException("No se pudo obtener la relación entre el voluntario y la emergencia");
+        }    
+    }
 }

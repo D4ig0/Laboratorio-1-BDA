@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmeHabilidadService {
     @Autowired
-    private IEmeHabilidadRepository emeHabilidadRepository;
+    IEmeHabilidadRepository emeHabilidadRepository;
     @Autowired
-    private IEmergenciaRepository emergenciaRepository;
+    IEmergenciaRepository emergenciaRepository;
     @Autowired
-    private IHabilidadRepository habilidadRepository;
+    IHabilidadRepository habilidadRepository;
 
     public void createEmeHabilidad(Integer idEmergencia, Integer idHabilidad){
         try{

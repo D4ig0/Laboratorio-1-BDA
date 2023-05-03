@@ -10,15 +10,18 @@ import grupo2.laboratorio1.bda.models.Emergencia;
 import grupo2.laboratorio1.bda.repositories.IEmeHabilidadRepository;
 import grupo2.laboratorio1.bda.repositories.IEmergenciaRepository;
 import grupo2.laboratorio1.bda.repositories.ITareaHabilidadRepository;
+import grupo2.laboratorio1.bda.repositories.IVolEmergenciaRepository;
 
 @Service
 public class EmergenciaService {
     @Autowired
-    private IEmergenciaRepository emergenciaRepository;
+    IEmergenciaRepository emergenciaRepository;
     @Autowired
-    private IEmeHabilidadRepository emeHabilidadRepository;
+    IEmeHabilidadRepository emeHabilidadRepository;
     @Autowired
-    private ITareaHabilidadRepository tareaHabilidadRepository;
+    ITareaHabilidadRepository tareaHabilidadRepository;
+    @Autowired
+    IVolEmergenciaRepository volEmergenciaRepository;
 
     public Emergencia createEmergencia(String nombre, String descripcion, String fecha_inicio, String fecha_termino, String activo, Integer id_institucion){
         Emergencia emergencia = new Emergencia();
@@ -44,6 +47,9 @@ public class EmergenciaService {
     }
 
     public Boolean deleteEmergencia(Integer id_emergencia){
+        if(volEmergenciaRepository.getVolEmergenciaByEmergencia(id_emergencia).size() > 0){
+            throw new IllegalArgumentException("No se puede eliminar la emergencia porque tiene voluntarios asociados");
+        }
         if(emeHabilidadRepository.getEmeHabilidadByIdEmergencia(id_emergencia).size() > 0){
             throw new IllegalArgumentException("No se puede eliminar la emergencia porque tiene habilidades asociadas");
         }

@@ -1,6 +1,7 @@
 package grupo2.laboratorio1.bda.services;
 
 import grupo2.laboratorio1.bda.models.Voluntario;
+import grupo2.laboratorio1.bda.repositories.IVolEmergenciaRepository;
 import grupo2.laboratorio1.bda.repositories.IVoluntarioRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import java.util.regex.Pattern;
 public class VoluntarioService {
     @Autowired
     IVoluntarioRepository voluntarioRepository;
+    @Autowired
+    IVolEmergenciaRepository volEmergenciaRepository;
 
     public void createVoluntario(@NonNull String nombre, @NonNull String correo, @NonNull String password){
         String encodedPasssword = generateEncodedPassword(password);
@@ -47,10 +50,12 @@ public class VoluntarioService {
     }
 
     public void deleteVoluntario(Integer idVoluntario){
+        if(volEmergenciaRepository.getVolEmergenciaByVoluntario(idVoluntario).size() > 0){
+            throw new IllegalArgumentException("El voluntario esta asignado a una emergencia");
+        }
         if(!existsVoluntario(idVoluntario)){
             throw new IllegalArgumentException("No existe el voluntario");
         }
-
         voluntarioRepository.deleteVoluntario(idVoluntario);
     }
 

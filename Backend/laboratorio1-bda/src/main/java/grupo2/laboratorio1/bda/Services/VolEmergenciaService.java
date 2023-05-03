@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class VolEmergenciaService {
     @Autowired
-    private IVolEmergenciaRepository volEmergenciaRepository;
+    IVolEmergenciaRepository volEmergenciaRepository;
 
     public void createVolEmergencia(Integer idVoluntario, Integer idEmergencia){
         try {
