@@ -24,9 +24,9 @@ public class EmergenciaRepository implements IEmergenciaRepository{
                 .addParameter("fecha_inicio", emergencia.getFecha_inicio())
                 .addParameter("fecha_termino", emergencia.getFecha_termino())
                 .addParameter("activo", emergencia.getActivo())
-                .addParameter("id_institucion", emergencia.getId_institucion())
+                .addParameter("id_institucion", emergencia.getIdInstitucion())
                 .executeUpdate().getKey();
-            emergencia.setId_emergencia(id);
+            emergencia.setIdEmergencia(id);
             return emergencia;
         }
         catch(Exception e){
@@ -80,8 +80,8 @@ public class EmergenciaRepository implements IEmergenciaRepository{
                 .addParameter("fecha_inicio", emergencia.getFecha_inicio())
                 .addParameter("fecha_termino", emergencia.getFecha_termino())
                 .addParameter("activo", emergencia.getActivo())
-                .addParameter("id_institucion", emergencia.getId_institucion())
-                .addParameter("id_emergencia", emergencia.getId_emergencia())
+                .addParameter("id_institucion", emergencia.getIdInstitucion())
+                .addParameter("id_emergencia", emergencia.getIdEmergencia())
                 .executeUpdate();
             return emergencia;
         }

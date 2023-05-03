@@ -1,6 +1,7 @@
 package grupo2.laboratorio1.bda.services;
 
 import grupo2.laboratorio1.bda.models.Tarea;
+import grupo2.laboratorio1.bda.repositories.ITareaHabilidadRepository;
 import grupo2.laboratorio1.bda.repositories.ITareaRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import java.util.List;
 public class TareaService {
     @Autowired
     ITareaRepository tareaRepository;
+    @Autowired
+    ITareaHabilidadRepository tareaHabilidadRepository;
 
     public void createTarea(@NonNull Integer idEmergencia, String nombre, String descripcion, Integer cantVolRequeridos,
                             Integer cantVolInscritos, Date fechaInicio, Date fechaFin , String estadoActual)
@@ -37,6 +40,9 @@ public class TareaService {
     }
 
     public void deleteTarea(@NonNull Integer idTarea){
+        if(tareaHabilidadRepository.getTareaHabilidadByIdTarea(idTarea).size() > 0){
+            throw new IllegalArgumentException("No se puede eliminar la tarea porque tiene habilidades asociadas");
+        }
         tareaRepository.deleteTarea(idTarea);
     }
 

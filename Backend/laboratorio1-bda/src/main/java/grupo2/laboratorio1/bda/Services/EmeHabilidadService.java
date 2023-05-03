@@ -1,9 +1,9 @@
 package grupo2.laboratorio1.bda.services;
 
 import grupo2.laboratorio1.bda.models.EmeHabilidad;
-import grupo2.laboratorio1.bda.repositories.EmeHabilidadRepository;
-import grupo2.laboratorio1.bda.repositories.EmergenciaRepository;
-import grupo2.laboratorio1.bda.repositories.HabilidadRepository;
+import grupo2.laboratorio1.bda.repositories.IEmeHabilidadRepository;
+import grupo2.laboratorio1.bda.repositories.IEmergenciaRepository;
+import grupo2.laboratorio1.bda.repositories.IHabilidadRepository;
 
 import java.util.List;
 
@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmeHabilidadService {
     @Autowired
-    private EmeHabilidadRepository emeHabilidadRepository;
+    private IEmeHabilidadRepository emeHabilidadRepository;
     @Autowired
-    private EmergenciaRepository emergenciaRepository;
+    private IEmergenciaRepository emergenciaRepository;
     @Autowired
-    private HabilidadRepository habilidadRepository;
+    private IHabilidadRepository habilidadRepository;
 
     public void createEmeHabilidad(Integer idEmergencia, Integer idHabilidad){
         try{

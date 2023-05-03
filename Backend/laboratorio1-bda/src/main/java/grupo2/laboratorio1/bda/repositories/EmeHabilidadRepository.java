@@ -89,4 +89,38 @@ public class EmeHabilidadRepository implements IEmeHabilidadRepository {
             throw new RuntimeException("No se pudo eliminar la tabla relacion entre emergencia y habilidad");
         }
     }
+
+    public List<EmeHabilidad> getEmeHabilidadByIdEmergencia(Integer idEmergencia){
+        String queryText = "SELECT * FROM eme_habilidad WHERE id_emergencia = :idEmergencia";
+        try (Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idEmergencia", idEmergencia)
+                    .addColumnMapping("ID_EME_HABILIDAD", "idEmeHabilidad")
+                    .addColumnMapping("ID_EMERGENCIA", "idEmergencia")
+                    .addColumnMapping("ID_HABILIDAD", "idHabilidad");
+            List<EmeHabilidad> emeHabilidad = query.executeAndFetch(EmeHabilidad.class);
+            return emeHabilidad;
+
+        }
+        catch (Exception e){
+            throw new RuntimeException("No se pudo obtener la tabla relacion entre emergencia y habilidad");
+        }
+    }
+
+    public List<EmeHabilidad> getEmeHabilidadByIdHabilidad(Integer idHabilidad){
+        String queryText = "SELECT * FROM eme_habilidad WHERE id_habilidad = :idHabilidad";
+        try (Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idHabilidad", idHabilidad)
+                    .addColumnMapping("ID_EME_HABILIDAD", "idEmeHabilidad")
+                    .addColumnMapping("ID_EMERGENCIA", "idEmergencia")
+                    .addColumnMapping("ID_HABILIDAD", "idHabilidad");
+            List<EmeHabilidad> emeHabilidad = query.executeAndFetch(EmeHabilidad.class);
+            return emeHabilidad;
+
+        }
+        catch (Exception e){
+            throw new RuntimeException("No se pudo obtener la tabla relacion entre emergencia y habilidad");
+        }
+    }
 }

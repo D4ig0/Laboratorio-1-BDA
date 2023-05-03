@@ -1,7 +1,9 @@
 package grupo2.laboratorio1.bda.services;
 
 import grupo2.laboratorio1.bda.models.Habilidad;
-import grupo2.laboratorio1.bda.repositories.HabilidadRepository;
+import grupo2.laboratorio1.bda.repositories.IEmeHabilidadRepository;
+import grupo2.laboratorio1.bda.repositories.IHabilidadRepository;
+import grupo2.laboratorio1.bda.repositories.ITareaHabilidadRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +13,11 @@ import java.util.List;
 @Service
 public class HabilidadService {
     @Autowired
-    HabilidadRepository habilidadRepository;
+    IHabilidadRepository habilidadRepository;
+    @Autowired
+    IEmeHabilidadRepository emeHabilidadRepository;
+    @Autowired
+    ITareaHabilidadRepository tareaHabilidadRepository;
 
     public void createHabilidad(@NonNull Integer idHabilidad,
                               String descripcion){
@@ -38,10 +44,12 @@ public class HabilidadService {
     }
 
     public void deleteHabilidad(Integer idHabilidad){
-        //if(!existsHabilidad(idHabilidad)){
-        //    throw new IllegalArgumentException("No existe la habilidad");
-        //}
-
+        if(emeHabilidadRepository.getEmeHabilidadByIdHabilidad(idHabilidad).size() > 0){
+            throw new IllegalArgumentException("No se puede eliminar la habilidad porque tiene emergencias asociadas");
+        }
+        if(tareaHabilidadRepository.getTareaHabilidadByIdHabilidad(idHabilidad).size() > 0){
+            throw new IllegalArgumentException("No se puede eliminar la habilidad porque tiene tareas asociadas");
+        }
         habilidadRepository.deleteHabilidad(idHabilidad);
     }
 }

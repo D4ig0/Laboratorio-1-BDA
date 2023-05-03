@@ -31,7 +31,7 @@ public class TareaHabilidadRepository implements ITareaHabilidadRepository{
         }
     }
 
-    
+    @Override
     public TareaHabilidad getTareaHabilidad(Integer idTareaHabilidad){
         String queryText = "SELECT * FROM tarea_habilidad WHERE id_tarea_habilidad = :idTareaHabilidad";
         try (Connection connection = sql2o.open()){
@@ -49,7 +49,7 @@ public class TareaHabilidadRepository implements ITareaHabilidadRepository{
         }
     }
 
- 
+    @Override
     public List<TareaHabilidad> getAllTareaHabilidad(){
         String queryText = "SELECT * FROM tarea_habilidad";
         try (Connection connection = sql2o.open()){
@@ -66,33 +66,92 @@ public class TareaHabilidadRepository implements ITareaHabilidadRepository{
             throw new RuntimeException("No se pudo obtener la tabla relacion entre tarea y habilidad");
         }}
 
-        public TareaHabilidad updateTareaHabilidad(Integer idTareaHabilidad, TareaHabilidad tareaHabilidad){
-            String queryText = "UPDATE tarea_habilidad SET id_emergencia = :id_emergencia, id_habilidad = :id_habilidad, id_tarea = :id_tarea WHERE id_tarea_habilidad = :id_tarea_habilidad";
-            try (Connection connection = sql2o.open()){
-                Query query = connection.createQuery(queryText)
-                        .addParameter("id_emergencia", tareaHabilidad.getIdEmergencia())
-                        .addParameter("id_habilidad", tareaHabilidad.getIdHabilidad())
-                        .addParameter("id_tarea", tareaHabilidad.getIdTarea())
-                        .addParameter("id_tarea_habilidad", idTareaHabilidad);
-                TareaHabilidad tarea_habilidad = query.executeAndFetchFirst(TareaHabilidad.class);
-                return tarea_habilidad;
-    
-            }
-            catch (Exception e){
-                throw new RuntimeException("No se pudo actualizar la tabla relacion entre tarea y habilidad");
-            }
+    @Override
+    public TareaHabilidad updateTareaHabilidad(Integer idTareaHabilidad, TareaHabilidad tareaHabilidad){
+        String queryText = "UPDATE tarea_habilidad SET id_emergencia = :id_emergencia, id_habilidad = :id_habilidad, id_tarea = :id_tarea WHERE id_tarea_habilidad = :id_tarea_habilidad";
+        try (Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("id_emergencia", tareaHabilidad.getIdEmergencia())
+                    .addParameter("id_habilidad", tareaHabilidad.getIdHabilidad())
+                    .addParameter("id_tarea", tareaHabilidad.getIdTarea())
+                    .addParameter("id_tarea_habilidad", idTareaHabilidad);
+            TareaHabilidad tarea_habilidad = query.executeAndFetchFirst(TareaHabilidad.class);
+            return tarea_habilidad;
+
         }
-        public void deleteTareaHabilidad(Integer idTareaHabilidad){
-            String queryText = "DELETE FROM tarea_habilidad WHERE id_tarea_habilidad = :idTareaHabilidad";
-            try (Connection connection = sql2o.open()){
-                Query query = connection.createQuery(queryText)
-                        .addParameter("idTareaHabilidad", idTareaHabilidad);
-                query.executeUpdate();
-            }
-            catch (Exception e){
-                throw new RuntimeException("No se pudo eliminar la tabla relacion entre tarea y habilidad");
-            }
+        catch (Exception e){
+            throw new RuntimeException("No se pudo actualizar la tabla relacion entre tarea y habilidad");
         }
     }
+
+    @Override
+    public void deleteTareaHabilidad(Integer idTareaHabilidad){
+        String queryText = "DELETE FROM tarea_habilidad WHERE id_tarea_habilidad = :idTareaHabilidad";
+        try (Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idTareaHabilidad", idTareaHabilidad);
+            query.executeUpdate();
+        }
+        catch (Exception e){
+            throw new RuntimeException("No se pudo eliminar la tabla relacion entre tarea y habilidad");
+        }
+    }
+
+    @Override
+    public List<TareaHabilidad> getTareaHabilidadByIdHabilidad(Integer idHabilidad){
+        String queryText = "SELECT * FROM tarea_habilidad WHERE id_habilidad = :idHabilidad";
+        try (Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idHabilidad", idHabilidad)
+                    .addColumnMapping("ID_TAREA_HABILIDAD", "idTareaHabilidad")
+                    .addColumnMapping("ID_EMERGENCIA", "idEmergencia")
+                    .addColumnMapping("ID_HABILIDAD", "idHabilidad")
+                    .addColumnMapping("ID_TAREA", "idTarea");
+            List<TareaHabilidad> tareaHabilidad = query.executeAndFetch(TareaHabilidad.class);
+            return tareaHabilidad;
+
+        }
+        catch (Exception e){
+            throw new RuntimeException("No se pudo obtener la tabla relacion entre tarea y habilidad");
+        }
+    }
+    @Override
+    public List<TareaHabilidad> getTareaHabilidadByIdTarea(Integer idTarea){
+        String queryText = "SELECT * FROM tarea_habilidad WHERE id_tarea = :idTarea";
+        try (Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idTarea", idTarea)
+                    .addColumnMapping("ID_TAREA_HABILIDAD", "idTareaHabilidad")
+                    .addColumnMapping("ID_EMERGENCIA", "idEmergencia")
+                    .addColumnMapping("ID_HABILIDAD", "idHabilidad")
+                    .addColumnMapping("ID_TAREA", "idTarea");
+            List<TareaHabilidad> tareaHabilidad = query.executeAndFetch(TareaHabilidad.class);
+            return tareaHabilidad;
+
+        }
+        catch (Exception e){
+            throw new RuntimeException("No se pudo obtener la tabla relacion entre tarea y habilidad");
+        }
+    }
+
+    @Override
+    public List<TareaHabilidad> getTareaHabilidadByIdEmergencia(Integer idEmergencia){
+        String queryText = "SELECT * FROM tarea_habilidad WHERE id_emergencia = :idEmergencia";
+        try (Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idEmergencia", idEmergencia)
+                    .addColumnMapping("ID_TAREA_HABILIDAD", "idTareaHabilidad")
+                    .addColumnMapping("ID_EMERGENCIA", "idEmergencia")
+                    .addColumnMapping("ID_HABILIDAD", "idHabilidad")
+                    .addColumnMapping("ID_TAREA", "idTarea");
+            List<TareaHabilidad> tareaHabilidad = query.executeAndFetch(TareaHabilidad.class);
+            return tareaHabilidad;
+
+        }
+        catch (Exception e){
+            throw new RuntimeException("No se pudo obtener la tabla relacion entre tarea y habilidad");
+        }
+    }      
+}
 
 

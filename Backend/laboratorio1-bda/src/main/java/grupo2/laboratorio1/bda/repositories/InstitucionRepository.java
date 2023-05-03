@@ -26,7 +26,7 @@ public class InstitucionRepository implements IInstitucionRepository{
             Integer insertedId = (Integer) conn.createQuery("INSERT INTO institucion (nombre) values (:institucionNombre)", true)
                     .addParameter("institucionNombre", institucion.getNombre())
                     .executeUpdate().getKey();
-            institucion.setId_institucion(insertedId);
+            institucion.setIdInstitucion(insertedId);
             return institucion;
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -64,7 +64,7 @@ public class InstitucionRepository implements IInstitucionRepository{
         try(Connection conn = sql2o.open()){
             conn.createQuery("UPDATE institucion SET nombre = COALESCE(:nombre,nombre) WHERE id_institucion = :id_institucion")
                     .addParameter("nombre", institucion.getNombre())
-                    .addParameter("id_institucion", institucion.getId_institucion())
+                    .addParameter("id_institucion", institucion.getIdInstitucion())
                     .executeUpdate();
             return institucion;
         }catch(Exception e){

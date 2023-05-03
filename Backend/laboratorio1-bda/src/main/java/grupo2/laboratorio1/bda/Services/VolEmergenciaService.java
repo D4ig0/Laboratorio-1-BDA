@@ -1,7 +1,7 @@
 package grupo2.laboratorio1.bda.services;
 
 import grupo2.laboratorio1.bda.models.VolEmergencia;
-import grupo2.laboratorio1.bda.repositories.VolEmergenciaRepository;
+import grupo2.laboratorio1.bda.repositories.IVolEmergenciaRepository;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class VolEmergenciaService {
     @Autowired
-    private VolEmergenciaRepository volEmergenciaRepository;
+    private IVolEmergenciaRepository volEmergenciaRepository;
 
     public void createVolEmergencia(Integer idVoluntario, Integer idEmergencia){
         try {

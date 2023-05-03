@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Emergencia {
-    private Integer id_emergencia;
+    private Integer idEmergencia;
     private String nombre;
     private String descripcion;
     private Date fecha_inicio;
     private Date fecha_termino;
     private Boolean activo;
-    private Integer id_institucion;
+    private Integer idInstitucion;
 }

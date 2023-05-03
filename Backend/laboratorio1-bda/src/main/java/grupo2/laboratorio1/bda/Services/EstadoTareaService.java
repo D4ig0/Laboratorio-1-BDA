@@ -1,7 +1,7 @@
 package grupo2.laboratorio1.bda.services;
 
 import grupo2.laboratorio1.bda.models.EstadoTarea;
-import grupo2.laboratorio1.bda.repositories.EstadoTareaRepository;
+import grupo2.laboratorio1.bda.repositories.IEstadoTareaRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class EstadoTareaService {
     @Autowired
-    EstadoTareaRepository estadoTareaRepository;
+    IEstadoTareaRepository estadoTareaRepository;
 
     public void createEstadoTarea(@NonNull Integer idEstadoTarea,
                                 String descripcion){
