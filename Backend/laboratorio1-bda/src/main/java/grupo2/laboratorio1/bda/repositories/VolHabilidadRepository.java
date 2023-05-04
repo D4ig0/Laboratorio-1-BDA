@@ -62,22 +62,19 @@ public class VolHabilidadRepository implements IVolHabilidadRepository {
 
     @Override
     public VolHabilidad updateVolHabilidad(Integer idVolHabilidad, VolHabilidad volHabilidad){
-        String queryTxt = "UPDATE vol_habilidad SET id_voluntario = :idVoluntario, id_habilidad = :idHabilidad WHERE id_vol_habilidad = :idVolHabilidad";
+        String queryTxt = "UPDATE vol_habilidad SET id_voluntario = coalesce(:idVoluntario, id_voluntario), id_habilidad = coalesce(:idHabilidad, id_habilidad) WHERE id_vol_habilidad = :idVolHabilidad";
         try (Connection connection = sql2o.open()) {
             Query query = connection.createQuery(queryTxt)
                     .addParameter("idVolHabilidad", idVolHabilidad)
                     .addParameter("idVoluntario", volHabilidad.getIdVoluntario())
-                    .addParameter("idHabilidad", volHabilidad.getIdHabilidad())
-                    .addColumnMapping("ID_VOL_habilidad", "idVolHabilidad")
-                    .addColumnMapping("ID_VOLUNTARIO", "idVoluntario")
-                    .addColumnMapping("ID_HABILIDAD", "idHabilidad");
-            VolHabilidad volHabilidad1 = query.executeAndFetchFirst(VolHabilidad.class);
-            return volHabilidad1;
+                    .addParameter("idHabilidad", volHabilidad.getIdHabilidad());
+            query.executeUpdate();
+            VolHabilidad volHabilidadActualizada = this.getVolHabilidad(idVolHabilidad);
+            return volHabilidadActualizada;
 
         } catch(Exception e){
             throw new RuntimeException("No se pudo actualizar la relación entre el voluntario y la emergencia");
         }
-
     }
 
     @Override

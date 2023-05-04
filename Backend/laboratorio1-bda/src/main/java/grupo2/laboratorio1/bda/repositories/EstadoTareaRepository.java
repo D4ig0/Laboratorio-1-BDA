@@ -16,12 +16,10 @@ public class EstadoTareaRepository implements IEstadoTareaRepository {
 
     @Override
     public void createEstadoTarea(EstadoTarea estadoTarea) {
-        String queryText = "INSERT INTO estado_tarea (id_estado_tarea, descripcion) " +
-                "VALUES (:idEstadoTarea, :descripcion)";
+        String queryText = "INSERT INTO estado_tarea (descripcion) VALUES (:descripcion)";
 
         try(Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
-                    .addParameter("idEstadoTarea", estadoTarea.getIdEstadoTarea())
                     .addParameter("descripcion", estadoTarea.getDescripcion());
             query.executeUpdate();
         }
@@ -63,10 +61,7 @@ public class EstadoTareaRepository implements IEstadoTareaRepository {
 
     @Override
     public void updateEstadoTarea(EstadoTarea estadoTarea) {
-        String queryText = "UPDATE estado_tarea SET " +
-                "nombre = COALESCE(:descripcion, descripcion) " +
-                "WHERE id_estado_tarea = :idEstadoTarea";
-
+        String queryText = "UPDATE estado_tarea SET descripcion = coalesce(:descripcion, descripcion) WHERE id_estado_tarea = :idEstadoTarea";
         try(Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
                     .addParameter("descripcion", estadoTarea.getDescripcion())

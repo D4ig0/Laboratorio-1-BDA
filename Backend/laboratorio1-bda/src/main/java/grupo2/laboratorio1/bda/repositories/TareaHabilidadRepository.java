@@ -19,15 +19,15 @@ public class TareaHabilidadRepository implements ITareaHabilidadRepository{
     @Override
     public void createTareaHabilidad(TareaHabilidad tareaHabilidad){
         String queryText = "INSERT INTO tarea_habilidad (id_emergencia, id_habilidad, id_tarea) VALUES (:id_emergencia, :id_habilidad, :id_tarea)";
-        try( Connection Connection = sql2o.open()){
-            Connection.createQuery(queryText)
+        try (Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
                     .addParameter("id_emergencia", tareaHabilidad.getIdEmergencia())
                     .addParameter("id_habilidad", tareaHabilidad.getIdHabilidad())
-                    .addParameter("id_habilidad", tareaHabilidad.getIdTarea())
-                    .executeUpdate();
+                    .addParameter("id_tarea", tareaHabilidad.getIdTarea());
+            query.executeUpdate();
         }
         catch (Exception e){
-            throw new RuntimeException("No se pudo crear la tabla relacion entre tarea y habilidad");
+            throw new RuntimeException("No se pudo registrar la tabla relacion entre tarea y habilidad");
         }
     }
 
@@ -68,16 +68,16 @@ public class TareaHabilidadRepository implements ITareaHabilidadRepository{
 
     @Override
     public TareaHabilidad updateTareaHabilidad(Integer idTareaHabilidad, TareaHabilidad tareaHabilidad){
-        String queryText = "UPDATE tarea_habilidad SET id_emergencia = :id_emergencia, id_habilidad = :id_habilidad, id_tarea = :id_tarea WHERE id_tarea_habilidad = :id_tarea_habilidad";
+        String queryText = "UPDATE tarea_habilidad SET id_emergencia = coalesce(:idEmergencia, id_emergencia), id_habilidad = coalesce(:idHabilidad, id_habilidad), id_tarea = coalesce(:idTarea, id_tarea) WHERE id_tarea_habilidad = :idTareaHabilidad";
         try (Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
-                    .addParameter("id_emergencia", tareaHabilidad.getIdEmergencia())
-                    .addParameter("id_habilidad", tareaHabilidad.getIdHabilidad())
-                    .addParameter("id_tarea", tareaHabilidad.getIdTarea())
-                    .addParameter("id_tarea_habilidad", idTareaHabilidad);
-            TareaHabilidad tarea_habilidad = query.executeAndFetchFirst(TareaHabilidad.class);
-            return tarea_habilidad;
-
+                    .addParameter("idEmergencia", tareaHabilidad.getIdEmergencia())
+                    .addParameter("idHabilidad", tareaHabilidad.getIdHabilidad())
+                    .addParameter("idTarea", tareaHabilidad.getIdTarea())
+                    .addParameter("idTareaHabilidad", idTareaHabilidad);
+            query.executeUpdate();
+            TareaHabilidad tareaHabilidadActualizada = this.getTareaHabilidad(idTareaHabilidad);
+            return tareaHabilidadActualizada;
         }
         catch (Exception e){
             throw new RuntimeException("No se pudo actualizar la tabla relacion entre tarea y habilidad");

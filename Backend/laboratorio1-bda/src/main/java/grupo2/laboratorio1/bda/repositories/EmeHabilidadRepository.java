@@ -63,15 +63,14 @@ public class EmeHabilidadRepository implements IEmeHabilidadRepository {
     }
 
     public EmeHabilidad updateEmeHabilidad(Integer idEmeHabilidad, EmeHabilidad emeHabilidad){
-        String queryText = "UPDATE eme_habilidad SET id_emergencia = :id_emergencia, id_habilidad = :id_habilidad WHERE id_eme_habilidad = :idEmeHabilidad";
+        String queryText = "UPDATE eme_habilidad SET id_emergencia = coalesce(:idEmergencia, id_emergencia), id_habilidad = coalesce(:idHabilidad, id_habilidad) WHERE id_eme_habilidad = :idEmeHabilidad";
         try (Connection connection = sql2o.open()){
-            Query query = connection.createQuery(queryText)
-                    .addParameter("id_emergencia", emeHabilidad.getIdEmergencia())
-                    .addParameter("id_habilidad", emeHabilidad.getIdHabilidad())
-                    .addParameter("id_eme_habilidad", idEmeHabilidad);
-            EmeHabilidad emeHabilidad2 = query.executeAndFetchFirst(EmeHabilidad.class);
-            return emeHabilidad2;
-
+            connection.createQuery(queryText)
+                    .addParameter("idEmeHabilidad", idEmeHabilidad)
+                    .addParameter("idEmergencia", emeHabilidad.getIdEmergencia())
+                    .addParameter("idHabilidad", emeHabilidad.getIdHabilidad())
+                    .executeUpdate();
+            return getEmeHabilidad(idEmeHabilidad);
         }
         catch (Exception e){
             throw new RuntimeException("No se pudo actualizar la tabla relacion entre emergencia y habilidad");
@@ -82,7 +81,7 @@ public class EmeHabilidadRepository implements IEmeHabilidadRepository {
         String queryText = "DELETE FROM eme_habilidad WHERE id_eme_habilidad = :idEmeHabilidad";
         try (Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
-                    .addParameter("id_eme_habilidad", idEmeHabilidad);
+                    .addParameter("idEmeHabilidad", idEmeHabilidad);
             query.executeUpdate();
         }
         catch (Exception e){

@@ -40,7 +40,7 @@ public class TareaHabilidadService {
         } catch ( Exception e){
             throw new RuntimeException("No se ha encontrado en la base de datos tarea");
         }
-        TareaHabilidad tarea_habilidad = new TareaHabilidad(null, idEmergencia, idHabilidad,idTarea);
+        TareaHabilidad tarea_habilidad = new TareaHabilidad(null, idEmergencia, idHabilidad, idTarea);
         tareaHabilidadRepository.createTareaHabilidad(tarea_habilidad);
     }
 

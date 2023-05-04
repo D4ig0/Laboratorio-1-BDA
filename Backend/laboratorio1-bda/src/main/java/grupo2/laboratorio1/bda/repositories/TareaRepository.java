@@ -18,26 +18,24 @@ public class TareaRepository implements ITareaRepository{
     private Sql2o sql2o;
 
     @Override
-    public void createTarea(Tarea tarea) {
-        String queryText = "INSERT INTO tarea ( id_emergencia, nombre , descripcion, cant_vol_requeridos , cant_vol_inscritos ,fecha_inicio ,fecha_fin ,estado_actual) " +
-                "VALUES (:idEmergencia, :nombre, :descripcion , :cantVolRequeridos , :cantVolInscritos, :fechaInicio , :fechaFin , :estadoActual)";
-
+    public void createTarea(Tarea tarea){
+        String queryText = "INSERT INTO tarea (id_emergencia, nombre, descripcion, cant_vol_requeridos, cant_vol_inscritos, fecha_inicio, fecha_fin, estado_actual) VALUES (:idEmergencia, :nombre, :descripcion, :cantVolRequeridos, :cantVolInscritos, :fechaInicio, :fechaFin, :estadoActual)";
         try(Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
-                                    .addParameter("idEmergencia", tarea.getIdEmergencia())
-                                    .addParameter("nombre", tarea.getNombre())
-                                    .addParameter("descripcion ", tarea.getDescripcion())
-                                    .addParameter("cantVolRequeridos ", tarea.getCantVolRequeridos())
-                                    .addParameter("cantVolInscritos", tarea.getCantVolInscritos())
-                                    .addParameter("fechaInicio", tarea.getFechaInicio())
-                                    .addParameter("fechaFin", tarea.getFechaFin())
-                                    .addParameter("estadoActual", tarea.getEstadoActual());
+                    .addParameter("idEmergencia", tarea.getIdEmergencia())
+                    .addParameter("nombre", tarea.getNombre())
+                    .addParameter("descripcion", tarea.getDescripcion())
+                    .addParameter("cantVolRequeridos", tarea.getCantVolRequeridos())
+                    .addParameter("cantVolInscritos", tarea.getCantVolInscritos())
+                    .addParameter("fechaInicio", tarea.getFechaInicio())
+                    .addParameter("fechaFin", tarea.getFechaFin())
+                    .addParameter("estadoActual", tarea.getEstadoActual());
             query.executeUpdate();
         }
         catch (Exception e){
-            throw new RuntimeException("Ocurrio un error al generar la tarea");
-        }}
-
+            throw new RuntimeException("Ocurrio un error al crear la tarea");
+        }
+    }
     
     @Override
     public Tarea getTarea(Integer idTarea) {
@@ -89,17 +87,7 @@ public class TareaRepository implements ITareaRepository{
 
     @Override
     public void updateTarea(Tarea tarea) {
-        String queryText = "UPDATE tarea SET " +
-                "id_emergencia = COALESCE(:idEmergencia, id_emergencia), " +
-                "nombre = COALESCE(:nombre, nombre), " +
-                "descripcion = COALESCE(:descripcion, descripcion), " +
-                "cant_vol_requeridos = COALESCE(:cantVolRequeridos, cant_vol_requeridos), " +
-                "cant_vol_inscritos = COALESCE(:cantVolInscritos, cant_vol_inscritos), " +
-                "fecha_inicio = COALESCE(:fechaInicio, fecha_inicio), " +
-                "fecha_fin = COALESCE(:fechaFin, fecha_fin), " +
-                "estado_actual = COALESCE(:estadoActual, estado_actual) " +
-                "WHERE id_tarea = :idTarea";
-
+        String queryText = "UPDATE tarea SET id_emergencia = coalesce(:idEmergencia, id_emergencia), nombre = coalesce(:nombre, nombre), descripcion = coalesce(:descripcion, descripcion), cant_vol_requeridos = coalesce(:cantVolRequeridos, cant_vol_requeridos), cant_vol_inscritos = coalesce(:cantVolInscritos, cant_vol_inscritos), fecha_inicio = coalesce(:fechaInicio, fecha_inicio), fecha_fin = coalesce(:fechaFin, fecha_fin), estado_actual = coalesce(:estadoActual, estado_actual) WHERE id_tarea = :idTarea";
         try(Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
                     .addParameter("idEmergencia", tarea.getIdEmergencia())
@@ -109,13 +97,13 @@ public class TareaRepository implements ITareaRepository{
                     .addParameter("cantVolInscritos", tarea.getCantVolInscritos())
                     .addParameter("fechaInicio", tarea.getFechaInicio())
                     .addParameter("fechaFin", tarea.getFechaFin())
-                    .addParameter("estadoActual", tarea.getEstadoActual());
+                    .addParameter("estadoActual", tarea.getEstadoActual())
+                    .addParameter("idTarea", tarea.getIdTarea());
             query.executeUpdate();
         }
         catch (Exception e){
             throw new RuntimeException("Ocurrio un error al actualizar la tarea");
         }
-
     }
 
     public boolean existsTarea(Integer idTarea){

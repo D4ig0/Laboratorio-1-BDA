@@ -61,7 +61,6 @@ public class EmeHabilidadService {
         } catch (Exception e){
             throw new RuntimeException("No se ha encontrado en la base de datos la EmeHabilidad");
         }
-        // Falta verificar que esten eliminadas las tablas habilidad y emergencia
         emeHabilidadRepository.deleteEmeHabilidad(idEmeHabilidad);
     }
 }

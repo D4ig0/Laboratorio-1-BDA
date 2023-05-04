@@ -13,9 +13,8 @@ public class EstadoTareaService {
     @Autowired
     IEstadoTareaRepository estadoTareaRepository;
 
-    public void createEstadoTarea(@NonNull Integer idEstadoTarea,
-                                String descripcion){
-        EstadoTarea estadoTarea = new EstadoTarea(idEstadoTarea, descripcion);
+    public void createEstadoTarea(String descripcion){
+        EstadoTarea estadoTarea = new EstadoTarea(null, descripcion);
         estadoTareaRepository.createEstadoTarea(estadoTarea);
     }
 

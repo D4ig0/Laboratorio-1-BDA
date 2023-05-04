@@ -16,7 +16,7 @@ public class EmeHabilidadController {
     @Autowired
     private EmeHabilidadService emeHabilidadService;
 
-    @PostMapping("/emeHabilidad")
+    @PostMapping("/emeHabilidades")
     public void createEmeHabilidad(@RequestParam("idEmergencia") Integer idEmergencia,
                                     @RequestParam("idHabilidad") Integer idHabilidad){
         try{
@@ -31,7 +31,7 @@ public class EmeHabilidadController {
 
     }
 
-    @GetMapping("/emeHabilidad/{id}")
+    @GetMapping("/emeHabilidades/{id}")
     public EmeHabilidad getEmeHabilidad(@PathVariable("id") Integer idEmeHabilidad){
         try{
             return emeHabilidadService.getEmeHabilidad(idEmeHabilidad);
@@ -44,7 +44,7 @@ public class EmeHabilidadController {
         }
     }
     
-    @GetMapping("/emeHabilidad/all")
+    @GetMapping("/emeHabilidades")
     public List<EmeHabilidad> getAllEmeHabilidad(){
         try{
             return emeHabilidadService.getAllEmeHabilidad();
@@ -54,7 +54,7 @@ public class EmeHabilidadController {
         }
     }
 
-    @PutMapping("/emeHabilidad/all/{id}")
+    @PutMapping("/emeHabilidades/{id}")
     public EmeHabilidad updateEmeHabilidad(@PathVariable("id") Integer idEmeHabilidad, @RequestBody EmeHabilidad emehabilidad){
         try{
             return emeHabilidadService.updateEmeHabilidad(idEmeHabilidad,emehabilidad);
@@ -67,7 +67,7 @@ public class EmeHabilidadController {
         }
     }
 
-    @DeleteMapping("/emeHabilidad/{id}")
+    @DeleteMapping("/emeHabilidades/{id}")
     public void deleteEmeHabilidad(@PathVariable("id") Integer idEmeHabilidad){
         try{
             emeHabilidadService.deleteEmeHabilidad(idEmeHabilidad);

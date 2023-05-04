@@ -16,10 +16,9 @@ public class HabilidadController {
     HabilidadService habilidadService;
 
     @PostMapping("/habilidades")
-    public void createHabilidad(@RequestParam Integer idHabilidad,
-                              @RequestParam String descripcion){
+    public void createHabilidad(@RequestParam String descripcion){
         try{
-            habilidadService.createHabilidad(idHabilidad, descripcion);
+            habilidadService.createHabilidad(descripcion);
         }
         catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());

@@ -16,7 +16,7 @@ public class TareaHabilidadController {
     @Autowired
     TareaHabilidadService tarea_HabilidadService;
 
-    @PostMapping("/tarea_habilidades")
+    @PostMapping("/tareaHabilidades")
     public void createTareaHabilidad(@RequestParam Integer idEmergencia, @RequestParam Integer idHabilidad, @RequestParam Integer idTarea){
         try{
             tarea_HabilidadService.createTareaHabilidad(idEmergencia,  idHabilidad, idTarea);
@@ -30,7 +30,7 @@ public class TareaHabilidadController {
     }
 
 
-    @GetMapping("/tarea_habilidades/{id}")
+    @GetMapping("/tareaHabilidades/{id}")
     public TareaHabilidad getTareaHabilidad(@PathVariable("id") Integer idTareaHabilidad){
         try{
             return tarea_HabilidadService.getTareaHabilidad(idTareaHabilidad);
@@ -43,7 +43,7 @@ public class TareaHabilidadController {
         }
     }
     
-    @GetMapping("/tarea_habilidades/all")
+    @GetMapping("/tareaHabilidades")
     public List<TareaHabilidad> getAllTareaHabilidad(){
         try{
             return tarea_HabilidadService.getAllTareaHabilidad();
@@ -54,7 +54,7 @@ public class TareaHabilidadController {
     }
 
 
-    @PutMapping("/tarea_habilidades/all/{id}")
+    @PutMapping("/tareaHabilidades/{id}")
     public TareaHabilidad updateTareaHabilidad(@PathVariable("id") Integer idTareaHabilidad, @RequestBody TareaHabilidad tareaHabilidad){
         try{
             return tarea_HabilidadService.updateTareaHabilidad(idTareaHabilidad,tareaHabilidad);
@@ -68,7 +68,7 @@ public class TareaHabilidadController {
     }
 
 
-    @DeleteMapping("/tarea_habilidades/{id}")
+    @DeleteMapping("/tareaHabilidades/{id}")
     public void deleteTareaHabilidad(@PathVariable("id") Integer idTareaHabilidad){
         try{
             tarea_HabilidadService.deleteTareaHabilidad(idTareaHabilidad);

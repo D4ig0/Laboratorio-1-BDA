@@ -18,9 +18,8 @@ public class HabilidadService {
     ITareaHabilidadRepository tareaHabilidadRepository;
     @Autowired
     IVolHabilidadRepository volHabilidadRepository;
-    public void createHabilidad(@NonNull Integer idHabilidad,
-                              String descripcion){
-        Habilidad habilidad = new Habilidad(idHabilidad, descripcion);
+    public void createHabilidad(String descripcion){
+        Habilidad habilidad = new Habilidad(null, descripcion);
         habilidadRepository.createHabilidad(habilidad);
     }
 

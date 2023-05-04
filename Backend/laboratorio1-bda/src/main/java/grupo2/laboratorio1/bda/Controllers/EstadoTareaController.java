@@ -15,11 +15,10 @@ public class EstadoTareaController {
     @Autowired
     EstadoTareaService estadoTareaService;
 
-    @PostMapping("/estadoTarea")
-    public void createEstadoTarea(@RequestParam Integer idEstadoTarea,
-                                @RequestParam String descripcion){
+    @PostMapping("/estadoTareas")
+    public void createEstadoTarea(@RequestParam String descripcion){
         try{
-            estadoTareaService.createEstadoTarea(idEstadoTarea, descripcion);
+            estadoTareaService.createEstadoTarea(descripcion);
         }
         catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
