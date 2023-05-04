@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
+import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
 import grupo2.laboratorio1.bda.models.Institucion;
@@ -18,20 +19,16 @@ public class InstitucionRepository implements IInstitucionRepository{
     // Create
     @Override
     public Institucion createInstitucion(Institucion institucion) {
+        String queryText = "INSERT INTO institucion (nombre) values (:nombre)";
         try(Connection conn = sql2o.open()){
-            // El returnGeneratedKeys() es para que devuelva el id que se genero
-            // automaticamente en la base de datos
-            // se guarda en insertedId y se obtiene con getKey()
-            // luego se asigna a la institucion
-            Integer insertedId = (Integer) conn.createQuery("INSERT INTO institucion (nombre) values (:institucionNombre)", true)
-                    .addParameter("institucionNombre", institucion.getNombre())
-                    .executeUpdate().getKey();
-            institucion.setIdInstitucion(insertedId);
-            return institucion;
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-            return null;
+            Query query = conn.createQuery(queryText)
+            .addParameter("nombre", institucion.getNombre());
+            query.executeUpdate();
         }
+        catch (Exception e) {
+            throw new RuntimeException("Ocurrio un error al registrar la institucion");
+        }
+        return institucion;
     }
 
     // Read
@@ -40,6 +37,8 @@ public class InstitucionRepository implements IInstitucionRepository{
         try(Connection conn = sql2o.open()){
             return conn.createQuery("select * from institucion where id_institucion = :id_institucion")
                     .addParameter("id_institucion", id_institucion)
+                    .addColumnMapping("ID_INSTITUCION", "idInstitucion")
+                    .addColumnMapping("NOMBRE", "nombre")
                     .executeAndFetchFirst(Institucion.class);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -51,6 +50,8 @@ public class InstitucionRepository implements IInstitucionRepository{
     public List<Institucion> getAllInstituciones() {
         try(Connection conn = sql2o.open()){
             return conn.createQuery("select * from institucion")
+                    .addColumnMapping("ID_INSTITUCION", "idInstitucion")
+                    .addColumnMapping("NOMBRE", "nombre")
                     .executeAndFetch(Institucion.class);
         } catch (Exception e) {
             System.out.println(e.getMessage());

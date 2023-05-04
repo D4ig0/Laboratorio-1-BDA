@@ -17,19 +17,20 @@ public class VolEmergenciaRepository implements IVolEmergenciaRepository {
 
     @Override
     public void createVolEmergencia(VolEmergencia volEmergencia) {
-        String query = "INSERT INTO vol_emergencia (idVoluntario, idEmergencia) VALUES (:idVoluntario, :idEmergencia)";
+        String query = "INSERT INTO vol_emergencia (id_voluntario, id_emergencia) VALUES (:idVoluntario, :idEmergencia)";
         try (org.sql2o.Connection con = sql2o.open()) {
-            con.createQuery(query)
+            Query query2 = con.createQuery(query)
                     .addParameter("idVoluntario", volEmergencia.getIdVoluntario())
-                    .addParameter("idEmergencia", volEmergencia.getIdEmergencia())
-                    .executeUpdate();
+                    .addParameter("idEmergencia", volEmergencia.getIdEmergencia());
+            query2.executeUpdate();
         } catch(Exception e){
+            System.out.println("locura 1");
             throw new RuntimeException("No se pudo crear la relación entre el voluntario y la emergencia");
         }
     }
 
     public VolEmergencia getVolEmergencia(Integer idVolEmergencia){
-        String queryTxt = "SELECT * FROM vol_emergencia WHERE idVolEmergencia = :idVolEmergencia";
+        String queryTxt = "SELECT * FROM vol_emergencia WHERE id_volEmergencia = :idVolEmergencia";
         try (Connection connection = sql2o.open()) {
             Query query = connection.createQuery(queryTxt)
                     .addParameter("idVolEmergencia", idVolEmergencia)
@@ -60,7 +61,7 @@ public class VolEmergenciaRepository implements IVolEmergenciaRepository {
     }
 
     public VolEmergencia updateVolEmergencia(Integer idVolEmergencia, VolEmergencia volEmergencia){
-        String queryTxt = "UPDATE vol_emergencia SET idVoluntario = :idVoluntario, idEmergencia = :idEmergencia WHERE id_vol_emergencia = :idVolEmergencia";
+        String queryTxt = "UPDATE vol_emergencia SET id_voluntario = :idVoluntario, id_emergencia = :idEmergencia WHERE id_vol_emergencia = :idVolEmergencia";
         try (Connection connection = sql2o.open()) {
             Query query = connection.createQuery(queryTxt)
                     .addParameter("idVolEmergencia", idVolEmergencia)

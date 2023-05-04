@@ -21,9 +21,13 @@ public class VolEmergenciaService {
             volEmergenciaRepository.createVolEmergencia(volEmergencia);
         }
         catch (IllegalArgumentException e){
+            System.out.println("locura 2");
+
             throw new IllegalArgumentException(e.getMessage());
         }
         catch (RuntimeException e){
+            System.out.println("locura 3");
+
             throw new RuntimeException(e.getMessage());
         }
     }
