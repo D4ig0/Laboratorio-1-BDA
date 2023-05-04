@@ -5,9 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Institucion {
-    private Integer idInstitucion;
-    private String nombre;
+@AllArgsConstructor
+public class VolHabilidad {
+
+    private Integer idVolHabilidad;
+    private Integer idVoluntario;
+    private Integer idHabilidad;
+
 }

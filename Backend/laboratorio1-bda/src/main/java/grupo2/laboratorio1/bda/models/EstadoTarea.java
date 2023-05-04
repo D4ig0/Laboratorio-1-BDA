@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Institucion {
-    private Integer idInstitucion;
-    private String nombre;
+public class EstadoTarea {
+    private Integer idEstadoTarea;
+    private String descripcion;
 }

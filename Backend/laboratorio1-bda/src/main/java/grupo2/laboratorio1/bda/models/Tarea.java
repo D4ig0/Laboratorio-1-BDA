@@ -1,3 +1,5 @@
+
+
 package grupo2.laboratorio1.bda.models;
 
 import java.sql.Date;
@@ -9,12 +11,18 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Emergencia {
-    private Integer idEmergencia;
+public class Tarea {
+
+    private Integer idTarea;
+    private Integer idEmergencia; 
+
     private String nombre;
     private String descripcion;
-    private Date fecha_inicio;
-    private Date fecha_termino;
-    private Boolean activo;
-    private Integer idInstitucion;
+    private Integer cantVolRequeridos;
+    private Integer cantVolInscritos;
+    private Date fechaInicio;
+    private Date fechaFin;
+
+    private String estadoActual;
+
 }
