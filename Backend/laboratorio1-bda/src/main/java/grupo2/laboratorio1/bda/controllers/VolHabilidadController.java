@@ -1,7 +1,7 @@
 package grupo2.laboratorio1.bda.controllers;
 
-import grupo2.laboratorio1.bda.models.VolEmergencia;
-import grupo2.laboratorio1.bda.services.VolEmergenciaService;
+import grupo2.laboratorio1.bda.models.VolHabilidad;
+import grupo2.laboratorio1.bda.services.VolHabilidadService;
 
 import java.util.List;
 
@@ -20,15 +20,15 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @CrossOrigin
-public class VolEmergenciaController {
+public class VolHabilidadController {
     @Autowired
-    private VolEmergenciaService volEmergenciaService;
+    private VolHabilidadService volHabilidadService;
 
-    @PostMapping("/volEmergencia")
-    public void createVolEmergencia(@RequestParam("idVoluntario") Integer idVoluntario,
-                                    @RequestParam("idEmergencia") Integer idEmergencia){
+    @PostMapping("/volHabilidades")
+    public void createVolHabilidad(@RequestParam("idVoluntario") Integer idVoluntario,
+                                    @RequestParam("idHabilidad") Integer idHabilidad){
         try{
-            volEmergenciaService.createVolEmergencia(idVoluntario, idEmergencia);
+            volHabilidadService.createVolHabilidad(idVoluntario, idHabilidad);
         }
         catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -39,10 +39,10 @@ public class VolEmergenciaController {
 
     }
 
-    @GetMapping("/volEmergencia/{id}")
-    public VolEmergencia getVolEmergencia(@PathVariable("id") Integer id){
+    @GetMapping("/volHabilidades/{id}")
+    public VolHabilidad getVolHabilidad(@PathVariable("id") Integer id){
         try{
-            return volEmergenciaService.getVolEmergencia(id);
+            return volHabilidadService.getVolHabilidad(id);
         }
         catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -52,20 +52,20 @@ public class VolEmergenciaController {
         }
     }
 
-    @GetMapping("/volEmergencia/all")
-    public List<VolEmergencia> getAllVolEmergencia(){
+    @GetMapping("/volHabilidades")
+    public List<VolHabilidad> getAllVolHabilidad(){
         try{
-            return volEmergenciaService.getAllVolEmergencia();
+            return volHabilidadService.getAllVolHabilidad();
         }
         catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
-    @PutMapping("/volEmergencia/all/{id}")
-    public VolEmergencia updateVolEmergencia(@PathVariable("id") Integer id, @RequestBody VolEmergencia volEmergencia){
+    @PutMapping("/volHabilidades/{id}")
+    public VolHabilidad updateVolHabilidad(@PathVariable("id") Integer id, @RequestBody VolHabilidad volHabilidad){
         try{
-            return volEmergenciaService.updateVolEmergencia(id, volEmergencia);
+            return volHabilidadService.updateVolHabilidad(id, volHabilidad);
         }
         catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -75,10 +75,10 @@ public class VolEmergenciaController {
         }
     }
 
-    @DeleteMapping("/volEmergencia/all/{id}")
-    public void deleteVolEmergencia(@PathVariable("id") Integer id){
+    @DeleteMapping("/volHabilidades/{id}")
+    public void deleteVolHabilidad(@PathVariable("id") Integer id){
         try{
-            volEmergenciaService.deleteVolEmergencia(id);
+            volHabilidadService.deleteVolHabilidad(id);
         }
         catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());

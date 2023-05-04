@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class VolEmergencia {
+public class VolHabilidad {
 
-    private Integer idVolEmergencia;
+    private Integer idVolHabilidad;
     private Integer idVoluntario;
-    private Integer idEmergencia;
+    private Integer idHabilidad;
 
 }

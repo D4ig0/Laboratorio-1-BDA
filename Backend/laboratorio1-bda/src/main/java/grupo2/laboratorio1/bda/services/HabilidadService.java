@@ -1,9 +1,7 @@
 package grupo2.laboratorio1.bda.services;
 
 import grupo2.laboratorio1.bda.models.Habilidad;
-import grupo2.laboratorio1.bda.repositories.IEmeHabilidadRepository;
-import grupo2.laboratorio1.bda.repositories.IHabilidadRepository;
-import grupo2.laboratorio1.bda.repositories.ITareaHabilidadRepository;
+import grupo2.laboratorio1.bda.repositories.*;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +16,8 @@ public class HabilidadService {
     IEmeHabilidadRepository emeHabilidadRepository;
     @Autowired
     ITareaHabilidadRepository tareaHabilidadRepository;
-
+    @Autowired
+    IVolHabilidadRepository volHabilidadRepository;
     public void createHabilidad(@NonNull Integer idHabilidad,
                               String descripcion){
         Habilidad habilidad = new Habilidad(idHabilidad, descripcion);
@@ -44,6 +43,9 @@ public class HabilidadService {
     }
 
     public void deleteHabilidad(Integer idHabilidad){
+        if(volHabilidadRepository.getVolHabilidadByHabilidad(idHabilidad).size()>0){
+            throw new IllegalArgumentException("No se puede eliminar la habilidad porque tiene voluntarios asociados");
+        }
         if(emeHabilidadRepository.getEmeHabilidadByIdHabilidad(idHabilidad).size() > 0){
             throw new IllegalArgumentException("No se puede eliminar la habilidad porque tiene emergencias asociadas");
         }
