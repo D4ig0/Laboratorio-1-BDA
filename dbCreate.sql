@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.institucion_trigger_table (
     nombre_nuevo VARCHAR(50),
     nombre_anterior VARCHAR(50),
 
-    fecha DATE,
+    fecha_modificacion DATE,
     usuario_modificador VARCHAR(50),
     accion VARCHAR(50)
 ); 
@@ -127,29 +127,31 @@ CREATE OR REPLACE FUNCTION desastresdb.public.institucion_trigger_function()
 RETURNS TRIGGER AS $institucion_trigger_function$
 BEGIN
     IF (TG_OP = 'INSERT') THEN
-        INSERT INTO desastresdb.public.institucion_trigger_table(id_institucion, nombre_nuevo, nombre_anterior, fecha, usuario_modificador, accion)
-        VALUES (NEW.id_institucion, NEW.nombre, NULL, NOW(), CURRENT_USER, 'CREATE');
+        INSERT INTO desastresdb.public.institucion_trigger_table (id_institucion, nombre_nuevo, fecha_modificacion, usuario_modificador, accion)
+        VALUES (NEW.id_institucion, NEW.nombre, CURRENT_DATE, CURRENT_USER, 'INSERT');
         RETURN NEW;
     ELSIF (TG_OP = 'UPDATE') THEN
-        INSERT INTO desastresdb.public.institucion_trigger_table(id_institucion, nombre_nuevo, nombre_anterior, fecha, usuario_modificador, accion)
-        VALUES (OLD.id_institucion, NEW.nombre, OLD.nombre, NOW(), CURRENT_USER, 'UPDATE');
+        INSERT INTO desastresdb.public.institucion_trigger_table (id_institucion, nombre_nuevo, nombre_anterior, fecha_modificacion, usuario_modificador, accion)
+        VALUES (NEW.id_institucion, NEW.nombre, OLD.nombre, CURRENT_DATE, CURRENT_USER, 'UPDATE');
         RETURN NEW;
     ELSIF (TG_OP = 'DELETE') THEN
-        INSERT INTO desastresdb.public.institucion_trigger_table(id_institucion, nombre_nuevo, nombre_anterior, fecha, usuario_modificador, accion)
-        VALUES (OLD.id_institucion, NULL, OLD.nombre, NOW(), CURRENT_USER, 'DELETE');
+        INSERT INTO desastresdb.public.institucion_trigger_table (id_institucion, nombre_anterior, fecha_modificacion, usuario_modificador, accion)
+        VALUES (OLD.id_institucion, OLD.nombre, CURRENT_DATE, CURRENT_USER, 'DELETE');
         RETURN OLD;
     END IF;
 END;
 $institucion_trigger_function$ LANGUAGE plpgsql;
 
-CREATE TRIGGER institucion_trigger_function_trigger 
+CREATE TRIGGER institucion_trigger
 AFTER INSERT OR UPDATE OR DELETE ON desastresdb.public.institucion
-FOR EACH ROW EXECUTE FUNCTION desastresdb.public.institucion_trigger_function();
+FOR EACH ROW EXECUTE PROCEDURE desastresdb.public.institucion_trigger_function();
 
 --- Tabla emergencia_trigger_table
 CREATE TABLE IF NOT EXISTS desastresdb.public.emergencia_trigger_table (
     id_emergencia INT,
-    id_institucion INT,
+
+    id_institucion_nuevo INT,
+    id_institucion_anterior INT,
 
     nombre_nuevo VARCHAR(50),
     nombre_anterior VARCHAR(50),
@@ -166,7 +168,7 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.emergencia_trigger_table (
     activo_nuevo BOOLEAN,
     activo_anterior BOOLEAN,
 
-    fecha DATE,
+    fecha_modificacion DATE,
     usuario_modificador VARCHAR(50),
     accion VARCHAR(50)
 );
@@ -176,69 +178,169 @@ CREATE OR REPLACE FUNCTION desastresdb.public.emergencia_trigger_function()
 RETURNS TRIGGER AS $emergencia_trigger_function$
 BEGIN
     IF (TG_OP = 'INSERT') THEN
-        INSERT INTO desastresdb.public.emergencia_trigger_table(id_emergencia, id_institucion, nombre_nuevo, nombre_anterior, descripcion_nuevo, descripcion_anterior, fecha_inicio_nuevo, fecha_inicio_anterior, fecha_termino_nuevo, fecha_termino_anterior, activo_nuevo, activo_anterior, fecha, usuario_modificador, accion)
-        VALUES (NEW.id_emergencia, NEW.id_institucion, NEW.nombre, NULL, NEW.descripcion, NULL, NEW.fecha_inicio, NULL, NEW.fecha_termino, NULL, NEW.activo, NULL, NOW(), CURRENT_USER, 'CREATE');
+        INSERT INTO desastresdb.public.emergencia_trigger_table (id_emergencia, id_institucion_nuevo, nombre_nuevo, descripcion_nuevo, fecha_inicio_nuevo, fecha_termino_nuevo, activo_nuevo, fecha_modificacion, usuario_modificador, accion)
+        VALUES (NEW.id_emergencia, NEW.id_institucion, NEW.nombre, NEW.descripcion, NEW.fecha_inicio, NEW.fecha_termino, NEW.activo, CURRENT_DATE, CURRENT_USER, 'INSERT');
         RETURN NEW;
     ELSIF (TG_OP = 'UPDATE') THEN
-        INSERT INTO desastresdb.public.emergencia_trigger_table(id_emergencia, id_institucion, nombre_nuevo, nombre_anterior, descripcion_nuevo, descripcion_anterior, fecha_inicio_nuevo, fecha_inicio_anterior, fecha_termino_nuevo, fecha_termino_anterior, activo_nuevo, activo_anterior, fecha, usuario_modificador, accion)
-        VALUES (OLD.id_emergencia, NEW.id_institucion, NEW.nombre, OLD.nombre, NEW.descripcion, OLD.descripcion, NEW.fecha_inicio, OLD.fecha_inicio, NEW.fecha_termino, OLD.fecha_termino, NEW.activo, OLD.activo, NOW(), CURRENT_USER, 'UPDATE');
+        INSERT INTO desastresdb.public.emergencia_trigger_table (id_emergencia, id_institucion_nuevo, id_institucion_anterior, nombre_nuevo, nombre_anterior, descripcion_nuevo, descripcion_anterior, fecha_inicio_nuevo, fecha_inicio_anterior, fecha_termino_nuevo, fecha_termino_anterior, activo_nuevo, activo_anterior, fecha_modificacion, usuario_modificador, accion)
+        VALUES (NEW.id_emergencia, NEW.id_institucion, OLD.id_institucion, NEW.nombre, OLD.nombre, NEW.descripcion, OLD.descripcion, NEW.fecha_inicio, OLD.fecha_inicio, NEW.fecha_termino, OLD.fecha_termino, NEW.activo, OLD.activo, CURRENT_DATE, CURRENT_USER, 'UPDATE');
         RETURN NEW;
     ELSIF (TG_OP = 'DELETE') THEN
-        INSERT INTO desastresdb.public.emergencia_trigger_table(id_emergencia, id_institucion, nombre_nuevo, nombre_anterior, descripcion_nuevo, descripcion_anterior, fecha_inicio_nuevo, fecha_inicio_anterior, fecha_termino_nuevo, fecha_termino_anterior, activo_nuevo, activo_anterior, fecha, usuario_modificador, accion)
-        VALUES (OLD.id_emergencia, OLD.id_institucion, NULL, OLD.nombre, NULL, OLD.descripcion, NULL, OLD.fecha_inicio, NULL, OLD.fecha_termino, NULL, OLD.activo, NOW(), CURRENT_USER, 'DELETE');
+        INSERT INTO desastresdb.public.emergencia_trigger_table (id_emergencia, id_institucion_anterior, nombre_anterior, descripcion_anterior, fecha_inicio_anterior, fecha_termino_anterior, activo_anterior, fecha_modificacion, usuario_modificador, accion)
+        VALUES (OLD.id_emergencia, OLD.id_institucion, OLD.nombre, OLD.descripcion, OLD.fecha_inicio, OLD.fecha_termino, OLD.activo, CURRENT_DATE, CURRENT_USER, 'DELETE');
         RETURN OLD;
     END IF;
 END;
 $emergencia_trigger_function$ LANGUAGE plpgsql;
 
-CREATE TRIGGER emergencia_trigger_function_trigger
+CREATE TRIGGER emergencia_trigger
 AFTER INSERT OR UPDATE OR DELETE ON desastresdb.public.emergencia
-FOR EACH ROW EXECUTE FUNCTION desastresdb.public.emergencia_trigger_function();
+FOR EACH ROW EXECUTE PROCEDURE desastresdb.public.emergencia_trigger_function();
+
+--- Tabla tarea_trigger_table
+CREATE TABLE IF NOT EXISTS desastresdb.public.tarea_trigger_table (
+    id_tarea INT,
+
+    id_emergencia_nuevo INT,
+    id_emergencia_anterior INT,
+
+    nombre_nuevo VARCHAR(50),
+    nombre_anterior VARCHAR(50),
+
+    descripcion_nuevo VARCHAR(200),
+    descripcion_anterior VARCHAR(200),
+
+    cant_vol_requeridos_nuevo INT,
+    cant_vol_requeridos_anterior INT,
+
+    cant_vol_inscritos_nuevo INT,
+    cant_vol_inscritos_anterior INT,
+
+    fecha_inicio_nuevo DATE,
+    fecha_inicio_anterior DATE,
+
+    fecha_fin_nuevo DATE,
+    fecha_fin_anterior DATE,
+
+    estado_actual_nuevo VARCHAR(50),
+    estado_actual_anterior VARCHAR(50),
+
+    fecha_modificacion DATE,
+    usuario_modificador VARCHAR(50),
+    accion VARCHAR(50)
+);
 
 --- Trigger para la tabla tarea
 CREATE OR REPLACE FUNCTION desastresdb.public.tarea_trigger_function()
 RETURNS TRIGGER AS $tarea_trigger_function$
 BEGIN
     IF (TG_OP = 'INSERT') THEN
-        INSERT INTO desastresdb.public.tarea_trigger_table(id_tarea, id_emergencia, id_estado_tarea, nombre_nuevo, nombre_anterior, descripcion_nuevo, descripcion_anterior, fecha_inicio_nuevo, fecha_inicio_anterior, fecha_termino_nuevo, fecha_termino_anterior, fecha_limite_nuevo, fecha_limite_anterior, fecha, usuario_modificador, accion)
-        VALUES (NEW.id_tarea, NEW.id_emergencia, NEW.id_estado_tarea, NEW.nombre, NULL, NEW.descripcion, NULL, NEW.fecha_inicio, NULL, NEW.fecha_termino, NULL, NEW.fecha_limite, NULL, NOW(), CURRENT_USER, 'CREATE');
+        INSERT INTO desastresdb.public.tarea_trigger_table (id_tarea, id_emergencia_nuevo, nombre_nuevo, descripcion_nuevo, cant_vol_requeridos_nuevo, cant_vol_inscritos_nuevo, fecha_inicio_nuevo, fecha_fin_nuevo, estado_actual_nuevo, fecha_modificacion, usuario_modificador, accion)
+        VALUES (NEW.id_tarea, NEW.id_emergencia, NEW.nombre, NEW.descripcion, NEW.cant_vol_requeridos, NEW.cant_vol_inscritos, NEW.fecha_inicio, NEW.fecha_fin, NEW.estado_actual, CURRENT_DATE, CURRENT_USER, 'INSERT');
         RETURN NEW;
     ELSIF (TG_OP = 'UPDATE') THEN
-        INSERT INTO desastresdb.public.tarea_trigger_table(id_tarea, id_emergencia, id_estado_tarea, nombre_nuevo, nombre_anterior, descripcion_nuevo, descripcion_anterior, fecha_inicio_nuevo, fecha_inicio_anterior, fecha_termino_nuevo, fecha_termino_anterior, fecha_limite_nuevo, fecha_limite_anterior, fecha, usuario_modificador, accion)
-        VALUES (OLD.id_tarea, NEW.id_emergencia, NEW.id_estado_tarea, NEW.nombre, OLD.nombre, NEW.descripcion, OLD.descripcion, NEW.fecha_inicio, OLD.fecha_inicio, NEW.fecha_termino, OLD.fecha_termino, NEW.fecha_limite, OLD.fecha_limite, NOW(), CURRENT_USER, 'UPDATE');
+        INSERT INTO desastresdb.public.tarea_trigger_table (id_tarea, id_emergencia_nuevo, id_emergencia_anterior, nombre_nuevo, nombre_anterior, descripcion_nuevo, descripcion_anterior, cant_vol_requeridos_nuevo, cant_vol_requeridos_anterior, cant_vol_inscritos_nuevo, cant_vol_inscritos_anterior, fecha_inicio_nuevo, fecha_inicio_anterior, fecha_fin_nuevo, fecha_fin_anterior, estado_actual_nuevo, estado_actual_anterior, fecha_modificacion, usuario_modificador, accion)
+        VALUES (NEW.id_tarea, NEW.id_emergencia, OLD.id_emergencia, NEW.nombre, OLD.nombre, NEW.descripcion, OLD.descripcion, NEW.cant_vol_requeridos, OLD.cant_vol_requeridos, NEW.cant_vol_inscritos, OLD.cant_vol_inscritos, NEW.fecha_inicio, OLD.fecha_inicio, NEW.fecha_fin, OLD.fecha_fin, NEW.estado_actual, OLD.estado_actual, CURRENT_DATE, CURRENT_USER, 'UPDATE');
         RETURN NEW;
     ELSIF (TG_OP = 'DELETE') THEN
-        INSERT INTO desastresdb.public.tarea_trigger_table(id_tarea, id_emergencia, id_estado_tarea, nombre_nuevo, nombre_anterior, descripcion_nuevo, descripcion_anterior, fecha_inicio_nuevo, fecha_inicio_anterior, fecha_termino_nuevo, fecha_termino_anterior, fecha_limite_nuevo, fecha_limite_anterior, fecha, usuario_modificador, accion)
-        VALUES (OLD.id_tarea, OLD.id_emergencia, OLD.id_estado_tarea, NULL, OLD.nombre, NULL, OLD.descripcion, NULL, OLD.fecha_inicio, NULL, OLD.fecha_termino, NULL, OLD.fecha_limite, NOW(), CURRENT_USER, 'DELETE');
+        INSERT INTO desastresdb.public.tarea_trigger_table (id_tarea, id_emergencia_anterior, nombre_anterior, descripcion_anterior, cant_vol_requeridos_anterior, cant_vol_inscritos_anterior, fecha_inicio_anterior, fecha_fin_anterior, estado_actual_anterior, fecha_modificacion, usuario_modificador, accion)
+        VALUES (OLD.id_tarea, OLD.id_emergencia, OLD.nombre, OLD.descripcion, OLD.cant_vol_requeridos, OLD.cant_vol_inscritos, OLD.fecha_inicio, OLD.fecha_fin, OLD.estado_actual, CURRENT_DATE, CURRENT_USER, 'DELETE');
         RETURN OLD;
     END IF;
 END;
 $tarea_trigger_function$ LANGUAGE plpgsql;
 
-CREATE TRIGGER tarea_trigger_function_trigger
+CREATE TRIGGER tarea_trigger
 AFTER INSERT OR UPDATE OR DELETE ON desastresdb.public.tarea
-FOR EACH ROW EXECUTE FUNCTION desastresdb.public.tarea_trigger_function();
+FOR EACH ROW EXECUTE PROCEDURE desastresdb.public.tarea_trigger_function();
+
+--- Tabla voluntario_trigger_table
+CREATE TABLE IF NOT EXISTS desastresdb.public.voluntario_trigger_table (
+    id_voluntario INT,
+
+    nombre_nuevo VARCHAR(50),
+    nombre_anterior VARCHAR(50),
+
+    correo_nuevo VARCHAR(50),
+    correo_anterior VARCHAR(50),
+
+    password_nuevo VARCHAR(50),
+    password_anterior VARCHAR(50),
+
+    fecha_modificacion DATE,
+    usuario_modificador VARCHAR(50),
+    accion VARCHAR(50)
+);
 
 --- Trigger para la tabla voluntario
 CREATE OR REPLACE FUNCTION desastresdb.public.voluntario_trigger_function()
 RETURNS TRIGGER AS $voluntario_trigger_function$
 BEGIN
     IF (TG_OP = 'INSERT') THEN
-        INSERT INTO desastresdb.public.voluntario_trigger_table(id_voluntario, id_institucion, id_estado_voluntario, nombre_nuevo, nombre_anterior, apellido_paterno_nuevo, apellido_paterno_anterior, apellido_materno_nuevo, apellido_materno_anterior, fecha_nacimiento_nuevo, fecha_nacimiento_anterior, fecha_ingreso_nuevo, fecha_ingreso_anterior, fecha_salida_nuevo, fecha_salida_anterior, fecha, usuario_modificador, accion)
-        VALUES (NEW.id_voluntario, NEW.id_institucion, NEW.id_estado_voluntario, NEW.nombre, NULL, NEW.apellido_paterno, NULL, NEW.apellido_materno, NULL, NEW.fecha_nacimiento, NULL, NEW.fecha_ingreso, NULL, NEW.fecha_salida, NULL, NOW(), CURRENT_USER, 'CREATE');
+        INSERT INTO desastresdb.public.voluntario_trigger_table (id_voluntario, nombre_nuevo, correo_nuevo, password_nuevo, fecha_modificacion, usuario_modificador, accion)
+        VALUES (NEW.id_voluntario, NEW.nombre, NEW.correo, NEW.password, CURRENT_DATE, CURRENT_USER, 'INSERT');
         RETURN NEW;
     ELSIF (TG_OP = 'UPDATE') THEN
-        INSERT INTO desastresdb.public.voluntario_trigger_table(id_voluntario, id_institucion, id_estado_voluntario, nombre_nuevo, nombre_anterior, apellido_paterno_nuevo, apellido_paterno_anterior, apellido_materno_nuevo, apellido_materno_anterior, fecha_nacimiento_nuevo, fecha_nacimiento_anterior, fecha_ingreso_nuevo, fecha_ingreso_anterior, fecha_salida_nuevo, fecha_salida_anterior, fecha, usuario_modificador, accion)
-        VALUES (OLD.id_voluntario, NEW.id_institucion, NEW.id_estado_voluntario, NEW.nombre, OLD.nombre, NEW.apellido_paterno, OLD.apellido_paterno, NEW.apellido_materno, OLD.apellido_materno, NEW.fecha_nacimiento, OLD.fecha_nacimiento, NEW.fecha_ingreso, OLD.fecha_ingreso, NEW.fecha_salida, OLD.fecha_salida, NOW(), CURRENT_USER, 'UPDATE');
+        INSERT INTO desastresdb.public.voluntario_trigger_table (id_voluntario, nombre_nuevo, nombre_anterior, correo_nuevo, correo_anterior, password_nuevo, password_anterior, fecha_modificacion, usuario_modificador, accion)
+        VALUES (NEW.id_voluntario, NEW.nombre, OLD.nombre, NEW.correo, OLD.correo, NEW.password, OLD.password, CURRENT_DATE, CURRENT_USER, 'UPDATE');
         RETURN NEW;
     ELSIF (TG_OP = 'DELETE') THEN
-        INSERT INTO desastresdb.public.voluntario_trigger_table(id_voluntario, id_institucion, id_estado_voluntario, nombre_nuevo, nombre_anterior, apellido_paterno_nuevo, apellido_paterno_anterior, apellido_materno_nuevo, apellido_materno_anterior, fecha_nacimiento_nuevo, fecha_nacimiento_anterior, fecha_ingreso_nuevo, fecha_ingreso_anterior, fecha_salida_nuevo, fecha_salida_anterior, fecha, usuario_modificador, accion)
-        VALUES(OLD.id_voluntario, OLD.id_institucion, OLD.id_estado_voluntario, NULL, OLD.nombre, NULL, OLD.apellido_paterno, NULL, OLD.apellido_materno, NULL, OLD.fecha_nacimiento, NULL, OLD.fecha_ingreso, NULL, OLD.fecha_salida, NOW(), CURRENT_USER, 'DELETE');
+        INSERT INTO desastresdb.public.voluntario_trigger_table (id_voluntario, nombre_anterior, correo_anterior, password_anterior, fecha_modificacion, usuario_modificador, accion)
+        VALUES (OLD.id_voluntario, OLD.nombre, OLD.correo, OLD.password, CURRENT_DATE, CURRENT_USER, 'DELETE');
         RETURN OLD;
     END IF;
 END;
 $voluntario_trigger_function$ LANGUAGE plpgsql;
 
-CREATE TRIGGER voluntario_trigger_function_trigger
+CREATE TRIGGER voluntario_trigger
 AFTER INSERT OR UPDATE OR DELETE ON desastresdb.public.voluntario
-FOR EACH ROW EXECUTE FUNCTION desastresdb.public.voluntario_trigger_function();
+FOR EACH ROW EXECUTE PROCEDURE desastresdb.public.voluntario_trigger_function();
+
+--- Tabla ranking_trigger_table
+CREATE TABLE IF NOT EXISTS desastresdb.public.ranking_trigger_table (
+    id_ranking INT,
+
+    id_voluntario_nuevo INT,
+    id_voluntario_anterior INT,
+
+    id_tarea_nuevo INT,
+    id_tarea_anterior INT,
+
+    puntaje_nuevo INT,
+    puntaje_anterior INT,
+
+    flg_invitado_nuevo BOOLEAN,
+    flg_invitado_anterior BOOLEAN,
+
+    flg_participa_nuevo BOOLEAN,
+    flg_participa_anterior BOOLEAN,
+
+    fecha_modificacion DATE,
+    usuario_modificador VARCHAR(50),
+    accion VARCHAR(50)
+);
+
+--- Trigger para la tabla ranking
+CREATE OR REPLACE FUNCTION desastresdb.public.ranking_trigger_function()
+RETURNS TRIGGER AS $ranking_trigger_function$
+BEGIN
+    IF(TG_OP = 'INSERT') THEN
+        INSERT INTO desastresdb.public.ranking_trigger_table (id_ranking, id_voluntario_nuevo, id_tarea_nuevo, puntaje_nuevo, flg_invitado_nuevo, flg_participa_nuevo, fecha_modificacion, usuario_modificador, accion)
+        VALUES (NEW.id_ranking, NEW.id_voluntario, NEW.id_tarea, NEW.puntaje, NEW.flg_invitado, NEW.flg_participa, CURRENT_DATE, CURRENT_USER, 'INSERT');
+        RETURN NEW;
+    ELSIF (TG_OP = 'UPDATE') THEN
+        INSERT INTO desastresdb.public.ranking_trigger_table (id_ranking, id_voluntario_nuevo, id_voluntario_anterior, id_tarea_nuevo, id_tarea_anterior, puntaje_nuevo, puntaje_anterior, flg_invitado_nuevo, flg_invitado_anterior, flg_participa_nuevo, flg_participa_anterior, fecha_modificacion, usuario_modificador, accion)
+        VALUES (NEW.id_ranking, NEW.id_voluntario, OLD.id_voluntario, NEW.id_tarea, OLD.id_tarea, NEW.puntaje, OLD.puntaje, NEW.flg_invitado, OLD.flg_invitado, NEW.flg_participa, OLD.flg_participa, CURRENT_DATE, CURRENT_USER, 'UPDATE');
+        RETURN NEW;
+    ELSIF (TG_OP = 'DELETE') THEN
+        INSERT INTO desastresdb.public.ranking_trigger_table (id_ranking, id_voluntario_anterior, id_tarea_anterior, puntaje_anterior, flg_invitado_anterior, flg_participa_anterior, fecha_modificacion, usuario_modificador, accion)
+        VALUES (OLD.id_ranking, OLD.id_voluntario, OLD.id_tarea, OLD.puntaje, OLD.flg_invitado, OLD.flg_participa, CURRENT_DATE, CURRENT_USER, 'DELETE');
+        RETURN OLD;
+    END IF;
+END;
+$ranking_trigger_function$ LANGUAGE plpgsql;
+
+CREATE TRIGGER ranking_trigger
+AFTER INSERT OR UPDATE OR DELETE ON desastresdb.public.ranking
+FOR EACH ROW EXECUTE PROCEDURE desastresdb.public.ranking_trigger_function();
+
