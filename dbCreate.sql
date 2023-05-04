@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.institucion_trigger_table (
     nombre_nuevo VARCHAR(50),
     nombre_anterior VARCHAR(50),
 
-    fecha_modificacion DATE,
+    fecha_modificacion TIMESTAMP,
     usuario_modificador VARCHAR(50),
     accion VARCHAR(50)
 ); 
@@ -168,7 +168,7 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.emergencia_trigger_table (
     activo_nuevo BOOLEAN,
     activo_anterior BOOLEAN,
 
-    fecha_modificacion DATE,
+    fecha_modificacion TIMESTAMP,
     usuario_modificador VARCHAR(50),
     accion VARCHAR(50)
 );
@@ -225,7 +225,7 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.tarea_trigger_table (
     estado_actual_nuevo VARCHAR(50),
     estado_actual_anterior VARCHAR(50),
 
-    fecha_modificacion DATE,
+    fecha_modificacion TIMESTAMP,
     usuario_modificador VARCHAR(50),
     accion VARCHAR(50)
 );
@@ -267,7 +267,7 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.voluntario_trigger_table (
     password_nuevo VARCHAR(50),
     password_anterior VARCHAR(50),
 
-    fecha_modificacion DATE,
+    fecha_modificacion TIMESTAMP,
     usuario_modificador VARCHAR(50),
     accion VARCHAR(50)
 );
@@ -315,7 +315,7 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.ranking_trigger_table (
     flg_participa_nuevo BOOLEAN,
     flg_participa_anterior BOOLEAN,
 
-    fecha_modificacion DATE,
+    fecha_modificacion TIMESTAMP,
     usuario_modificador VARCHAR(50),
     accion VARCHAR(50)
 );
@@ -517,15 +517,15 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.eme_habilidad_trigger_table (
 CREATE OR REPLACE FUNCTION desastresdb.public.eme_habilidad_trigger_function()
 RETURNS TRIGGER AS $eme_habilidad_trigger_function$
 BEGIN
-    IF(TG_OP = "INSERT") THEN
+    IF(TG_OP = 'INSERT') THEN
         INSERT INTO desastresdb.public.eme_habilidad_trigger_table(id_eme_habilidad, id_emergencia_anterior, id_emergencia_nuevo, id_habilidad_anterior, id_habilidad_nuevo, fecha, usuario_modificador, accion)
         VALUES (NEW.id_eme_habilidad, NULL, NEW.id_emergencia, NULL, NEW.id_habilidad, NOW(), CURRENT_USER, 'CREATE');
         RETURN NEW;
-    ELSIF(TG_OP = "UPDATE") THEN
+    ELSIF(TG_OP = 'UPDATE') THEN
         INSERT INTO desastresdb.public.eme_habilidad_trigger_table(id_eme_habilidad, id_emergencia_anterior, id_emergencia_nuevo, id_habilidad_anterior, id_habilidad_nuevo, fecha, usuario_modificador, accion)
         VALUES (OLD.id_eme_habilidad, OLD.id_emergencia, NEW.id_emergencia, OLD.id_habilidad, NEW.id_habilidad, NOW(), CURRENT_USER, 'UPDATE');
         RETURN NEW;
-    ELSIF(TG_OP = "DELETE") THEN
+    ELSIF(TG_OP = 'DELETE') THEN
         INSERT INTO desastresdb.public.eme_habilidad_trigger_table(id_eme_habilidad, id_emergencia_anterior, id_emergencia_nuevo, id_habilidad_anterior, id_habilidad_nuevo, fecha, usuario_modificador, accion)
         VALUES (OLD.id_eme_habilidad, OLD.id_emergencia, NULL, OLD.id_habilidad, NULL, NOW(), CURRENT_USER, 'DELETE');
         RETURN OLD;
