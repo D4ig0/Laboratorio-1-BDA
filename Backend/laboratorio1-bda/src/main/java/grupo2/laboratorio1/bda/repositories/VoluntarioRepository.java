@@ -8,6 +8,7 @@ import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class VoluntarioRepository implements IVoluntarioRepository{
@@ -40,6 +41,22 @@ public class VoluntarioRepository implements IVoluntarioRepository{
                     .addColumnMapping("ID_VOLUNTARIO", "idVoluntario");
             Voluntario voluntario = query.executeAndFetchFirst(Voluntario.class);
             return voluntario;
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al obtener el voluntario");
+        }
+    }
+
+    @Override
+    public Optional<Voluntario> getVoluntarioByCorreo(String correo) {
+        String queryText = "SELECT id_voluntario, nombre, correo, password FROM voluntario WHERE correo = :correo";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("correo", correo)
+                    .addColumnMapping("ID_VOLUNTARIO", "idVoluntario");
+            Voluntario voluntario = query.executeAndFetchFirst(Voluntario.class);
+            return Optional.of(voluntario);
         }
         catch (Exception e){
             throw new RuntimeException("Ocurrio un error al obtener el voluntario");

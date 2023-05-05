@@ -5,6 +5,7 @@ import grupo2.laboratorio1.bda.repositories.IVolHabilidadRepository;
 import grupo2.laboratorio1.bda.repositories.IVoluntarioRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +31,12 @@ public class VoluntarioService {
             throw new IllegalArgumentException("No existe el voluntario");
         }
         return voluntarioRepository.getVoluntario(idVoluntario);
+    }
+
+    public Voluntario getVoluntarioByCorreo(@NonNull String correo){
+        return voluntarioRepository
+                .getVoluntarioByCorreo(correo)
+                .orElseThrow(() -> new UsernameNotFoundException("No existe el voluntario"));
     }
 
     public List<Voluntario> getAllVoluntarios(){
