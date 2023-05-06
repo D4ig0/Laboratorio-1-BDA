@@ -9,12 +9,15 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
+    private Integer id;
     private String email;
     private String password;
     private static String ROLE = "VOLUNTARIO";
@@ -50,7 +53,14 @@ public class User implements UserDetails {
     }
 
     public static User voluntarioToUser(Voluntario voluntario){
-        return new User(voluntario.getCorreo(), voluntario.getPassword());
+        return new User(voluntario.getIdVoluntario(), voluntario.getCorreo(), voluntario.getPassword());
+    }
+
+    public Map<String, Object> generateExtraClaims() {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", id);
+        claims.put("role", ROLE);
+        return claims;
     }
 }
 

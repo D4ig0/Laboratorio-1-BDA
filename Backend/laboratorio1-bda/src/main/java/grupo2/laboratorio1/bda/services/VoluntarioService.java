@@ -6,6 +6,7 @@ import grupo2.laboratorio1.bda.repositories.IVoluntarioRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -75,7 +76,9 @@ public class VoluntarioService {
     }
 
     private String generateEncodedPassword(String passsword){
-        return voluntarioRepository.getEncodedPassword(passsword);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.encode(passsword);
+        //return voluntarioRepository.getEncodedPassword(passsword);
     }
 
     private void vaildateVoluntario(Voluntario voluntario){

@@ -2,6 +2,7 @@ package grupo2.laboratorio1.bda.repositories;
 
 import grupo2.laboratorio1.bda.models.Voluntario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Query;
@@ -56,7 +57,7 @@ public class VoluntarioRepository implements IVoluntarioRepository{
                     .addParameter("correo", correo)
                     .addColumnMapping("ID_VOLUNTARIO", "idVoluntario");
             Voluntario voluntario = query.executeAndFetchFirst(Voluntario.class);
-            return Optional.of(voluntario);
+            return Optional.ofNullable(voluntario);
         }
         catch (Exception e){
             throw new RuntimeException("Ocurrio un error al obtener el voluntario");

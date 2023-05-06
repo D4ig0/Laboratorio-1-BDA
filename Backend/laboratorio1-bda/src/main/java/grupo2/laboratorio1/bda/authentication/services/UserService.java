@@ -11,10 +11,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
-    private VoluntarioService voluntarioService;
+    VoluntarioService voluntarioService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return User.voluntarioToUser(voluntarioService.getVoluntarioByCorreo(username));
+        return getUserByEmail(username);
+    }
+
+    public User getUserByEmail(String email) {
+        return User.voluntarioToUser(voluntarioService.getVoluntarioByCorreo(email));
     }
 }
