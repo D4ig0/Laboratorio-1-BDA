@@ -2,7 +2,6 @@ package grupo2.laboratorio1.bda.repositories;
 
 import grupo2.laboratorio1.bda.models.Voluntario;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Query;
@@ -141,21 +140,6 @@ public class VoluntarioRepository implements IVoluntarioRepository{
         }
         catch (Exception e){
             throw new RuntimeException("Ocurrio un error al realizar la query");
-        }
-    }
-
-    @Override
-    public String getEncodedPassword(String password) {
-        String queryText = "SELECT CRYPT(:password, GEN_SALT('md5'))";
-
-        try(Connection connection = sql2o.open()){
-            Query query = connection.createQuery(queryText)
-                    .addParameter("password", password);
-            String encodedPassword = query.executeScalar(String.class);
-            return encodedPassword;
-        }
-        catch (Exception e){
-            throw new RuntimeException("Ocurrio un error al codificar la password");
         }
     }
 }

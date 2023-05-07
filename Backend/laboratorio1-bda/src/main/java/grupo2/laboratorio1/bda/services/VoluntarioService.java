@@ -78,7 +78,6 @@ public class VoluntarioService {
     private String generateEncodedPassword(String passsword){
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder.encode(passsword);
-        //return voluntarioRepository.getEncodedPassword(passsword);
     }
 
     private void vaildateVoluntario(Voluntario voluntario){

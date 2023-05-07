@@ -14,6 +14,5 @@ public interface IVoluntarioRepository {
     void deleteVoluntario(Integer idVoluntario);
     boolean existsVoluntario(Integer idVoluntario);
     boolean existsVoluntarioByCorreo(String correo);
-    String getEncodedPassword(String password);
 }
 

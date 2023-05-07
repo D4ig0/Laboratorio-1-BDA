@@ -108,5 +108,3 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.eme_habilidad(
     FOREIGN KEY (id_emergencia) REFERENCES desastresdb.public.emergencia(id_emergencia),
     FOREIGN KEY (id_habilidad) REFERENCES desastresdb.public.habilidad(id_habilidad)
 );
-
-CREATE EXTENSION pgcrypto;
