@@ -8,7 +8,7 @@
             <p>EMERGENCIAS</p>
         </div>
         <div class="links">
-            <p>INICIAR SESION</p>
+            <RouterLink to="/login" >INICIAR SESION</RouterLink>
             <p>REGISTRARSE</p>
         </div>
     </div>
