@@ -28,13 +28,13 @@ public class DatabaseContext {
             public Connection open(){
                 Connection connection = super.open();
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                if(authentication != null){
+                try{
                     User user = (User) authentication.getPrincipal();
-                    Integer user_id = user.getId();
+                    String userId = user.getId().toString();
                     connection.createQuery("SELECT set_config('app.user.id', :user_id, false)")
-                            .addParameter("user_id", user_id)
+                            .addParameter("user_id", userId)
                             .executeScalar(String.class);
-                }
+                }catch (Exception e){}
                 return connection;
             }
         };
