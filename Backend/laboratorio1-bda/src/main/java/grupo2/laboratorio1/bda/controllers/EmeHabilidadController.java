@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -17,66 +18,70 @@ public class EmeHabilidadController {
     private EmeHabilidadService emeHabilidadService;
 
     @PostMapping("/emeHabilidades")
-    public void createEmeHabilidad(@RequestParam("idEmergencia") Integer idEmergencia,
+    public ResponseEntity createEmeHabilidad(@RequestParam("idEmergencia") Integer idEmergencia,
                                     @RequestParam("idHabilidad") Integer idHabilidad){
         try{
             emeHabilidadService.createEmeHabilidad(idEmergencia, idHabilidad);
+            return ResponseEntity.ok(null);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
 
     }
 
     @GetMapping("/emeHabilidades/{id}")
-    public EmeHabilidad getEmeHabilidad(@PathVariable("id") Integer idEmeHabilidad){
+    public ResponseEntity<EmeHabilidad> getEmeHabilidad(@PathVariable("id") Integer idEmeHabilidad){
         try{
-            return emeHabilidadService.getEmeHabilidad(idEmeHabilidad);
+            EmeHabilidad emeHabilidad = emeHabilidadService.getEmeHabilidad(idEmeHabilidad);
+            return ResponseEntity.ok(emeHabilidad);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.notFound().header("message", e.getMessage()).build();
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().header("message", e.getMessage()).build();
         }
     }
     
     @GetMapping("/emeHabilidades")
-    public List<EmeHabilidad> getAllEmeHabilidad(){
+    public ResponseEntity<List<EmeHabilidad>> getAllEmeHabilidad(){
         try{
-            return emeHabilidadService.getAllEmeHabilidad();
+            return ResponseEntity.ok(emeHabilidadService.getAllEmeHabilidad());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().header("message", e.getMessage()).build();
         }
     }
 
     @PutMapping("/emeHabilidades/{id}")
-    public EmeHabilidad updateEmeHabilidad(@PathVariable("id") Integer idEmeHabilidad, @RequestBody EmeHabilidad emehabilidad){
+    public ResponseEntity<EmeHabilidad> updateEmeHabilidad(@PathVariable("id") Integer idEmeHabilidad, @RequestBody EmeHabilidad emehabilidad){
         try{
-            return emeHabilidadService.updateEmeHabilidad(idEmeHabilidad,emehabilidad);
+           EmeHabilidad emeHabilidad = emeHabilidadService.updateEmeHabilidad(idEmeHabilidad,emehabilidad);
+            return ResponseEntity.ok(emeHabilidad);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.notFound().header("message", e.getMessage()).build();
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().header("message", e.getMessage()).build();
         }
     }
 
     @DeleteMapping("/emeHabilidades/{id}")
-    public void deleteEmeHabilidad(@PathVariable("id") Integer idEmeHabilidad){
+    public ResponseEntity deleteEmeHabilidad(@PathVariable("id") Integer idEmeHabilidad){
         try{
             emeHabilidadService.deleteEmeHabilidad(idEmeHabilidad);
+            return ResponseEntity.ok().build();
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 }

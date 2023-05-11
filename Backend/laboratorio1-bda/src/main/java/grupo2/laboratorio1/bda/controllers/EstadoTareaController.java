@@ -4,6 +4,7 @@ import grupo2.laboratorio1.bda.models.EstadoTarea;
 import grupo2.laboratorio1.bda.services.EstadoTareaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -16,59 +17,63 @@ public class EstadoTareaController {
     EstadoTareaService estadoTareaService;
 
     @PostMapping("/estadoTareas")
-    public void createEstadoTarea(@RequestParam String descripcion){
+    public ResponseEntity createEstadoTarea(@RequestParam String descripcion){
         try{
             estadoTareaService.createEstadoTarea(descripcion);
+            return ResponseEntity.ok(null);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
     @GetMapping("/estadoTareas/{id}")
-    public EstadoTarea getEstadoTarea(@PathVariable("id") Integer idEstadoTarea){
+    public ResponseEntity<EstadoTarea> getEstadoTarea(@PathVariable("id") Integer idEstadoTarea){
         try {
-            return estadoTareaService.getEstadoTarea(idEstadoTarea);
+            EstadoTarea estadoTarea = estadoTareaService.getEstadoTarea(idEstadoTarea);
+            return ResponseEntity.ok(estadoTarea);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            return ResponseEntity.notFound().header("message", e.getMessage()).build();
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().header("message", e.getMessage()).build();
         }
     }
 
     @GetMapping("/estadoTareas")
-    public List<EstadoTarea> getAllEstadoTareas(){
-        return estadoTareaService.getAllEstadoTareas();
+    public ResponseEntity<List<EstadoTarea>> getAllEstadoTareas(){
+        return ResponseEntity.ok(estadoTareaService.getAllEstadoTareas());
     }
 
     @PutMapping("/estadoTareas/{id}")
-    public void updateEstadoTarea(@PathVariable("id") Integer idEstadoTarea, @RequestBody EstadoTarea estadoTarea){
+    public ResponseEntity updateEstadoTarea(@PathVariable("id") Integer idEstadoTarea, @RequestBody EstadoTarea estadoTarea){
         try {
             estadoTareaService.updateEstadoTarea(idEstadoTarea, estadoTarea);
+            return ResponseEntity.ok(null);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
     @DeleteMapping("/estadoTareas/{id}")
-    public void deleteEstadoTarea(@PathVariable("id") Integer idEstadoTarea){
+    public ResponseEntity deleteEstadoTarea(@PathVariable("id") Integer idEstadoTarea){
         try {
             estadoTareaService.deleteEstadoTarea(idEstadoTarea);
+            return ResponseEntity.ok().build();
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 }

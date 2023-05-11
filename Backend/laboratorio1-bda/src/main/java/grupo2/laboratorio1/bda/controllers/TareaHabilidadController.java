@@ -3,9 +3,8 @@ package grupo2.laboratorio1.bda.controllers;
 import grupo2.laboratorio1.bda.models.TareaHabilidad;
 import grupo2.laboratorio1.bda.services.TareaHabilidadService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -14,73 +13,74 @@ import java.util.List;
 public class TareaHabilidadController {
 
     @Autowired
-    TareaHabilidadService tarea_HabilidadService;
+    TareaHabilidadService tareaHabilidadService;
 
     @PostMapping("/tareaHabilidades")
-    public void createTareaHabilidad(@RequestParam Integer idEmergencia, @RequestParam Integer idHabilidad, @RequestParam Integer idTarea){
+    public ResponseEntity createTareaHabilidad(@RequestParam Integer idEmergencia, @RequestParam Integer idHabilidad, @RequestParam Integer idTarea){
         try{
-            tarea_HabilidadService.createTareaHabilidad(idEmergencia,  idHabilidad, idTarea);
+            tareaHabilidadService.createTareaHabilidad(idEmergencia,  idHabilidad, idTarea);
+            return ResponseEntity.ok(null);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
 
     @GetMapping("/tareaHabilidades/{id}")
-    public TareaHabilidad getTareaHabilidad(@PathVariable("id") Integer idTareaHabilidad){
+    public ResponseEntity<TareaHabilidad> getTareaHabilidad(@PathVariable("id") Integer idTareaHabilidad){
         try{
-            return tarea_HabilidadService.getTareaHabilidad(idTareaHabilidad);
+            TareaHabilidad tareaHabilidad = tareaHabilidadService.getTareaHabilidad(idTareaHabilidad);
+            return ResponseEntity.ok(tareaHabilidad);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.notFound().header("message", e.getMessage()).build();
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().header("message", e.getMessage()).build();
         }
     }
     
     @GetMapping("/tareaHabilidades")
-    public List<TareaHabilidad> getAllTareaHabilidad(){
+    public ResponseEntity<List<TareaHabilidad>> getAllTareaHabilidad(){
         try{
-            return tarea_HabilidadService.getAllTareaHabilidad();
+            return ResponseEntity.ok(tareaHabilidadService.getAllTareaHabilidad());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().header("message", e.getMessage()).build();
         }
     }
 
 
     @PutMapping("/tareaHabilidades/{id}")
-    public TareaHabilidad updateTareaHabilidad(@PathVariable("id") Integer idTareaHabilidad, @RequestBody TareaHabilidad tareaHabilidad){
+    public ResponseEntity<TareaHabilidad> updateTareaHabilidad(@PathVariable("id") Integer idTareaHabilidad, @RequestBody TareaHabilidad tareaHabilidad){
         try{
-            return tarea_HabilidadService.updateTareaHabilidad(idTareaHabilidad,tareaHabilidad);
+            TareaHabilidad tareaHabilidadRes = tareaHabilidadService.updateTareaHabilidad(idTareaHabilidad,tareaHabilidad);
+            return ResponseEntity.ok(tareaHabilidadRes);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.notFound().header("message", e.getMessage()).build();
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().header("message", e.getMessage()).build();
         }
     }
 
 
     @DeleteMapping("/tareaHabilidades/{id}")
-    public void deleteTareaHabilidad(@PathVariable("id") Integer idTareaHabilidad){
+    public ResponseEntity deleteTareaHabilidad(@PathVariable("id") Integer idTareaHabilidad){
         try{
-            tarea_HabilidadService.deleteTareaHabilidad(idTareaHabilidad);
+            tareaHabilidadService.deleteTareaHabilidad(idTareaHabilidad);
+            return ResponseEntity.ok().build();
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
-
-
-
 }
