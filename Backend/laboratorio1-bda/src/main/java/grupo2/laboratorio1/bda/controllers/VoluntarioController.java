@@ -4,6 +4,7 @@ import grupo2.laboratorio1.bda.services.VoluntarioService;
 import grupo2.laboratorio1.bda.models.Voluntario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -16,15 +17,16 @@ public class VoluntarioController {
     VoluntarioService voluntarioService;
 
     @PostMapping("/voluntarios")
-    public void createRanking(@RequestParam String nombre, @RequestParam String correo, @RequestParam String password){
+    public ResponseEntity createVoluntario(@RequestParam String nombre, @RequestParam String correo, @RequestParam String password){
         try{
             voluntarioService.createVoluntario(nombre, correo, password);
+            return ResponseEntity.ok(null);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
