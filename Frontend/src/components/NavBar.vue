@@ -8,8 +8,8 @@
             <p>EMERGENCIAS</p>
         </div>
         <div class="links">
-            <p>INICIAR SESION</p>
-            <p>REGISTRARSE</p>
+            <RouterLink to="/login" >INICIAR SESION</RouterLink>
+            <RouterLink to="/register" >REGISTRARSE</RouterLink>
         </div>
     </div>
 </template>
@@ -27,12 +27,14 @@
         justify-content: space-between;
         align-items: center;
         width: 20rem;
+
     }
 
     .links p {
         margin: 0 1rem;
         cursor: pointer;
         color: #363225;
+        
     }
 
     .links p:hover {

@@ -129,16 +129,16 @@ CREATE OR REPLACE FUNCTION desastresdb.public.trigger_function()
 RETURNS TRIGGER AS $trigger_function$
 BEGIN
     IF(TG_OP = 'INSERT') THEN 
-        INSERT INTO desastresdb.public.logs (nombre_tabla, datos_nuevos, fecha_modificacion, usuario_modificador, accion)
-        VALUES (TG_TABLE_NAME, NEW, NOW(), CURRENT_USER, 'CREATE');
+        INSERT INTO desastresdb.public.logs (tabla, datos_nuevos, fecha_modificacion, usuario_modificador, accion)
+        VALUES (TG_TABLE_NAME, NEW, NOW(), current_setting('app.user.id'), 'CREATE');
         RETURN NEW;
     ELSIF(TG_OP = 'UPDATE') THEN
-        INSERT INTO desastresdb.public.logs (nombre_tabla, datos_nuevos, datos_anteriores, fecha_modificacion, usuario_modificador, accion)
-        VALUES (TG_TABLE_NAME, NEW, OLD, NOW(), CURRENT_USER, 'UPDATE');
+        INSERT INTO desastresdb.public.logs (tabla, datos_nuevos, datos_anteriores, fecha_modificacion, usuario_modificador, accion)
+        VALUES (TG_TABLE_NAME, NEW, OLD, NOW(), current_setting('app.user.id'), 'UPDATE');
         RETURN NEW;
     ELSIF(TG_OP = 'DELETE') THEN
-        INSERT INTO desastresdb.public.logs (nombre_tabla, datos_anteriores, fecha_modificacion, usuario_modificador, accion)
-        VALUES (TG_TABLE_NAME, OLD, NOW(), CURRENT_USER, 'DELETE');
+        INSERT INTO desastresdb.public.logs (tabla, datos_anteriores, fecha_modificacion, usuario_modificador, accion)
+        VALUES (TG_TABLE_NAME, OLD, NOW(), current_setting('app.user.id'), 'DELETE');
         RETURN OLD;
     END IF;
 END;
@@ -157,7 +157,7 @@ AFTER INSERT OR UPDATE OR DELETE ON desastresdb.public.tarea
 FOR EACH ROW EXECUTE FUNCTION desastresdb.public.trigger_function();
 
 CREATE TRIGGER trigger
-AFTER INSERT OR UPDATE OR DELETE ON desastresdb.public.voluntario
+AFTER UPDATE OR DELETE ON desastresdb.public.voluntario
 FOR EACH ROW EXECUTE FUNCTION desastresdb.public.trigger_function();
 
 CREATE TRIGGER trigger
@@ -183,6 +183,22 @@ FOR EACH ROW EXECUTE FUNCTION desastresdb.public.trigger_function();
 CREATE TRIGGER trigger
 AFTER INSERT OR UPDATE OR DELETE ON desastresdb.public.eme_habilidad
 FOR EACH ROW EXECUTE FUNCTION desastresdb.public.trigger_function();
+
+
+CREATE OR REPLACE FUNCTION desastresdb.public.trigger_new_voluntario()
+RETURNS TRIGGER AS $trigger_nvoluntario$
+
+BEGIN
+    INSERT INTO desastresdb.public.logs (tabla, datos_nuevos, fecha_modificacion, usuario_modificador, accion)
+    VALUES (TG_TABLE_NAME, NEW, NOW(), NULL, 'CREATE');
+    RETURN NEW;
+END;
+$trigger_nvoluntario$ LANGUAGE plpgsql;
+
+CREATE TRIGGER new_voluntario
+AFTER INSERT ON desastresdb.public.voluntario
+FOR EACH ROW EXECUTE FUNCTION desastresdb.public.trigger_new_voluntario();
+
 
 ----------------------------------------------------------------------------------------------------
 
