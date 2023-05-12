@@ -10,32 +10,33 @@ import grupo2.laboratorio1.bda.services.EmergenciaService;
 
 @RestController
 @CrossOrigin
+@RequestMapping("/emergencias")
 public class EmergenciaController {
     @Autowired
     private EmergenciaService emergenciaService;
 
-    @PostMapping("/emergencia/create")
+    @PostMapping
     public Emergencia createEmergencia(@RequestParam String nombre, @RequestParam String descripcion, @RequestParam String fecha_inicio, @RequestParam String fecha_termino, @RequestParam String activo, @RequestParam Integer id_institucion){
         return emergenciaService.createEmergencia(nombre, descripcion, fecha_inicio, fecha_termino, activo, id_institucion);
     }
 
-    @GetMapping("/emergencia/{id_emergencia}")
-    public Emergencia getEmergencia(@PathVariable("id_emergencia") Integer id_emergencia){
+    @GetMapping("/{id}")
+    public Emergencia getEmergencia(@PathVariable("id") Integer id_emergencia){
         return emergenciaService.getEmergencia(id_emergencia);
     }
 
-    @GetMapping("/emergencias")
+    @GetMapping
     public List<Emergencia> getAllEmergencias(){
         return emergenciaService.getAllEmergencias();
     }
 
-    @PutMapping("/emergencia/update")
-    public Emergencia updateEmergencia(@RequestBody Emergencia emergencia){
-        return emergenciaService.updateEmergencia(emergencia);
+    @PutMapping("/{id}")
+    public Emergencia updateEmergencia(@PathVariable("id") Integer id, @RequestBody Emergencia emergencia){
+        return emergenciaService.updateEmergencia(id, emergencia);
     }
 
-    @DeleteMapping("/emergencia/delete/{id_emergencia}")
-    public Boolean deleteEmergencia(@PathVariable("id_emergencia") Integer id_emergencia){
+    @DeleteMapping("/{id}")
+    public Boolean deleteEmergencia(@PathVariable("id") Integer id_emergencia){
         return emergenciaService.deleteEmergencia(id_emergencia);
     }
 }

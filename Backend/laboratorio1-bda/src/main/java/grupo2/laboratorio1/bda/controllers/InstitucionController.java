@@ -10,31 +10,32 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
+@RequestMapping("/instituciones")
 public class InstitucionController {
     @Autowired
     InstitucionService institucionService;
 
-    @GetMapping("/instituciones")
+    @GetMapping
     public List<Institucion> getAllInstituciones(){
         return institucionService.getAllInstituciones();
     }
 
-    @GetMapping("/institucion/{id}")
+    @GetMapping("/{id}")
     public Institucion getInstitucion(@PathVariable("id") Integer id){
         return institucionService.getInstitucion(id);
     }
 
-    @PostMapping("/institucion/create")
+    @PostMapping
     public Institucion createInstitucion(@RequestParam String nombre){
         return institucionService.createInstitucion(nombre);
     }
 
-    @PutMapping("/institucion/update")
-    public Institucion updateInstitucion(@RequestBody Institucion institucion){
-        return institucionService.updateInstitucion(institucion);
+    @PutMapping("/{id}")
+    public Institucion updateInstitucion(@PathVariable("id") Integer id,  @RequestBody Institucion institucion){
+        return institucionService.updateInstitucion(id, institucion);
     }
 
-    @DeleteMapping("/institucion/delete/{id}")
+    @DeleteMapping("/{id}")
     public boolean deleteInstitucio(@PathVariable("id") Integer id){
         return institucionService.deleteInstitucion(id);
     }

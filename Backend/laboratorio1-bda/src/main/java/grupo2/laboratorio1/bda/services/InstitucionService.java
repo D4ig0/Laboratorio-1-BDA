@@ -28,7 +28,8 @@ public class InstitucionService {
         return institucionRepository.createInstitucion(institucion);
     }
 
-    public Institucion updateInstitucion(Institucion institucion){
+    public Institucion updateInstitucion(Integer id, Institucion institucion){
+        institucion.setIdInstitucion(id);
         return institucionRepository.updateInstitucion(institucion);
     }
 

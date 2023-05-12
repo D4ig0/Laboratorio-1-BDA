@@ -40,7 +40,8 @@ public class EmergenciaService {
         return emergenciaRepository.getAllEmergencias();
     }
 
-    public Emergencia updateEmergencia(Emergencia emergencia){
+    public Emergencia updateEmergencia(Integer id, Emergencia emergencia){
+        emergencia.setIdEmergencia(id);
         return emergenciaRepository.updateEmergencia(emergencia);
     }
 
