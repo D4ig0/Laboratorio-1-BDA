@@ -2,7 +2,7 @@
   <div class="login">
     <div class="posicion">
       <h2 class="titulo">Inicia Sesión</h2>
-      <h3 class="subtitulo">Ingrese sus datos de voluntario</h3>
+      <h3 >Ingrese sus datos de voluntario</h3>
     </div>
     <form @submit.prevent="login">
       <div class="form-group">
@@ -16,10 +16,11 @@
       <button type="submit">Iniciar sesión</button>
     </form>
     <div class="register">
-      <p>¿No tienes cuenta?</p>
+      <p class="texto"> ¿No tienes cuenta?</p>
       <router-link to="register" class="enlace">Registrate</router-link>
     </div>
   </div>
+  
 </template>
 
 
@@ -30,15 +31,11 @@
   margin-bottom: 1rem;
   font-weight: bold;
   font-size: 1.5rem;
-  margin-right: 6.5rem;
 }
 
-.subtitulo
-{
-  margin-bottom: 2rem;
-}
 .posicion{
- margin-right: 9rem;
+  justify-content: start;
+
 }
 label {
   font-size: 0.9rem;
@@ -46,7 +43,7 @@ label {
   color: #363225;
 }
 .login {
-  display: flex;
+  display: grid;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -61,48 +58,50 @@ label {
 }
 
 input {
-  border-radius: 4px;
-  border: 1px solid #363225;
+  border-radius: 0.2rem;
+  border: 0.1rem solid #363225;
   background-color: transparent;
-  padding: 10px 20px;
+  padding: 0.5rem 1rem;
   color: #363225;
-  width: 400px;
+  width: 25rem;
   outline: none; 
 }
 button {
-  display: inline-block;
   background-color: #FF5C39;
   color: #fff;
-  padding: 0.5em 1em;
+  padding: 0.5rem 1rem;
   font-size: 1rem;
   font-weight: bold;
   text-align: center;
   text-decoration: none;
-  width: 400px;
+  width: 25rem;
   border: none;
-  border-radius: 4px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 0.2rem;
+  box-shadow: 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.25);
   transition: background-color 0.2s ease-in-out;
 }
 
 button:hover {
   background-color: #c23414;
-  cursor: pointer;
+  cursor:pointer;
 }
 
 .register{
-display: flex;
-align-items: center;
+display:grid;
+grid-template-areas: 'texto enlace' ;
+justify-content:center;
 padding: 0.5rem;
 color: #363225;
+}
+.texto{
+  margin-right: 0.5rem;
+  color: #363225;
 }
 
 .enlace{
   color: #FF5C39;
   text-decoration: none;
-  padding: 0.5rem;
   
-  text-decoration: none;
 }
 .enlace:hover{
   color: #c23414;
