@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import NavBar from './components/NavBar.vue';
+import NavBar from './components/Navbar.vue'
+import axios from 'axios'
+
 </script>
 
 <template>
