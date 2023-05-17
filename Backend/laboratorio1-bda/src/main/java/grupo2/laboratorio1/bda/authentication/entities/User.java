@@ -18,6 +18,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class User implements UserDetails {
     private Integer id;
+    private String name;
     private String email;
     private String password;
     private static String ROLE = "VOLUNTARIO";
@@ -53,13 +54,13 @@ public class User implements UserDetails {
     }
 
     public static User voluntarioToUser(Voluntario voluntario){
-        return new User(voluntario.getIdVoluntario(), voluntario.getCorreo(), voluntario.getPassword());
+        return new User(voluntario.getIdVoluntario(), voluntario.getNombre(), voluntario.getCorreo(), voluntario.getPassword());
     }
 
     public Map<String, Object> generateExtraClaims() {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", id);
-        claims.put("role", ROLE);
+        claims.put("name", name);
         return claims;
     }
 }

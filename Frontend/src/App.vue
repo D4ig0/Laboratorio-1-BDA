@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import NavBar from './components/Navbar.vue'
-import axios from 'axios'
-
+import { RouterView } from 'vue-router'
+import NavBar from './components/NavBar.vue'
+import { useAuthStore } from './stores/auth'
+const store = useAuthStore()
+store.initStates()
 </script>
 
 <template>
@@ -14,8 +15,5 @@ import axios from 'axios'
 </template>
 
 <style scoped>
-body { 
-  width: 100%;
-  height: 100%;
-}
+
 </style>

@@ -1,73 +1,121 @@
 <template>
-  <div class="login">
-    <div class="posicion">
+  <main class="login">
+    <div class="header">
       <h2 class="titulo">Inicia Sesión</h2>
-      <h3 >Ingrese sus datos de voluntario</h3>
+      <h3>Ingrese sus datos de voluntario</h3>
     </div>
-    <form @submit.prevent="login">
+    <ErrorMessage v-show="errorMessage" :message="errorMessage" />
+    <form @submit.prevent="login" class="form">
       <div class="form-group">
-        <label for="username">Usuario<br></label>
-        <input type="text" >
+        <label for="username">Correo<br /></label>
+        <input v-model="correo" type="email" required />
       </div>
       <div class="form-group">
-        <label for="password">Contraseña<br></label>
-        <input type="password">
+        <label for="password">Contraseña<br /></label>
+        <input v-model="password" type="password" required />
       </div>
       <button type="submit">Iniciar sesión</button>
     </form>
     <div class="register">
-      <p class="texto"> ¿No tienes cuenta?</p>
+      <p class="texto">¿No tienes cuenta?</p>
       <router-link to="register" class="enlace">Registrate</router-link>
     </div>
-  </div>
-  
+  </main>
 </template>
 
+<script lang="ts">
+import { defineComponent } from "vue";
+import type { AxiosResponse, AxiosError } from "axios";
+import ErrorMessage from "@/components/ErrorMessage.vue";
+import router from "@/router";
+import { useAuthStore } from "@/stores/auth";
+export default defineComponent({
+  components: { ErrorMessage },
+  name: "Login",
+  data() {
+    return {
+      correo: "",
+      password: "",
+      errorMessage: "",
+    };
+  },
+  methods: {
+    async login(): Promise<void> {
+      const authStore = useAuthStore();
 
+      authStore
+        .login(this.correo, this.password)
+        .then((response: AxiosResponse<any, any>) => {
+          this.setErrorMessageByStatus(response.status);
+          router.replace({ path: '/' })
+        })
+        .catch((error: AxiosError | any) => {
+          this.setErrorMessageByStatus(error.response.status);
+        });
+    },
 
+    setErrorMessageByStatus(status: number): void {
+      const statusMessage: { [key: number]: string } = {
+        200: "",
+        403: "Correo o contraseña incorrecta",
+        500: "Ocurrió un error al iniciar sesión",
+      };
+      this.errorMessage = statusMessage[status] ?? "";
+    },
+  },
+});
+</script>
 
 <style scoped>
-.titulo {
+.login {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8rem;
+  text-align: left;
+  gap: 2rem;
+  font-family: "Open Sans", sans-serif;
+}
+
+.header .titulo {
   margin-bottom: 1rem;
   font-weight: bold;
   font-size: 1.5rem;
+  color: #363225;
 }
 
-.posicion{
-  justify-content: start;
-
+.header h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #363225;
 }
-label {
+
+.form {
+  display: grid;
+  gap: 3rem;
+}
+
+.form-group label {
   font-size: 0.9rem;
   font-weight: bold;
   color: #363225;
 }
-.login {
-  display: grid;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 5rem;
-  text-align: left; 
-  height: 45rem;
-  font-family: "Open Sans", sans-serif;
-}
 
-.form-group {
-  margin-bottom: 3rem;
-}
-
-input {
+.form-group input {
   border-radius: 0.2rem;
   border: 0.1rem solid #363225;
   background-color: transparent;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   color: #363225;
   width: 25rem;
-  outline: none; 
+  outline: none;
+  font-family: "Open Sans";
+  font-weight: 500;
+  color: #363225;
 }
-button {
-  background-color: #FF5C39;
+
+.form button {
+  background-color: #ff5c39;
   color: #fff;
   padding: 0.5rem 1rem;
   font-size: 1rem;
@@ -81,75 +129,32 @@ button {
   transition: background-color 0.2s ease-in-out;
 }
 
-button:hover {
-  background-color: #c23414;
-  cursor:pointer;
+.form button:hover {
+  background-color: #ec411a;
+  cursor: pointer;
 }
 
-.register{
-display:grid;
-grid-template-areas: 'texto enlace' ;
-justify-content:center;
-padding: 0.5rem;
-color: #363225;
+.register {
+  display: grid;
+  grid-template-areas: "texto enlace";
+  justify-content: center;
+  padding: 0.5rem;
+  color: #363225;
 }
-.texto{
+
+.register .texto {
+  font-weight: 500;
   margin-right: 0.5rem;
   color: #363225;
 }
 
-.enlace{
-  color: #FF5C39;
+.register .enlace {
+  font-weight: 700;
+  color: #ff5c39;
   text-decoration: none;
-  
-}
-.enlace:hover{
-  color: #c23414;
 }
 
-
-
-</style>
-
-
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
-
-interface LoginData {
-  username: string;
-  password: string;
-  errorMessage: string;
+.register .enlace:hover {
+  color: #ec411a;
 }
-
-export default defineComponent({
-  name: 'Login',
-  setup() {
-    const data = ref<LoginData>({
-      username: '',
-      password: '',
-      errorMessage: ''
-    });
-
-    const login = () => {
-      if (data.value.username === 'miusuario' && data.value.password === 'micontraseña') {
-        alert('Bienvenido!');
-      } else {
-        data.value.errorMessage = 'Nombre de usuario o contraseña incorrectos.';
-      }
-    };
-
-    return {
-      ...data,
-      login
-    };
-  }
-});
-</script>
-
-<style>
-
-
-
-
-
 </style>
