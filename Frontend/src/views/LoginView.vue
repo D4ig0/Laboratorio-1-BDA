@@ -6,14 +6,8 @@
     </div>
     <ErrorMessage v-show="errorMessage" :message="errorMessage" />
     <form @submit.prevent="login" class="form">
-      <div class="form-group">
-        <label for="username">Correo<br /></label>
-        <input v-model="correo" type="email" required />
-      </div>
-      <div class="form-group">
-        <label for="password">Contraseña<br /></label>
-        <input v-model="password" type="password" required />
-      </div>
+      <InputField @inputData="setCorreo" fieldName="Correo" inputType="email" />
+      <PasswordField @passwordData="setPassowrd" />
       <button type="submit">Iniciar sesión</button>
     </form>
     <div class="register">
@@ -27,10 +21,12 @@
 import { defineComponent } from "vue";
 import type { AxiosResponse, AxiosError } from "axios";
 import ErrorMessage from "@/components/ErrorMessage.vue";
+import PasswordField from "@/components/PasswordField.vue";
+import InputField from "@/components/InputField.vue";
 import router from "@/router";
 import { useAuthStore } from "@/stores/auth";
 export default defineComponent({
-  components: { ErrorMessage },
+  components: { ErrorMessage, PasswordField, InputField },
   name: "Login",
   data() {
     return {
@@ -42,12 +38,11 @@ export default defineComponent({
   methods: {
     async login(): Promise<void> {
       const authStore = useAuthStore();
-
       authStore
         .login(this.correo, this.password)
         .then((response: AxiosResponse<any, any>) => {
           this.setErrorMessageByStatus(response.status);
-          router.replace({ path: '/' })
+          router.replace({ path: "/" });
         })
         .catch((error: AxiosError | any) => {
           this.setErrorMessageByStatus(error.response.status);
@@ -61,6 +56,14 @@ export default defineComponent({
         500: "Ocurrió un error al iniciar sesión",
       };
       this.errorMessage = statusMessage[status] ?? "";
+    },
+
+    setPassowrd(password: string) {
+      this.password = password;
+    },
+
+    setCorreo(correo: string) {
+      this.correo = correo;
     },
   },
 });
