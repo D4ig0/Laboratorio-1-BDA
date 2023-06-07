@@ -7,7 +7,7 @@
     <ErrorMessage v-show="errorMessage" :message="errorMessage" />
     <form @submit.prevent="login" class="form">
       <InputField @inputData="setCorreo" fieldName="Correo" inputType="email" />
-      <PasswordField @passwordData="setPassowrd" />
+      <PasswordField @passwordData="setPassword"  />
       <button type="submit">Iniciar sesión</button>
     </form>
     <div class="register">
@@ -40,6 +40,7 @@ export default defineComponent({
       const authStore = useAuthStore();
       authStore
         .login(this.correo, this.password)
+
         .then((response: AxiosResponse<any, any>) => {
           this.setErrorMessageByStatus(response.status);
           router.replace({ path: "/" });
@@ -58,7 +59,7 @@ export default defineComponent({
       this.errorMessage = statusMessage[status] ?? "";
     },
 
-    setPassowrd(password: string) {
+    setPassword(password: string) {
       this.password = password;
     },
 
@@ -74,8 +75,8 @@ export default defineComponent({
   display: grid;
   align-items: center;
   justify-content: center;
-  margin-top: 8rem;
   text-align: left;
+  margin-top: 8rem;
   gap: 2rem;
   font-family: "Open Sans", sans-serif;
 }
@@ -98,25 +99,6 @@ export default defineComponent({
   gap: 3rem;
 }
 
-.form-group label {
-  font-size: 0.9rem;
-  font-weight: bold;
-  color: #363225;
-}
-
-.form-group input {
-  border-radius: 0.2rem;
-  border: 0.1rem solid #363225;
-  background-color: transparent;
-  padding: 0.5rem;
-  color: #363225;
-  width: 25rem;
-  outline: none;
-  font-family: "Open Sans";
-  font-weight: 500;
-  color: #363225;
-}
-
 .form button {
   background-color: #ff5c39;
   color: #fff;
@@ -131,25 +113,11 @@ export default defineComponent({
   box-shadow: 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.25);
   transition: background-color 0.2s ease-in-out;
 }
-
 .form button:hover {
   background-color: #ec411a;
   cursor: pointer;
 }
 
-.register {
-  display: grid;
-  grid-template-areas: "texto enlace";
-  justify-content: center;
-  padding: 0.5rem;
-  color: #363225;
-}
-
-.register .texto {
-  font-weight: 500;
-  margin-right: 0.5rem;
-  color: #363225;
-}
 
 .register .enlace {
   font-weight: 700;
@@ -157,7 +125,19 @@ export default defineComponent({
   text-decoration: none;
 }
 
+.register .texto {
+  font-weight: 500;
+  margin-right: 0.5rem;
+  color: #363225;
+}
 .register .enlace:hover {
   color: #ec411a;
+}
+.register {
+  display: grid;
+  grid-template-areas: "texto enlace";
+  justify-content: center;
+  padding: 0.5rem;
+  color: #363225;
 }
 </style>

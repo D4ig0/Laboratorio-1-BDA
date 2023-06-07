@@ -82,13 +82,14 @@ export default defineComponent({
 .password-field input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear {
   display: none;
+
 }
 
 .password-field .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 32;
   position: absolute;
-  top: 30px;
-  right: 12px;
+  top: 2rem;
+  right: 0.5rem;
   cursor: pointer;
 }
 </style>

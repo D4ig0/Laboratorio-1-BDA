@@ -1,24 +1,17 @@
 <template>
   <div class="register">
-    <div class="posicion">
+    <div class="header">
       <h2 class="titulo">Registro de voluntario</h2>
       <h3 class="subtitulo">Ingrese sus datos para registrarse en la plataforma</h3>
     </div>
-    <form @submit.prevent="crearUsuario">
-      <div class="form-group">
-        <label for="name">Nombre de usuario<br></label>
-        <input required type="text" v-model="username">
-      </div>
-      <div class="form-group">
-        <label for="correo">Correo<br></label>
-        <input required type="email" v-model="email">
-      </div>
-      <div class="form-group">
-        <label for="password">Contraseña<br></label>
-        <input required type="password" v-model="password">
-      </div>
-      <button  type="submit">Registrarse</button>
-      <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+    <ErrorMessage v-show="errorMessage" :message="errorMessage" />
+    <form @submit.prevent="registerUser" class="form">
+
+      <InputField fieldName="Nombre de usuario" @inputData="setUserName" inputType="text" />
+      <InputField fieldName="Correo" inputType="email" @inputData="setCorreo" />
+      <PasswordField @passwordData="setPassword" />
+
+      <button type="submit">Registrarse</button>
     </form>
     <div class="login">
       <p class="texto">¿Ya tienes una cuenta?</p>
@@ -27,92 +20,102 @@
   </div>
 </template>
   
-
-
 <script lang="ts">
 import axios from "axios";
+
+import type { AxiosResponse, AxiosError } from "axios";
+import InputField from "@/components/InputField.vue";
+import router from "@/router";
+import PasswordField from "@/components/PasswordField.vue";
+import ErrorMessage from "@/components/ErrorMessage.vue";
+
+
 export default {
+  components: { PasswordField, InputField, ErrorMessage },
   name: "RegisterPage",
   data() {
     return {
       username: "",
       email: "",
-      rut: "",
       password: "",
-      confirmPassword: "",
-      errorMessage: null,
+      errorMessage: "",
       valid: true,
     };
   },
   methods: {
-    crearUsuario() {
+    registerUser() {
       axios
         .post("/api/voluntarios", {
           nombre: this.username,
           correo: this.email,
           password: this.password,
         }, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }}
-        )
-        .then((response) => {
-          console.log(response);
+          headers: { "Content-Type": "multipart/form-data" }
         })
-        .catch((error) => {
-          console.log(error);
-          this.errorMessage = error.response.data.message;
-        });
-    }
-  },
+
+        .then((response: AxiosResponse<any, any>) => {
+          this.setErrorMessageByStatus(response.data);
+          router.replace({ path: "/login" });
+          alert("¡Usuario creado exitosamente!");
+        })
+
+        .catch((error: AxiosError | any) => {
+          this.setErrorMessageByStatus(error.response.data);
+        })
+    },
+
+    setErrorMessageByStatus(errorMessage: string): void {
+      this.errorMessage = errorMessage || "";
+    },
+
+    setUserName(username: string) {
+      this.username = username;
+    },
+    setPassword(password: string) {
+      this.password = password;
+    },
+
+    setCorreo(correo: string) {
+      this.email = correo;
+    },
+
+  }
 };
 </script>
   
 <style scoped>
-.titulo {
-  margin-bottom: 1rem;
-  font-weight: bold;
-  font-size: 1.5rem;
-}
-
-.posicion {
-  justify-content: start;
-
-}
-
 .register {
   display: grid;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: left;
+  gap: 2rem;
   padding: 5rem;
   height: 45rem;
   font-family: "Open Sans", sans-serif;
 }
 
-.form-group {
-  margin-bottom: 2rem;
-}
-
-label {
-  font-size: 0.9rem;
+.header .titulo {
+  margin-bottom: 1rem;
   font-weight: bold;
+  font-size: 1.5rem;
+
   color: #363225;
 }
 
-input {
-  border-radius: 0.2rem;
-  border: 0.1rem solid #363225;
-  background-color: transparent;
-  padding: 0.5rem 1rem;
+.header h3 {
+  font-size: 1rem;
+  font-weight: 500;
   color: #363225;
-  width: 25rem;
-  outline: none;
 }
 
-button {
-  display: inline-block;
+.form {
+  display: grid;
+  gap: 2.5rem;
+}
+
+
+.form button {
   background-color: #FF5C39;
   color: #fff;
   padding: 0.5rem 1rem;
@@ -127,24 +130,25 @@ button {
   transition: background-color 0.2s ease-in-out;
 }
 
-button:hover {
+.form button:hover {
   background-color: #c23414;
   cursor: pointer;
 }
 
-.enlace {
-  grid-area: enlace;
+.register .enlace {
+  grid-area: "texto enlace";
   color: #FF5C39;
   text-decoration: none;
+  font-weight: 700;
 }
 
-.texto {
-  grid-area: texto;
+.register .texto {
+  font-weight: 500;
   color: #363225;
   margin-right: 0.5rem;
 }
 
-.enlace:hover {
+.register.enlace:hover {
   color: #c23414;
 }
 
@@ -152,6 +156,7 @@ button:hover {
   margin-top: 0.5rem;
   grid-template-areas: 'texto enlace';
   display: grid;
+  padding: 0.5rem;
   justify-content: center;
 
 }
