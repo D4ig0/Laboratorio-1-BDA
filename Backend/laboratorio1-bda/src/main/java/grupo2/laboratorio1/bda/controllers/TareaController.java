@@ -63,11 +63,15 @@ public class TareaController {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
-
     @DeleteMapping("/tareas/{id}")
     public ResponseEntity deleteTarea(@PathVariable("id") Integer idTarea){
         tareaService.deleteTarea(idTarea);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/tareas/gtbe/{idE}")
+    public Integer getTotalTareasByEmergencia(@PathVariable("idE") Integer idEmergencia){
+        return tareaService.getTotalTareasByEmergencia(idEmergencia);
     }
 
 }
