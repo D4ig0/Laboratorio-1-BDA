@@ -1,9 +1,9 @@
 <template>
   <div class="input-field">
-    <label for="input">{{ fieldName }}<br /></label>
+    <label :for="fieldName">{{ fieldName }}<br /></label>
     <input
       @input="sendInputData"
-      id="input"
+      :id="fieldName"
       v-model="input"
       :type="inputType"
       required

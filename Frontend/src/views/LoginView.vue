@@ -7,12 +7,12 @@
     <ErrorMessage v-show="errorMessage" :message="errorMessage" />
     <form @submit.prevent="login" class="form">
       <InputField @inputData="setCorreo" fieldName="Correo" inputType="email" />
-      <PasswordField @passwordData="setPassword"  />
+      <PasswordField @passwordData="setPassword" />
       <button type="submit">Iniciar sesión</button>
     </form>
     <div class="register">
       <p class="texto">¿No tienes cuenta?</p>
-      <router-link to="register" class="enlace">Registrate</router-link>
+      <router-link to="register" class="enlace">Regístrate</router-link>
     </div>
   </main>
 </template>
@@ -40,7 +40,6 @@ export default defineComponent({
       const authStore = useAuthStore();
       authStore
         .login(this.correo, this.password)
-
         .then((response: AxiosResponse<any, any>) => {
           this.setErrorMessageByStatus(response.status);
           router.replace({ path: "/" });
@@ -118,6 +117,17 @@ export default defineComponent({
   cursor: pointer;
 }
 
+.register {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+.register .texto {
+  font-weight: 500;
+  color: #363225;
+  margin-right: 0.8rem;
+}
 
 .register .enlace {
   font-weight: 700;
@@ -125,19 +135,7 @@ export default defineComponent({
   text-decoration: none;
 }
 
-.register .texto {
-  font-weight: 500;
-  margin-right: 0.5rem;
-  color: #363225;
-}
 .register .enlace:hover {
   color: #ec411a;
-}
-.register {
-  display: grid;
-  grid-template-areas: "texto enlace";
-  justify-content: center;
-  padding: 0.5rem;
-  color: #363225;
 }
 </style>

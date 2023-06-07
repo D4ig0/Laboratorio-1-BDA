@@ -88,7 +88,7 @@ input[type="password"]::-ms-clear {
 .password-field .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 32;
   position: absolute;
-  top: 2rem;
+  top: 1.9rem;
   right: 0.5rem;
   cursor: pointer;
 }
