@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,66 +26,70 @@ public class VolHabilidadController {
     private VolHabilidadService volHabilidadService;
 
     @PostMapping("/volHabilidades")
-    public void createVolHabilidad(@RequestParam("idVoluntario") Integer idVoluntario,
-                                    @RequestParam("idHabilidad") Integer idHabilidad){
+    public ResponseEntity createVolHabilidad(@RequestParam("idVoluntario") Integer idVoluntario,
+                                             @RequestParam("idHabilidad") Integer idHabilidad){
         try{
             volHabilidadService.createVolHabilidad(idVoluntario, idHabilidad);
+            return ResponseEntity.ok().build();
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
 
     }
 
     @GetMapping("/volHabilidades/{id}")
-    public VolHabilidad getVolHabilidad(@PathVariable("id") Integer id){
+    public ResponseEntity<VolHabilidad> getVolHabilidad(@PathVariable("id") Integer id){
         try{
-            return volHabilidadService.getVolHabilidad(id);
+            VolHabilidad volHabilidad = volHabilidadService.getVolHabilidad(id);
+            return ResponseEntity.ok(volHabilidad);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.badRequest().header("message", e.getMessage()).build();
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().header("message", e.getMessage()).build();
         }
     }
 
     @GetMapping("/volHabilidades")
-    public List<VolHabilidad> getAllVolHabilidad(){
+    public ResponseEntity<List<VolHabilidad>> getAllVolHabilidad(){
         try{
-            return volHabilidadService.getAllVolHabilidad();
+            return ResponseEntity.ok(volHabilidadService.getAllVolHabilidad());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().header("message", e.getMessage()).build();
         }
     }
 
     @PutMapping("/volHabilidades/{id}")
-    public VolHabilidad updateVolHabilidad(@PathVariable("id") Integer id, @RequestBody VolHabilidad volHabilidad){
+    public ResponseEntity<VolHabilidad> updateVolHabilidad(@PathVariable("id") Integer id, @RequestBody VolHabilidad volHabilidad){
         try{
-            return volHabilidadService.updateVolHabilidad(id, volHabilidad);
+            VolHabilidad volHabilidadRes = volHabilidadService.updateVolHabilidad(id, volHabilidad);
+            return ResponseEntity.ok(volHabilidadRes);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.notFound().header("message", e.getMessage()).build();
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().header("message", e.getMessage()).build();
         }
     }
 
     @DeleteMapping("/volHabilidades/{id}")
-    public void deleteVolHabilidad(@PathVariable("id") Integer id){
+    public ResponseEntity deleteVolHabilidad(@PathVariable("id") Integer id){
         try{
             volHabilidadService.deleteVolHabilidad(id);
+            return ResponseEntity.ok().build();
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 }

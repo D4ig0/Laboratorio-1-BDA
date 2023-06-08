@@ -5,6 +5,7 @@ import grupo2.laboratorio1.bda.models.Tarea;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import java.sql.Date;
@@ -18,58 +19,59 @@ public class TareaController {
     TareaService tareaService;
 
     @PostMapping("/tareas")
-    public void createRanking(@RequestParam Integer idEmergencia,
-                              @RequestParam String nombre,
-                              @RequestParam String descripcion,
-                              @RequestParam Integer cantVolRequeridos,
-                              @RequestParam Integer cantVolInscritos, 
-                              @RequestParam Date fechaInicio,
-                              @RequestParam Date fechaFin,
-                              @RequestParam String estadoActual){
+    public ResponseEntity createRanking(@RequestParam Integer idEmergencia,
+                                                @RequestParam String nombre,
+                                                @RequestParam String descripcion,
+                                                @RequestParam Integer cantVolRequeridos,
+                                                @RequestParam Integer cantVolInscritos,
+                                                @RequestParam Date fechaInicio,
+                                                @RequestParam Date fechaFin,
+                                                @RequestParam String estadoActual){
         try{
             tareaService.createTarea(idEmergencia, nombre, descripcion,cantVolRequeridos, cantVolInscritos, fechaInicio, fechaFin, estadoActual);
+            return ResponseEntity.ok(null);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
     @GetMapping("/tareas/{id}")
-    public Tarea getTarea(@PathVariable("id") Integer idTarea){
-        return tareaService.getTarea(idTarea);
+    public ResponseEntity<Tarea> getTarea(@PathVariable("id") Integer idTarea){
+        Tarea tarea = tareaService.getTarea(idTarea);
+        return ResponseEntity.ok(tarea);
     }
 
     @GetMapping("/tareas")
-    public List<Tarea> getAllTareas(){
-        return tareaService.getAllTareas();
+    public ResponseEntity<List<Tarea>> getAllTareas(){
+        return ResponseEntity.ok(tareaService.getAllTareas());
     }
 
-
     @PutMapping("/tareas/{id}")
-    public void updateTarea(@PathVariable("id") Integer idTarea, @RequestBody Tarea tarea){
+    public ResponseEntity updateTarea(@PathVariable("id") Integer idTarea, @RequestBody Tarea tarea){
         try {
             tareaService.updateTarea(idTarea, tarea);
+            return ResponseEntity.ok(null);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
     @DeleteMapping("/tareas/{id}")
-    public void deleteTarea(@PathVariable("id") Integer idTarea){
+    public ResponseEntity deleteTarea(@PathVariable("id") Integer idTarea){
         tareaService.deleteTarea(idTarea);
+        return ResponseEntity.ok().build();
     }
 
-  
-
-
-
-
-
+    @GetMapping("/tareas/gtbe/{idE}")
+    public Integer getTotalTareasByEmergencia(@PathVariable("idE") Integer idEmergencia){
+        return tareaService.getTotalTareasByEmergencia(idEmergencia);
+    }
 
 }

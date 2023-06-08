@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.voluntario (
     id_voluntario SERIAL NOT NULL,
     nombre VARCHAR(50) NOT NULL,
     correo VARCHAR(150) UNIQUE NOT NULL,
-    password VARCHAR(50) NOT NULL,
+    password VARCHAR(80) NOT NULL,
     PRIMARY KEY(id_voluntario)
 );
 
@@ -109,4 +109,127 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.eme_habilidad(
     FOREIGN KEY (id_habilidad) REFERENCES desastresdb.public.habilidad(id_habilidad)
 );
 
-CREATE EXTENSION pgcrypto;
+---------------------------------------------------------------------------------------------------
+-- TRIGGERS
+
+CREATE TABLE IF NOT EXISTS desastresdb.public.logs (
+    id_log SERIAL NOT NULL,
+    tabla VARCHAR(50),
+
+    datos_anteriores TEXT,
+    datos_nuevos TEXT,
+   
+    fecha_modificacion TIMESTAMP,
+    usuario_modificador VARCHAR(50),
+     accion VARCHAR(10),
+    PRIMARY KEY(id_log)
+);
+
+CREATE OR REPLACE FUNCTION desastresdb.public.trigger_function()
+RETURNS TRIGGER AS $trigger_function$
+BEGIN
+    IF(TG_OP = 'INSERT') THEN 
+        INSERT INTO desastresdb.public.logs (tabla, datos_nuevos, fecha_modificacion, usuario_modificador, accion)
+        VALUES (TG_TABLE_NAME, NEW, NOW(), current_setting('app.user.id'), 'CREATE');
+        RETURN NEW;
+    ELSIF(TG_OP = 'UPDATE') THEN
+        INSERT INTO desastresdb.public.logs (tabla, datos_nuevos, datos_anteriores, fecha_modificacion, usuario_modificador, accion)
+        VALUES (TG_TABLE_NAME, NEW, OLD, NOW(), current_setting('app.user.id'), 'UPDATE');
+        RETURN NEW;
+    ELSIF(TG_OP = 'DELETE') THEN
+        INSERT INTO desastresdb.public.logs (tabla, datos_anteriores, fecha_modificacion, usuario_modificador, accion)
+        VALUES (TG_TABLE_NAME, OLD, NOW(), current_setting('app.user.id'), 'DELETE');
+        RETURN OLD;
+    END IF;
+END;
+$trigger_function$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger
+AFTER INSERT OR UPDATE OR DELETE ON desastresdb.public.institucion
+FOR EACH ROW EXECUTE FUNCTION desastresdb.public.trigger_function();
+
+CREATE TRIGGER trigger
+AFTER INSERT OR UPDATE OR DELETE ON desastresdb.public.emergencia
+FOR EACH ROW EXECUTE FUNCTION desastresdb.public.trigger_function();
+
+CREATE TRIGGER trigger
+AFTER INSERT OR UPDATE OR DELETE ON desastresdb.public.tarea
+FOR EACH ROW EXECUTE FUNCTION desastresdb.public.trigger_function();
+
+CREATE TRIGGER trigger
+AFTER UPDATE OR DELETE ON desastresdb.public.voluntario
+FOR EACH ROW EXECUTE FUNCTION desastresdb.public.trigger_function();
+
+CREATE TRIGGER trigger
+AFTER INSERT OR UPDATE OR DELETE ON desastresdb.public.ranking
+FOR EACH ROW EXECUTE FUNCTION desastresdb.public.trigger_function();
+
+CREATE TRIGGER trigger
+AFTER INSERT OR UPDATE OR DELETE ON desastresdb.public.habilidad
+FOR EACH ROW EXECUTE FUNCTION desastresdb.public.trigger_function();
+
+CREATE TRIGGER trigger
+AFTER INSERT OR UPDATE OR DELETE ON desastresdb.public.tarea_habilidad
+FOR EACH ROW EXECUTE FUNCTION desastresdb.public.trigger_function();
+
+CREATE TRIGGER trigger
+AFTER INSERT OR UPDATE OR DELETE ON desastresdb.public.estado_tarea
+FOR EACH ROW EXECUTE FUNCTION desastresdb.public.trigger_function();
+
+CREATE TRIGGER trigger
+AFTER INSERT OR UPDATE OR DELETE ON desastresdb.public.vol_habilidad
+FOR EACH ROW EXECUTE FUNCTION desastresdb.public.trigger_function();
+
+CREATE TRIGGER trigger
+AFTER INSERT OR UPDATE OR DELETE ON desastresdb.public.eme_habilidad
+FOR EACH ROW EXECUTE FUNCTION desastresdb.public.trigger_function();
+
+
+CREATE OR REPLACE FUNCTION desastresdb.public.trigger_new_voluntario()
+RETURNS TRIGGER AS $trigger_nvoluntario$
+
+BEGIN
+    INSERT INTO desastresdb.public.logs (tabla, datos_nuevos, fecha_modificacion, usuario_modificador, accion)
+    VALUES (TG_TABLE_NAME, NEW, NOW(), NULL, 'CREATE');
+    RETURN NEW;
+END;
+$trigger_nvoluntario$ LANGUAGE plpgsql;
+
+CREATE TRIGGER new_voluntario
+AFTER INSERT ON desastresdb.public.voluntario
+FOR EACH ROW EXECUTE FUNCTION desastresdb.public.trigger_new_voluntario();
+
+
+----------------------------------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS desastresdb.public.temp_table (
+	id_user varchar(50),
+	cantidad integer,
+	accion varchar(50)
+);
+
+CREATE OR REPLACE PROCEDURE contar_accion(p_accion VARCHAR) LANGUAGE plpgsql AS $$
+    
+BEGIN
+    DELETE FROM desastresdb.public.temp_table;
+	INSERT INTO desastresdb.public.temp_table
+    SELECT usuario_modificador, COUNT (accion), p_accion
+    FROM desastresdb.public.logs
+    WHERE accion = p_accion
+    GROUP BY usuario_modificador
+    ORDER BY usuario_modificador ASC;
+END;
+$$;	
+
+--- call contar_accion('CREATE');
+--- call contar_accion('UPDATE');
+--- call contar_accion('DELETE');
+
+----------------------------------------------------------------------------------------------------
+CREATE FUNCTION totalTareasActivasPorEmergencia(id_e int) RETURNS int AS $$
+BEGIN
+	RETURN(
+		SELECT count(ta) FROM tarea ta WHERE ta.id_emergencia = id_e and estado_actual = "Activo"
+		);
+END;
+$$ LANGUAGE plpgsql;
