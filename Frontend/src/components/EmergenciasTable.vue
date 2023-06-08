@@ -1,0 +1,119 @@
+
+<template>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th v-for="(header, key) in headers" :key="key">{{ header }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(data, key) in dataSet" :key="key">
+        <td>{{ data.id }}</td>
+        <td>{{ data.institucion }}</td>
+        <td>{{ data.nombre }}</td>
+        <td>{{ data.descripcion }}</td>
+        <td>{{ data.fecha_inicio }}</td>
+        <td>{{ data.fecha_termino }}</td>
+        <td class="status">
+          <button @click="changeStatus(data.id, data.activo)" :class="statusByBoolean(data.activo)">
+            {{ statusByBoolean(data.activo).toUpperCase() }}
+          </button>
+        </td>
+        <td>{{ data.tareas_activas }}</td>
+      </tr>
+    </tbody>
+  </table>
+</template>
+
+<script lang="ts">
+import type Emergencia from "@/models/Emergencia";
+import { defineComponent } from "vue";
+export default defineComponent({
+  name: "EmergenciasTable",
+  props: {
+    headers: { type: Array<String>, required: true },
+    dataSet: { type: Array<Emergencia>, required: true },
+  },
+  methods: {
+    statusByBoolean(bool: boolean) : string{
+      return bool ? "activa" : "inactiva";
+    },
+
+    changeStatus(id: number, status: boolean){
+      this.$emit("changeStatus", id, status)
+    }
+  }
+
+});
+</script>
+
+<style>
+.data-table {
+  min-width: 1000px;
+  border-collapse: collapse;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  font-family: "Open Sans";
+  font-size: 18px;
+}
+
+.data-table thead {
+  background-color: #ff5c39;
+  color: white;
+  border-bottom: 1px solid #ababab;
+  text-align: left;
+}
+
+.data-table thead tr th {
+  font-weight: 700;
+}
+
+.data-table th,
+td {
+  padding: 18px 25px;
+}
+
+.data-table tbody tr {
+  border-bottom: 1px solid #ababab;
+}
+
+.data-table tbody tr td {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.data-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.status button {
+  padding: 4px 10px;
+  border: none;
+  text-decoration: none;
+  border-radius: 2px;
+  cursor: pointer;
+
+  font-family: "Open Sans";
+  font-weight: 600;
+  font-size: 14px;
+  color: white;
+}
+
+.data-table tbody .activa {
+  background: green;
+}
+
+.data-table tbody .activa:hover {
+  background: rgb(0, 110, 0);
+}
+
+.data-table tbody .inactiva {
+  background: red;
+}
+
+.data-table tbody .inactiva:hover {
+  background: rgb(200, 0, 0);
+}
+</style>

@@ -3,6 +3,7 @@ import { useAuthStore } from "@/stores/auth";
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
+import EmergenciasView from '../views/EmergenciasView.vue'
 
 
 const router = createRouter({
@@ -22,6 +23,11 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterView
+    },
+    {
+      path: '/emergencias',
+      name: 'emergencias',
+      component: EmergenciasView
     }
   ]
 })
