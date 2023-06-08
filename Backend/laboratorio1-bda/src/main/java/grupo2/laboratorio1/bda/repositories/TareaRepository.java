@@ -133,6 +133,20 @@ public class TareaRepository implements ITareaRepository{
             throw new RuntimeException("Ocurrio un error al eliminar la tarea");
         }
     }
+
+    @Override
+    public Integer getTotalTareasByEmergencia(Integer idEmergencia){
+        String queryText = "SELECT totalTareasActivasPorEmergencia(:idEmergencia)";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idEmergencia", idEmergencia);
+            return query.executeScalar(Integer.class);
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al buscar las tareas activas");
+        }
+    }
 }
 
 

@@ -4,6 +4,7 @@ import grupo2.laboratorio1.bda.models.Habilidad;
 import grupo2.laboratorio1.bda.services.HabilidadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -16,59 +17,63 @@ public class HabilidadController {
     HabilidadService habilidadService;
 
     @PostMapping("/habilidades")
-    public void createHabilidad(@RequestParam String descripcion){
+    public ResponseEntity createHabilidad(@RequestParam String descripcion){
         try{
             habilidadService.createHabilidad(descripcion);
+            return ResponseEntity.ok(null);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
     @GetMapping("/habilidades/{id}")
-    public Habilidad getHabilidad(@PathVariable("id") Integer idHabilidad){
+    public ResponseEntity<Habilidad> getHabilidad(@PathVariable("id") Integer idHabilidad){
         try {
-            return habilidadService.getHabilidad(idHabilidad);
+            Habilidad habilidad =  habilidadService.getHabilidad(idHabilidad);
+            return ResponseEntity.ok(habilidad);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            return ResponseEntity.notFound().header("message", e.getMessage()).build();
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().header("message", e.getMessage()).build();
         }
     }
 
     @GetMapping("/habilidades")
-    public List<Habilidad> getAllHabilidades(){
-        return habilidadService.getAllHabilidades();
+    public ResponseEntity<List<Habilidad>> getAllHabilidades(){
+        return ResponseEntity.ok(habilidadService.getAllHabilidades());
     }
 
     @PutMapping("/habilidades/{id}")
-    public void updateHabilidad(@PathVariable("id") Integer idHabilidad, @RequestBody Habilidad habilidad){
+    public ResponseEntity updateHabilidad(@PathVariable("id") Integer idHabilidad, @RequestBody Habilidad habilidad){
         try {
             habilidadService.updateHabilidad(idHabilidad, habilidad);
+            return ResponseEntity.ok(null);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.notFound().header("message", e.getMessage()).build();
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().header("message", e.getMessage()).build();
         }
     }
 
     @DeleteMapping("/habilidades/{id}")
-    public void deleteHabilidad(@PathVariable("id") Integer idHabilidad){
+    public ResponseEntity deleteHabilidad(@PathVariable("id") Integer idHabilidad){
         try {
             habilidadService.deleteHabilidad(idHabilidad);
+            return ResponseEntity.ok().build();
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 }

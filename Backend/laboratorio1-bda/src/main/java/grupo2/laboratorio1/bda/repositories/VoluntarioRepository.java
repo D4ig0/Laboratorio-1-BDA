@@ -8,6 +8,7 @@ import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class VoluntarioRepository implements IVoluntarioRepository{
@@ -40,6 +41,22 @@ public class VoluntarioRepository implements IVoluntarioRepository{
                     .addColumnMapping("ID_VOLUNTARIO", "idVoluntario");
             Voluntario voluntario = query.executeAndFetchFirst(Voluntario.class);
             return voluntario;
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al obtener el voluntario");
+        }
+    }
+
+    @Override
+    public Optional<Voluntario> getVoluntarioByCorreo(String correo) {
+        String queryText = "SELECT id_voluntario, nombre, correo, password FROM voluntario WHERE correo = :correo";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("correo", correo)
+                    .addColumnMapping("ID_VOLUNTARIO", "idVoluntario");
+            Voluntario voluntario = query.executeAndFetchFirst(Voluntario.class);
+            return Optional.ofNullable(voluntario);
         }
         catch (Exception e){
             throw new RuntimeException("Ocurrio un error al obtener el voluntario");
@@ -123,21 +140,6 @@ public class VoluntarioRepository implements IVoluntarioRepository{
         }
         catch (Exception e){
             throw new RuntimeException("Ocurrio un error al realizar la query");
-        }
-    }
-
-    @Override
-    public String getEncodedPassword(String password) {
-        String queryText = "SELECT CRYPT(:password, GEN_SALT('md5'))";
-
-        try(Connection connection = sql2o.open()){
-            Query query = connection.createQuery(queryText)
-                    .addParameter("password", password);
-            String encodedPassword = query.executeScalar(String.class);
-            return encodedPassword;
-        }
-        catch (Exception e){
-            throw new RuntimeException("Ocurrio un error al codificar la password");
         }
     }
 }

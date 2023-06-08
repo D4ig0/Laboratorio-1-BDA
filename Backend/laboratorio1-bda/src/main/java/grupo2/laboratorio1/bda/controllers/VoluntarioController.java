@@ -3,9 +3,8 @@ package grupo2.laboratorio1.bda.controllers;
 import grupo2.laboratorio1.bda.services.VoluntarioService;
 import grupo2.laboratorio1.bda.models.Voluntario;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -16,59 +15,63 @@ public class VoluntarioController {
     VoluntarioService voluntarioService;
 
     @PostMapping("/voluntarios")
-    public void createRanking(@RequestParam String nombre, @RequestParam String correo, @RequestParam String password){
+    public ResponseEntity createVoluntario(@RequestParam String nombre, @RequestParam String correo, @RequestParam String password){
         try{
             voluntarioService.createVoluntario(nombre, correo, password);
+            return ResponseEntity.ok(null);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
     @GetMapping("/voluntarios/{id}")
-    public Voluntario getVoluntario(@PathVariable("id") Integer idVoluntario){
+    public ResponseEntity<Voluntario> getVoluntario(@PathVariable("id") Integer idVoluntario){
         try {
-            return voluntarioService.getVoluntario(idVoluntario);
+            Voluntario voluntario = voluntarioService.getVoluntario(idVoluntario);
+            return ResponseEntity.ok(voluntario);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            return ResponseEntity.notFound().header("message", e.getMessage()).build();
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().header("message", e.getMessage()).build();
         }
     }
 
     @GetMapping("/voluntarios")
-    public List<Voluntario> getAllVoluntarios(){
-        return voluntarioService.getAllVoluntarios();
+    public ResponseEntity<List<Voluntario>> getAllVoluntarios(){
+        return ResponseEntity.ok(voluntarioService.getAllVoluntarios());
     }
 
     @PutMapping("/voluntarios/{id}")
-    public void updateVoluntario(@PathVariable("id") Integer idVoluntario, @RequestBody Voluntario voluntario){
+    public ResponseEntity updateVoluntario(@PathVariable("id") Integer idVoluntario, @RequestBody Voluntario voluntario){
         try {
             voluntarioService.updateVoluntario(idVoluntario, voluntario);
+            return ResponseEntity.ok(null);
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
     @DeleteMapping("/voluntarios/{id}")
-    public void deleteVoluntario(@PathVariable("id") Integer idVoluntario){
+    public ResponseEntity deleteVoluntario(@PathVariable("id") Integer idVoluntario){
         try {
             voluntarioService.deleteVoluntario(idVoluntario);
+            return ResponseEntity.ok().build();
         }
         catch (IllegalArgumentException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 }

@@ -17,9 +17,7 @@ public class RankingRepository implements IRankingRepository{
 
     @Override
     public void createRanking(Ranking ranking) {
-        String queryText = "INSERT INTO ranking (id_voluntario, id_tarea, puntaje, flg_invitado, flg_participa) " +
-                "VALUES (:idVoluntario, :idTarea, :puntaje, :flgInvitado, :flgParticipa)";
-
+        String queryText = "INSERT INTO ranking (id_voluntario, id_tarea, puntaje, flg_invitado, flg_participa) VALUES (:idVoluntario, :idTarea, :puntaje, :flgInvitado, :flgParticipa)";
         try(Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
                                     .addParameter("idVoluntario", ranking.getIdVoluntario())
