@@ -233,3 +233,8 @@ BEGIN
 		);
 END;
 $$ LANGUAGE plpgsql;
+-----EN UNA QUERY DENTO DE LA DATA BASE de desastresdb---------------------------------------------------------------------------
+CREATE EXTENSION postgis;
+
+SELECT AddGeometryColumn('', 'emergencia', 'ubicacion', 4326, 'POINT', 2);
+SELECT AddGeometryColumn('', 'voluntario', 'ubicacion', 4326, 'POINT', 2);

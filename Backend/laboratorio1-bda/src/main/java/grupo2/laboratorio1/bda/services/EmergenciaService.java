@@ -21,7 +21,13 @@ public class EmergenciaService {
     @Autowired
     ITareaHabilidadRepository tareaHabilidadRepository;
 
-    public Emergencia createEmergencia(String nombre, String descripcion, String fecha_inicio, String fecha_termino, String activo, Integer id_institucion){
+    public Emergencia createEmergencia(String nombre,
+                                       String descripcion,
+                                       String fecha_inicio,
+                                       String fecha_termino,
+                                       String activo,
+                                       Integer id_institucion,
+                                       String ubicacion){
         Emergencia emergencia = new Emergencia();
         emergencia.setNombre(nombre);
         emergencia.setDescripcion(descripcion);
@@ -29,6 +35,7 @@ public class EmergenciaService {
         emergencia.setFecha_termino(Date.valueOf(fecha_termino));
         emergencia.setActivo(Boolean.valueOf(activo));
         emergencia.setIdInstitucion(Integer.valueOf(id_institucion));
+        emergencia.setUbicacion(ubicacion);
         return emergenciaRepository.createEmergencia(emergencia);
     }
 

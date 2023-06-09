@@ -19,7 +19,8 @@ public class EmergenciaRepository implements IEmergenciaRepository{
 
     @Override
     public Emergencia createEmergencia(Emergencia emergencia){
-        String queryText = "INSERT INTO emergencia (nombre, descripcion, fecha_inicio, fecha_termino, activo, id_institucion) values (:nombre, :descripcion, :fecha_inicio, :fecha_termino, :activo, :id_institucion)";
+        String queryText = "INSERT INTO emergencia (nombre, descripcion, fecha_inicio, fecha_termino, activo, id_institucion, ubicacion) "+
+                "values (:nombre, :descripcion, :fecha_inicio, :fecha_termino, :activo, :id_institucion, ST_GeomFromText(:ubiacion, 4326)";
         try(Connection conn = sql2o.open()){
             Query query = conn.createQuery(queryText)
                 .addParameter("nombre", emergencia.getNombre())
@@ -27,7 +28,8 @@ public class EmergenciaRepository implements IEmergenciaRepository{
                 .addParameter("fecha_inicio", emergencia.getFecha_inicio())
                 .addParameter("fecha_termino", emergencia.getFecha_termino())
                 .addParameter("activo", emergencia.getActivo())
-                .addParameter("id_institucion", emergencia.getIdInstitucion());
+                .addParameter("id_institucion", emergencia.getIdInstitucion())
+                .addParameter("ubiacion", emergencia.getUbicacion());
                 query.executeUpdate();
         }
         catch (Exception e) {

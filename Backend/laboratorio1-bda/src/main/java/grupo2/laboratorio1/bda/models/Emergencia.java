@@ -22,4 +22,6 @@ public class Emergencia {
 
     private String nombreInstitucion;
     private Integer tareasActivas;
+
+    private String ubicacion;
 }

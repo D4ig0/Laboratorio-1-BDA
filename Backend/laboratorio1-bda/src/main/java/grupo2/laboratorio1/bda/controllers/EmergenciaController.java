@@ -16,8 +16,15 @@ public class EmergenciaController {
     private EmergenciaService emergenciaService;
 
     @PostMapping
-    public Emergencia createEmergencia(@RequestParam String nombre, @RequestParam String descripcion, @RequestParam String fecha_inicio, @RequestParam String fecha_termino, @RequestParam String activo, @RequestParam Integer id_institucion){
-        return emergenciaService.createEmergencia(nombre, descripcion, fecha_inicio, fecha_termino, activo, id_institucion);
+    public Emergencia createEmergencia(@RequestParam String nombre,
+                                       @RequestParam String descripcion,
+                                       @RequestParam String fecha_inicio,
+                                       @RequestParam String fecha_termino,
+                                       @RequestParam String activo,
+                                       @RequestParam Integer id_institucion,
+                                       @RequestParam String latitud,
+                                       @RequestParam String longitud){
+        return emergenciaService.createEmergencia(nombre, descripcion, fecha_inicio, fecha_termino, activo, id_institucion,"POINT("+latitud+" "+longitud+")");
     }
 
     @GetMapping("/{id}")
