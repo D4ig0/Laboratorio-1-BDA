@@ -2,6 +2,8 @@ package grupo2.laboratorio1.bda.repositories;
 
 import java.util.List;
 
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKTReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.sql2o.Connection;
 import org.sql2o.Query;
@@ -18,9 +20,9 @@ public class EmergenciaRepository implements IEmergenciaRepository{
     private Sql2o sql2o;
 
     @Override
-    public Emergencia createEmergencia(Emergencia emergencia){
-        String queryText = "INSERT INTO emergencia (nombre, descripcion, fecha_inicio, fecha_termino, activo, id_institucion, ubicacion) "+
-                "values (:nombre, :descripcion, :fecha_inicio, :fecha_termino, :activo, :id_institucion, ST_GeomFromText(:ubiacion, 4326)";
+    public Emergencia createEmergencia(Emergencia emergencia, double latitud, double longitud){
+        String cords = "POINT ("+latitud+" "+longitud+")";
+        String queryText = "INSERT INTO emergencia (nombre, descripcion, fecha_inicio, fecha_termino, activo, id_institucion, ubicacion) values (:nombre, :descripcion, :fecha_inicio, :fecha_termino, :activo, :id_institucion, ST_GeomFromText(:ubicacion, 4326))";
         try(Connection conn = sql2o.open()){
             Query query = conn.createQuery(queryText)
                 .addParameter("nombre", emergencia.getNombre())
@@ -29,7 +31,7 @@ public class EmergenciaRepository implements IEmergenciaRepository{
                 .addParameter("fecha_termino", emergencia.getFecha_termino())
                 .addParameter("activo", emergencia.getActivo())
                 .addParameter("id_institucion", emergencia.getIdInstitucion())
-                .addParameter("ubiacion", emergencia.getUbicacion());
+                .addParameter("ubicacion", cords);
                 query.executeUpdate();
         }
         catch (Exception e) {
@@ -51,7 +53,8 @@ public class EmergenciaRepository implements IEmergenciaRepository{
                 .addColumnMapping("fecha_termino", "fecha_termino")
                 .addColumnMapping("activo", "activo")
                 .addColumnMapping("id_institucion", "idInstitucion")
-                .executeAndFetchFirst(Emergencia.class);
+                .addColumnMapping("ubicacion", "ubicacion")
+                    .executeAndFetchFirst(Emergencia.class);
             return emergencia;
         }
         catch(Exception e){
@@ -71,6 +74,7 @@ public class EmergenciaRepository implements IEmergenciaRepository{
                 .addColumnMapping("fecha_termino", "fecha_termino")
                 .addColumnMapping("activo", "activo")
                 .addColumnMapping("id_institucion", "idInstitucion")
+                .addColumnMapping("ubicacion", "ubicacion")
                 .executeAndFetch(Emergencia.class);
             return emergencias;
         }

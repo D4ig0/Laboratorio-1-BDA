@@ -2,6 +2,7 @@ package grupo2.laboratorio1.bda.controllers;
 
 import java.util.List;
 
+import org.locationtech.jts.geom.Geometry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +23,9 @@ public class EmergenciaController {
                                        @RequestParam String fecha_termino,
                                        @RequestParam String activo,
                                        @RequestParam Integer id_institucion,
-                                       @RequestParam String latitud,
-                                       @RequestParam String longitud){
-        return emergenciaService.createEmergencia(nombre, descripcion, fecha_inicio, fecha_termino, activo, id_institucion,"POINT("+latitud+" "+longitud+")");
+                                       @RequestParam double latitud,
+                                       @RequestParam double longitud){
+        return emergenciaService.createEmergencia(nombre, descripcion, fecha_inicio, fecha_termino, activo, id_institucion, latitud, longitud);
     }
 
     @GetMapping("/{id}")

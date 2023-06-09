@@ -4,6 +4,10 @@ import java.sql.Date;
 import java.util.List;
 
 import grupo2.laboratorio1.bda.repositories.IVolHabilidadRepository;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +31,8 @@ public class EmergenciaService {
                                        String fecha_termino,
                                        String activo,
                                        Integer id_institucion,
-                                       String ubicacion){
+                                       double latitud,
+                                       double longitud){
         Emergencia emergencia = new Emergencia();
         emergencia.setNombre(nombre);
         emergencia.setDescripcion(descripcion);
@@ -35,8 +40,7 @@ public class EmergenciaService {
         emergencia.setFecha_termino(Date.valueOf(fecha_termino));
         emergencia.setActivo(Boolean.valueOf(activo));
         emergencia.setIdInstitucion(Integer.valueOf(id_institucion));
-        emergencia.setUbicacion(ubicacion);
-        return emergenciaRepository.createEmergencia(emergencia);
+        return emergenciaRepository.createEmergencia(emergencia, latitud, longitud);
     }
 
     public Emergencia getEmergencia(Integer id_emergencia){
