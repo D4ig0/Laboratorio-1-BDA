@@ -136,7 +136,7 @@ public class TareaRepository implements ITareaRepository{
 
     @Override
     public Integer getTotalTareasByEmergencia(Integer idEmergencia){
-        String queryText = "SELECT totalTareasActivasPorEmergencia(:idEmergencia)";
+        String queryText = "SELECT total_tareas_activas_por_emergencia(:idEmergencia)";
 
         try(Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)

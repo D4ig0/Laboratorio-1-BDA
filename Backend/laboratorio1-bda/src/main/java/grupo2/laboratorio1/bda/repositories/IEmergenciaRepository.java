@@ -10,4 +10,6 @@ public interface IEmergenciaRepository {
     List<Emergencia> getAllEmergencias();
     Emergencia updateEmergencia(Emergencia emergencia);
     Boolean deleteEmergencia(Integer id_emergencia);
+
+    List<Emergencia> getAllEmergenciasExtraData();
 }

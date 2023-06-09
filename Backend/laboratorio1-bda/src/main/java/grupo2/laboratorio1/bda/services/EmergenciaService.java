@@ -54,4 +54,9 @@ public class EmergenciaService {
         }
         return emergenciaRepository.deleteEmergencia(id_emergencia);
     }
+
+    public List<Emergencia> getAllEmergenciasExtraData(){
+        return emergenciaRepository.getAllEmergenciasExtraData();
+    }
+
 }

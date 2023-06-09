@@ -120,4 +120,34 @@ public class EmergenciaRepository implements IEmergenciaRepository{
             return false;
         }
     }
+
+    public List<Emergencia> getAllEmergenciasExtraData() {
+        String query = "SELECT e.id_emergencia," +
+                        " i.nombre as nombre_institucion," +
+                        " e.nombre," +
+                        " e.descripcion," +
+                        " e.fecha_inicio," +
+                        " e.fecha_termino," +
+                        " e.activo," +
+                        " total_tareas_activas_por_emergencia(e.id_emergencia) as tareas_activas" +
+                        " FROM emergencia e," +
+                             " institucion i" +
+                        " WHERE e.id_institucion = i.id_institucion";
+        try(Connection conn = sql2o.open()){
+            List<Emergencia> emergencias = conn.createQuery(query)
+                    .addColumnMapping("id_emergencia", "idEmergencia")
+                    .addColumnMapping("nombre", "nombre")
+                    .addColumnMapping("descripcion", "descripcion")
+                    .addColumnMapping("fecha_inicio", "fecha_inicio")
+                    .addColumnMapping("fecha_termino", "fecha_termino")
+                    .addColumnMapping("activo", "activo")
+                    .addColumnMapping("nombre_institucion", "nombreInstitucion")
+                    .addColumnMapping("tareas_activas", "tareasActivas")
+                    .executeAndFetch(Emergencia.class);
+            return emergencias;
+        }
+        catch(Exception e){
+            throw new RuntimeException("Ocurrio un error al obtener las emergencias");
+        }
+    }
 }

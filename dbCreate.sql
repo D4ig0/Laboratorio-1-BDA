@@ -226,10 +226,10 @@ $$;
 --- call contar_accion('DELETE');
 
 ----------------------------------------------------------------------------------------------------
-CREATE FUNCTION totalTareasActivasPorEmergencia(id_e int) RETURNS int AS $$
+CREATE FUNCTION total_tareas_activas_por_emergencia(id_e int) RETURNS int AS $$
 BEGIN
 	RETURN(
-		SELECT count(ta) FROM tarea ta WHERE ta.id_emergencia = id_e and estado_actual = "Activo"
+		SELECT count(ta) FROM tarea ta WHERE ta.id_emergencia = id_e and ta.estado_actual LIKE 'Activo'
 		);
 END;
 $$ LANGUAGE plpgsql;

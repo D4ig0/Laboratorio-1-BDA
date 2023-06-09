@@ -39,4 +39,9 @@ public class EmergenciaController {
     public Boolean deleteEmergencia(@PathVariable("id") Integer id_emergencia){
         return emergenciaService.deleteEmergencia(id_emergencia);
     }
+
+    @GetMapping("/extra")
+    public List<Emergencia> getAllEmergenciasExtraData(){
+        return emergenciaService.getAllEmergenciasExtraData();
+    }
 }
