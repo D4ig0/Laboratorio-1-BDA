@@ -4,6 +4,7 @@ import grupo2.laboratorio1.bda.models.Tarea;
 
 import java.util.List;
 
+import grupo2.laboratorio1.bda.models.Voluntario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
@@ -145,6 +146,26 @@ public class TareaRepository implements ITareaRepository{
         }
         catch (Exception e){
             throw new RuntimeException("Ocurrio un error al buscar las tareas activas");
+        }
+    }
+
+    @Override
+    public List<Tarea> getTareasEnRegion(Integer idRegion){
+        String queryText = "SELECT t.id_emergencia, t.nombre, t.descripcion, t.cant_vol_requeridos, t.cant_vol_inscritos, t.fecha_inicio, t.fecha_fin, t.estado_actual " +
+                "FROM tarea t, division_regional r, emergencia e " +
+                "WHERE e.id_emergencia = t.id_emergencia " +
+                "AND r.gid = :idRegion  " +
+                "AND ST_CONTAINS(r.geom, e.ubicacion )";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("idRegion", idRegion)
+                    .addColumnMapping("ID_TAREA", "idTarea");
+            List<Tarea> tareas = query.executeAndFetch(Tarea.class);
+            return tareas;
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al obtener las tareas");
         }
     }
 }

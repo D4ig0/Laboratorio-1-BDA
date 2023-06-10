@@ -43,6 +43,10 @@ public class TareaService {
         return tareaRepository.getTotalTareasByEmergencia(idEmergenca);
     }
 
+    public List<Tarea> getTareasEnRegion(Integer idRegion){
+        return tareaRepository.getTareasEnRegion(idRegion);
+    }
+
    }
 
    

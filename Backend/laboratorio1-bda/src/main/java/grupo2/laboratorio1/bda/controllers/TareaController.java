@@ -74,4 +74,9 @@ public class TareaController {
         return tareaService.getTotalTareasByEmergencia(idEmergencia);
     }
 
+    @GetMapping("/tareas/gtr/{idR}")
+    public List<Tarea> getTareasEnRegion(@PathVariable("idR") Integer idRegion){
+        return tareaService.getTareasEnRegion(idRegion);
+    }
+
 }
