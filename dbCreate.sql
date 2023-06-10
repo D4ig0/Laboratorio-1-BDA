@@ -233,8 +233,36 @@ BEGIN
 		);
 END;
 $$ LANGUAGE plpgsql;
------EN UNA QUERY DENTO DE LA DATA BASE de desastresdb---------------------------------------------------------------------------
+-----EN UNA QUERY DENTO DE LA DATA BASE de desastresdb-----------------------------------------------------------------------
 CREATE EXTENSION postgis;
 
 SELECT AddGeometryColumn('', 'emergencia', 'ubicacion', 4326, 'POINT', 2);
 SELECT AddGeometryColumn('', 'voluntario', 'ubicacion', 4326, 'POINT', 2);
+
+-----------------------------------------------------------------------------------------------------------------------------
+-- Santiago
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('Juan', 'juan@voluntario.cl', 12345678, ST_SetSRID(ST_Point(-70.616647, -33.429306), 4326));
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('Matias', 'matias@voluntario.cl', 12345678, ST_SetSRID(ST_Point(-70.662309, -33.503771), 4326));
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('Daigo', 'daigo@voluntario.cl', 12345678, ST_SetSRID(ST_Point(-70.773203, -33.521518), 4326));
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('Samoth', 'samoth@voluntario.cl', 12345678, ST_SetSRID(ST_Point(-70.685312, -33.454803), 4326));
+-- Concepcion
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('Cristobal', 'cristobal@voluntario.cl', 12345678, ST_SetSRID(ST_Point(-73.046782, -36.784780), 4326));
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('JuanM', 'fernando@voluntario.cl', 207738050, ST_SetSRID(ST_Point(-73.083088, -36.793922), 4326));
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('Ignacio', 'ignacio@voluntario.cl', 12345678, ST_SetSRID(ST_Point(-73.048241, -36.813921), 4326));
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('Gaspar', 'gaspar@voluntario.cl', 12345678, ST_SetSRID(ST_Point(-73.005822, -36.830079), 4326));
+-- Antofagasta
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('Isidora', 'isidora@voluntario.cl', 12345678, ST_SetSRID(ST_Point(-70.411363, -23.680056), 4326));
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('Pedro', 'pedro@voluntario.cl', 12345678, ST_SetSRID(ST_Point(-70.414003, -23.686767), 4326));
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('Felipe', 'felipe@voluntario.cl', 12345678, ST_SetSRID(ST_Point(-70.393854, -23.660915), 4326));
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('Goku', 'goku@voluntario.cl', 12345678, ST_SetSRID(ST_Point(-70.392137, -23.645270), 4326));
+-- Valparaiso
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('Camila', 'camila@voluntario.cl', 12345678, ST_SetSRID(ST_Point(-71.634311, -33.035112), 4326));
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('Simon', 'Simon@voluntario.cl', 12345678, ST_SetSRID(ST_Point(-71.645340, -33.049358), 4326));
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('Javiera', 'javiera@voluntario.cl', 12345678, ST_SetSRID(ST_Point(-71.621136, -33.054106), 4326));
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('Valentina', 'valentina@voluntario.cl', 12345678, ST_SetSRID(ST_Point(-71.581310, -33.048818), 4326));
+-- Coquimbo
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('Lukas', 'lukas@voluntario.cl', 12345678, ST_SetSRID(ST_Point(-71.341817, -29.987352), 4326));
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('Marcos', 'marcos@voluntario.cl', 12345678, ST_SetSRID(ST_Point(-71.369626, -29.989360), 4326));
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('Francisco', 'francisco@voluntario.cl', 12345678, ST_SetSRID(ST_Point(-71.297614, -29.965717), 4326));
+INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) VALUES ('Marcelo', 'marcelo@voluntario.cl', 12345678, ST_SetSRID(ST_Point(-71.344885, -29.957005), 4326));
+-----------------------------------------------------------------------------------------------------------------------------

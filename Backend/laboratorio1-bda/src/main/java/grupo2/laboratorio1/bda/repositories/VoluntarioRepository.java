@@ -147,7 +147,7 @@ public class VoluntarioRepository implements IVoluntarioRepository{
 
     @Override
     public List<Voluntario> findVoluntarioForEmergencia(Double radio, Integer idEmergencia){
-        String queryText = "SELECT v.id_voluntario, v.nombre, v.correo, ST_X(v.ubicacion) as longitud, ST_Y(v.ubicacion) as latitud " +
+        String queryText = "SELECT DISTINCT v.id_voluntario, v.nombre, v.correo, ST_X(v.ubicacion) as longitud, ST_Y(v.ubicacion) as latitud " +
                 "FROM voluntario v , emergencia e, vol_habilidad vh, eme_habilidad eh " +
                 "WHERE e.id_emergencia = :idEmergencia "+
                 "AND vh.id_voluntario = v.id_voluntario " +
