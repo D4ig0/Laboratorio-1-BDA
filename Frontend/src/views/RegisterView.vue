@@ -14,8 +14,8 @@
         inputType="text"
       />
       <InputField fieldName="Correo" inputType="email" @inputData="setCorreo" />
+      <InputPlace @placeData="setPlaceData"/>
       <PasswordField @passwordData="setPassword" />
-
       <button type="submit">Registrarse</button>
     </form>
     <div class="login">
@@ -32,14 +32,17 @@ import InputField from "@/components/InputField.vue";
 import router from "@/router";
 import PasswordField from "@/components/PasswordField.vue";
 import ErrorMessage from "@/components/ErrorMessage.vue";
+import InputPlace from "@/components/InputPlace.vue"
 
 export default {
-  components: { PasswordField, InputField, ErrorMessage },
+  components: { PasswordField, InputField, ErrorMessage, InputPlace },
   name: "RegisterPage",
   data() {
     return {
       username: "",
       email: "",
+      latitud: 0,
+      longitud: 0,
       password: "",
       errorMessage: "",
       valid: true,
@@ -54,19 +57,19 @@ export default {
             nombre: this.username,
             correo: this.email,
             password: this.password,
+            longitud: this.longitud,
+            latitud: this.latitud
           },
           {
             headers: { "Content-Type": "multipart/form-data" },
           }
         )
         .then((response: AxiosResponse<any, any>) => {
-          console.log(response);
           this.setErrorMessageByResponse(response);
           router.replace({ path: "/login" });
           alert("¡Usuario creado exitosamente!");
         })
         .catch((error: AxiosError | any) => {
-          console.log(error);
           this.setErrorMessageByResponse(error.response);
         });
     },
@@ -84,6 +87,7 @@ export default {
     setUserName(username: string) {
       this.username = username;
     },
+
     setPassword(password: string) {
       this.password = password;
     },
@@ -91,10 +95,15 @@ export default {
     setCorreo(correo: string) {
       this.email = correo;
     },
+
+    setPlaceData(latitude: number, longitude: number) {
+      this.latitud = latitude
+      this.longitud = longitude
+    }
   },
 };
 </script>
-  
+
 <style scoped>
 .register {
   display: grid;

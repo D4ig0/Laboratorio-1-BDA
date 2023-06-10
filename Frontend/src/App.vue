@@ -7,7 +7,9 @@ store.initStates()
 </script>
 
 <template>
+  
   <header>
+    
     <NavBar/>
   </header>
 
