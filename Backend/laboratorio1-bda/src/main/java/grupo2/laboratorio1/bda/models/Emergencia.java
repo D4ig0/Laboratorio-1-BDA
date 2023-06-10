@@ -24,6 +24,7 @@ public class Emergencia {
     private String nombreInstitucion;
     private Integer tareasActivas;
 
-    private String ubicacion_str;
-    private Point ubicacion;
+
+    private Double longitud;
+    private Double latitud;
 }

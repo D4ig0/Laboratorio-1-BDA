@@ -2,6 +2,7 @@ package grupo2.laboratorio1.bda.repositories;
 
 import java.util.List;
 
+import org.postgis.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.sql2o.Connection;
 import org.sql2o.Query;
@@ -18,7 +19,7 @@ public class EmergenciaRepository implements IEmergenciaRepository{
     private Sql2o sql2o;
 
     @Override
-    public Emergencia createEmergencia(Emergencia emergencia, double x, double y){
+    public Emergencia createEmergencia(Emergencia emergencia, double y, double x){
         String queryText = "INSERT INTO emergencia (nombre, descripcion, fecha_inicio, fecha_termino, activo, id_institucion, ubicacion) values (:nombre, :descripcion, :fecha_inicio, :fecha_termino, :activo, :id_institucion, ST_SetSRID(ST_Point(:x, :y), 4326))";
         try (Connection conn = sql2o.open()) {
             Query query = conn.createQuery(queryText)
@@ -41,7 +42,7 @@ public class EmergenciaRepository implements IEmergenciaRepository{
 
     @Override
     public Emergencia getEmergencia(Integer id_emergencia){
-        String query = "SELECT id_emergencia, nombre, descripcion, fecha_inicio, fecha_termino, activo, ST_AsText(ubicacion) as ubi, id_institucion FROM emergencia WHERE id_emergencia = :id_emergencia";
+        String query = "SELECT id_emergencia, nombre, descripcion, fecha_inicio, fecha_termino, activo, ST_X(ubicacion) as longitud, ST_Y(ubicacion) as latitud, id_institucion FROM emergencia WHERE id_emergencia = :id_emergencia";
         try(Connection conn = sql2o.open()){
             Emergencia emergencia = conn.createQuery(query)
                 .addParameter("id_emergencia", id_emergencia)
@@ -52,7 +53,8 @@ public class EmergenciaRepository implements IEmergenciaRepository{
                 .addColumnMapping("fecha_termino", "fecha_termino")
                 .addColumnMapping("activo", "activo")
                 .addColumnMapping("id_institucion", "idInstitucion")
-                .addColumnMapping("ubi", "ubicacion_str")
+                .addColumnMapping("longitud", "longitud")
+                .addColumnMapping("latitud", "latitud")
                 .executeAndFetchFirst(Emergencia.class);
             return emergencia;
         }
@@ -63,7 +65,7 @@ public class EmergenciaRepository implements IEmergenciaRepository{
     }
 
     public List<Emergencia> getAllEmergencias(){
-        String query = "SELECT id_emergencia, nombre, descripcion, fecha_inicio, fecha_termino, activo, ST_AsText(ubicacion) as ubi, id_institucion FROM emergencia";
+        String query = "SELECT id_emergencia, nombre, descripcion, fecha_inicio, fecha_termino, activo, ST_X(ubicacion) as longitud, ST_Y(ubicacion) as latitud, id_institucion FROM emergencia";
         try(Connection conn = sql2o.open()){
             List<Emergencia> emergencias = conn.createQuery(query)
                 .addColumnMapping("id_emergencia", "idEmergencia")
@@ -72,7 +74,8 @@ public class EmergenciaRepository implements IEmergenciaRepository{
                 .addColumnMapping("fecha_inicio", "fecha_inicio")
                 .addColumnMapping("fecha_termino", "fecha_termino")
                 .addColumnMapping("activo", "activo")
-                .addColumnMapping("ubi", "ubicacion_str")
+                .addColumnMapping("longitud", "longitud")
+                .addColumnMapping("latitud", "latitud")
                 .addColumnMapping("id_institucion", "idInstitucion")
                 .executeAndFetch(Emergencia.class);
             return emergencias;
@@ -91,7 +94,8 @@ public class EmergenciaRepository implements IEmergenciaRepository{
                         "fecha_inicio = COALESCE(:fecha_inicio, fecha_inicio), "+
                         "fecha_termino = COALESCE(:fecha_termino, fecha_termino), "+
                         "activo = COALESCE(:activo, activo), "+
-                        "id_institucion = COALESCE(:id_institucion, id_institucion) "+
+                        "id_institucion = COALESCE(:id_institucion, id_institucion), "+
+                        "ubicacion = COALESCE(ST_SetSRID(ST_Point(:longitud, :latitud), 4326), ubicacion) "+
                         "WHERE id_emergencia = :id_emergencia";
         try(Connection conn = sql2o.open()){
             conn.createQuery(query)
@@ -102,6 +106,8 @@ public class EmergenciaRepository implements IEmergenciaRepository{
                 .addParameter("activo", emergencia.getActivo())
                 .addParameter("id_institucion", emergencia.getIdInstitucion())
                 .addParameter("id_emergencia", emergencia.getIdEmergencia())
+                .addParameter("longitud", emergencia.getLongitud())
+                .addParameter("latitud", emergencia.getLatitud())
                 .executeUpdate();
             return emergencia;
         }
