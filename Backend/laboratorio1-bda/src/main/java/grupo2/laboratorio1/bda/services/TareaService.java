@@ -18,7 +18,7 @@ public class TareaService {
     ITareaHabilidadRepository tareaHabilidadRepository;
 
     public void createTarea(@NonNull Integer idEmergencia, String nombre, String descripcion, Integer cantVolRequeridos, Integer cantVolInscritos, Date fechaInicio, Date fechaFin , String estadoActual){
-        Tarea tarea = new Tarea(null,idEmergencia, nombre, descripcion,cantVolRequeridos, cantVolInscritos, fechaInicio, fechaFin, estadoActual);
+        Tarea tarea = new Tarea(null,idEmergencia, nombre, descripcion,cantVolRequeridos, cantVolInscritos, fechaInicio, fechaFin, estadoActual, null, null);
         tareaRepository.createTarea(tarea);
     }
     public Tarea getTarea(@NonNull Integer idTarea){
