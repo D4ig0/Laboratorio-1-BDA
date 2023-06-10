@@ -1,12 +1,11 @@
 <template>
   <main class="emergencias">
     <h2 class="titulo">Listado de emergencias</h2>
-    <EmergenciasTable  @changeStatus="switchStatus"  :dataSet="tableDataSet" />
+    <EmergenciasTable @changeStatus="switchStatus" :dataSet="tableDataSet" />
   </main>
 </template>
 
 <script lang="ts">
-
 import axios from "axios";
 import { defineComponent } from "vue";
 import { useAuthStore } from "@/stores/auth";
@@ -17,13 +16,12 @@ export default defineComponent({
   name: "Emergencias",
   data() {
     return {
-      
-      tableDataSet:[] as Array<Emergencia> 
-    }
+      tableDataSet: [] as Array<Emergencia>,
+    };
   },
 
   methods: {
-    getEmergencies() {
+    getEmergencias() {
       const authStore = useAuthStore();
       const token = authStore.token;
       axios
@@ -34,33 +32,32 @@ export default defineComponent({
         })
         .then((response) => {
           this.tableDataSet = this.jsonArrayToEmergencias(response.data);
-        })
+        });
     },
     jsonArrayToEmergencias(json: Array<any>): Array<Emergencia> {
-  const emergencias: Array<Emergencia> = [];
+      const emergencias: Array<Emergencia> = [];
 
-  // Convertir el JSON a objetos Emergencia
-  for (let i = 0; i < json.length; i++) {
-    const emergencia: Emergencia = {
-      id: json[i].idEmergencia,
-      institucion: json[i].nombreInstitucion,
-      nombre: json[i].nombre,
-      descripcion: json[i].descripcion,
-      fecha_inicio: json[i].fecha_inicio,
-      fecha_termino: json[i].fecha_termino,
-      activo: json[i].activo,
-      tareas_activas: json[i].tareasActivas,
-    };
-    emergencias.push(emergencia);
-  }
+      // Convertir el JSON a objetos Emergencia
+      for (let i = 0; i < json.length; i++) {
+        const emergencia: Emergencia = {
+          id: json[i].idEmergencia,
+          institucion: json[i].nombreInstitucion,
+          nombre: json[i].nombre,
+          descripcion: json[i].descripcion,
+          fecha_inicio: json[i].fecha_inicio,
+          fecha_termino: json[i].fecha_termino,
+          activo: json[i].activo,
+          tareas_activas: json[i].tareasActivas,
+        };
+        emergencias.push(emergencia);
+      }
 
-  emergencias.sort((a, b) => a.id - b.id);
+      emergencias.sort((a, b) => a.id - b.id);
 
-  return emergencias;
-},
+      return emergencias;
+    },
 
-
-    switchStatus(id: number, status: boolean) {
+    switchStatus(id: number, status: boolean, key: number) {
       const authStore = useAuthStore();
       const token = authStore.token;
       axios
@@ -74,18 +71,18 @@ export default defineComponent({
           }
         )
         .then(() => {
-          this.getEmergencies();
+          // console.log(response)
+          // Agregar despues cuando se arregle el backend
+          // if(response.status == 200 && response.data) {
+          //   this.tableDataSet[key].activo = response.data.activo
+          // }
+          this.getEmergencias();
         });
-}
+    },
   },
   mounted() {
-    this.getEmergencies();
+    this.getEmergencias();
   },
-
- 
-
-
-
 });
 </script>
 
