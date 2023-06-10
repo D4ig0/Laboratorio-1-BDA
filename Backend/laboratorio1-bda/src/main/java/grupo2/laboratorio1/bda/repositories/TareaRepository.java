@@ -150,24 +150,35 @@ public class TareaRepository implements ITareaRepository{
     }
 
     @Override
-    public List<Tarea> getTareasEnRegion(Integer idRegion){
-        String queryText = "SELECT t.id_emergencia, t.nombre, t.descripcion, t.cant_vol_requeridos, t.cant_vol_inscritos, t.fecha_inicio, t.fecha_fin, t.estado_actual " +
+    public List<Tarea> getTareasEnRegion(Integer idRegion) {
+        String queryText = "SELECT t.*, ST_X(e.ubicacion) AS latitud, ST_Y(e.ubicacion) AS longitud " +
                 "FROM tarea t, division_regional r, emergencia e " +
                 "WHERE e.id_emergencia = t.id_emergencia " +
-                "AND r.gid = :idRegion  " +
-                "AND ST_CONTAINS(r.geom, e.ubicacion )";
-
-        try(Connection connection = sql2o.open()){
-            Query query = connection.createQuery(queryText)
+                "AND r.gid = :idRegion " +
+                "AND ST_CONTAINS(r.geom, e.ubicacion)";
+        try (Connection connection = sql2o.open()) {
+            List<Tarea> tareas = connection.createQuery(queryText)
                     .addParameter("idRegion", idRegion)
-                    .addColumnMapping("ID_TAREA", "idTarea");
-            List<Tarea> tareas = query.executeAndFetch(Tarea.class);
+                    .addColumnMapping("id_tarea", "idTarea")
+                    .addColumnMapping("id_emergencia", "idEmergencia")
+                    .addColumnMapping("nombre", "nombre")
+                    .addColumnMapping("descripcion", "descripcion")
+                    .addColumnMapping("cant_vol_requeridos", "cantVolRequeridos")
+                    .addColumnMapping("cant_vol_inscritos", "cantVolInscritos")
+                    .addColumnMapping("fecha_inicio", "fechaInicio")
+                    .addColumnMapping("fecha_fin", "fechaFin")
+                    .addColumnMapping("estado_actual", "estadoActual")
+                    .addColumnMapping("latitud", "latitud")
+                    .addColumnMapping("longitud", "longitud")
+                    .executeAndFetch(Tarea.class);
             return tareas;
-        }
-        catch (Exception e){
-            throw new RuntimeException("Ocurrio un error al obtener las tareas");
+        } catch (Exception e) {
+            throw new RuntimeException("Ocurrió un error al obtener las tareas", e);
         }
     }
+
+
+
 }
 
 

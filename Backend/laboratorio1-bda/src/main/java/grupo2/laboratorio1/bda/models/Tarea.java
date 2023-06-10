@@ -25,4 +25,6 @@ public class Tarea {
 
     private String estadoActual;
 
+    private Double latitud;
+    private Double longitud;
 }
