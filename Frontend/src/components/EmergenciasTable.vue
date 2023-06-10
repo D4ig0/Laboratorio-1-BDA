@@ -15,7 +15,10 @@
         <td>{{ data.fecha_inicio }}</td>
         <td>{{ data.fecha_termino }}</td>
         <td class="status">
-          <button @click="changeStatus(data.id, data.activo)" :class="statusByBoolean(data.activo)">
+          <button
+            @click="changeStatus(data.id, data.activo, key)"
+            :class="statusByBoolean(data.activo)"
+          >
             {{ statusByBoolean(data.activo).toUpperCase() }}
           </button>
         </td>
@@ -30,20 +33,32 @@ import type Emergencia from "@/models/Emergencia";
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "EmergenciasTable",
+  data() {
+    return {
+      headers: [
+        "ID",
+        "INSTITUCIÓN",
+        "NOMBRE",
+        "DESCRIPCIÓN",
+        "FECHA INICIO",
+        "FECHA TERMINO",
+        "ESTADO",
+        "TAREAS ACTIVAS",
+      ],
+    };
+  },
   props: {
-    headers: { type: Array<String>, required: true },
     dataSet: { type: Array<Emergencia>, required: true },
   },
   methods: {
-    statusByBoolean(bool: boolean) : string{
+    statusByBoolean(bool: boolean): string {
       return bool ? "activa" : "inactiva";
     },
 
-    changeStatus(id: number, status: boolean){
-      this.$emit("changeStatus", id, status)
-    }
-  }
-
+    changeStatus(id: number, status: boolean, key: number) {
+      this.$emit("changeStatus", id, status, key);
+    },
+  },
 });
 </script>
 
@@ -54,7 +69,7 @@ export default defineComponent({
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
+  text-align: left;
   font-family: "Open Sans";
   font-size: 18px;
 }
@@ -63,7 +78,6 @@ export default defineComponent({
   background-color: #ff5c39;
   color: white;
   border-bottom: 1px solid #ababab;
-  text-align: left;
 }
 
 .data-table thead tr th {
@@ -76,6 +90,7 @@ td {
 }
 
 .data-table tbody tr {
+  background-color: #e2e2e2;
   border-bottom: 1px solid #ababab;
 }
 
@@ -86,6 +101,10 @@ td {
 
 .data-table tbody tr:nth-of-type(even) {
   background-color: #f3f3f3;
+}
+
+.status {
+  min-width: 140px;
 }
 
 .status button {

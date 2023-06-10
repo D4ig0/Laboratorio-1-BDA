@@ -2,7 +2,7 @@
   <nav class="navbar">
     <div class="links left">
       <LinkContainer text="INICIO" path="/" direction="left" />
-      <LinkContainer text="EMERGENCIAS" path="/emergencias" direction="left" />
+      <LinkContainer v-if="authStore.isAuthenticated" text="EMERGENCIAS" path="/emergencias" direction="left" />
     </div>
     <div v-if="!authStore.isAuthenticated" class="links right">
       <LinkContainer text="INICIAR SESIÓN" path="/login" direction="right" />
@@ -25,7 +25,7 @@
       </div>
       <div class="dropdown-content">
         <li>
-          <a @click="authStore.logout">Cerrar Sesión</a>
+          <a @click="onLogOut">Cerrar Sesión</a>
         </li>
       </div>
     </div>
@@ -35,6 +35,7 @@
 <script lang="ts">
 import { useAuthStore } from "@/stores/auth";
 import { defineComponent } from "vue";
+import router from "@/router";
 import LinkContainer from "./LinkContainer.vue";
 
 export default defineComponent({
@@ -48,6 +49,13 @@ export default defineComponent({
       authUser,
     };
   },
+
+  methods: {
+    onLogOut(){
+      this.authStore.logout()
+      router.replace({ path: "/" });
+    }
+  }
 });
 </script>
 

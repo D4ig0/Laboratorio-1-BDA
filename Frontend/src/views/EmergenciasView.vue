@@ -1,74 +1,87 @@
 <template>
   <main class="emergencias">
     <h2 class="titulo">Listado de emergencias</h2>
-    <EmergenciasTable :headers="tableHeaders" :dataSet="tableDataSet" />
+    <EmergenciasTable @changeStatus="switchStatus" :dataSet="tableDataSet" />
   </main>
 </template>
 
 <script lang="ts">
+import axios from "axios";
 import { defineComponent } from "vue";
+import { useAuthStore } from "@/stores/auth";
 import EmergenciasTable from "@/components/EmergenciasTable.vue";
+import type Emergencia from "@/models/Emergencia";
 export default defineComponent({
   components: { EmergenciasTable },
   name: "Emergencias",
   data() {
     return {
-      tableHeaders: [
-        "ID",
-        "INSTITUCIÓN",
-        "NOMBRE",
-        "DESCRIPCIÓN",
-        "FECHA INICIO",
-        "FECHA TERMINO",
-        "ESTADO",
-        "TAREAS ACTIVAS",
-      ],
-      tableDataSet: [
-        {
-          id: 1,
-          institucion: "Institucion 01",
-          nombre: "Emergencia 01",
-          descripcion: "descripción test",
-          fecha_inicio: "2020-05-20",
-          fecha_termino: "2020-06-30",
-          activo: true,
-          tareas_activas: 8,
-        },
-        {
-          id: 2,
-          institucion: "Institucion 01",
-          nombre: "Emergencia 02",
-          descripcion: "descripción test",
-          fecha_inicio: "2023-11-01",
-          fecha_termino: "2023-12-08",
-          activo: true,
-          tareas_activas: 3,
-        },
-        {
-          id: 3,
-          institucion: "Institucion 02",
-          nombre: "Emergencia 03",
-          descripcion: "descripción test",
-          fecha_inicio: "2020-12-01",
-          fecha_termino: "2020-12-03",
-          activo: false,
-          tareas_activas: 0,
-        },
-        {
-          id: 4,
-          institucion: "Institucion 01",
-          nombre: "Emergencia 04",
-          descripcion: "descripción test",
-          fecha_inicio: "2022-04-01",
-          fecha_termino: "2022-08-23",
-          activo: true,
-          tareas_activas: 15,
-        },
-      ],
+      tableDataSet: [] as Array<Emergencia>,
     };
   },
-  methods: {
 
+  methods: {
+    getEmergencias() {
+      const authStore = useAuthStore();
+      const token = authStore.token;
+      axios
+        .get("/api/emergencias/extra", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          this.tableDataSet = this.jsonArrayToEmergencias(response.data);
+        });
+    },
+    jsonArrayToEmergencias(json: Array<any>): Array<Emergencia> {
+      const emergencias: Array<Emergencia> = [];
+
+      // Convertir el JSON a objetos Emergencia
+      for (let i = 0; i < json.length; i++) {
+        const emergencia: Emergencia = {
+          id: json[i].idEmergencia,
+          institucion: json[i].nombreInstitucion,
+          nombre: json[i].nombre,
+          descripcion: json[i].descripcion,
+          fecha_inicio: json[i].fecha_inicio,
+          fecha_termino: json[i].fecha_termino,
+          activo: json[i].activo,
+          tareas_activas: json[i].tareasActivas,
+        };
+        emergencias.push(emergencia);
+      }
+
+      emergencias.sort((a, b) => a.id - b.id);
+
+      return emergencias;
+    },
+
+    switchStatus(id: number, status: boolean, key: number) {
+      const authStore = useAuthStore();
+      const token = authStore.token;
+      axios
+        .put(
+          `/api/emergencias/${id}`,
+          { activo: !status },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then(() => {
+          // console.log(response)
+          // Agregar despues cuando se arregle el backend
+          // if(response.status == 200 && response.data) {
+          //   this.tableDataSet[key].activo = response.data.activo
+          // }
+          this.getEmergencias();
+        });
+    },
+  },
+  mounted() {
+    this.getEmergencias();
   },
 });
 </script>
