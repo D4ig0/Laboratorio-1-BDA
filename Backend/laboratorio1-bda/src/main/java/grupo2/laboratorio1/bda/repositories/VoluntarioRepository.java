@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -16,14 +15,16 @@ public class VoluntarioRepository implements IVoluntarioRepository{
     private Sql2o sql2o;
 
     @Override
-    public void createVoluntario(Voluntario voluntario) {
-        String queryText = "INSERT INTO voluntario (nombre, correo, password) values (:nombre, :correo, :password)";
-
+    public void createVoluntario(Voluntario voluntario,Double longitud, Double latitud) {
+        String queryText = "INSERT INTO voluntario (nombre, correo, password,ubicacion) values (:nombre, :correo, :password, ST_SetSRID(ST_Point(:longitud, :latitud), 4326))";
+        String point = "POINT("+voluntario.getLongitud()+" "+voluntario.getLatitud()+")";
         try(Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
                     .addParameter("nombre", voluntario.getNombre())
                     .addParameter("correo", voluntario.getCorreo())
-                    .addParameter("password", voluntario.getPassword());
+                    .addParameter("password", voluntario.getPassword())
+                    .addParameter("longitud", longitud)
+                    .addParameter("latitud", latitud);
             query.executeUpdate();
         }
         catch (Exception e){
@@ -33,8 +34,7 @@ public class VoluntarioRepository implements IVoluntarioRepository{
 
     @Override
     public Voluntario getVoluntario(Integer idVoluntario) {
-        String queryText = "SELECT id_voluntario, nombre, correo FROM voluntario WHERE id_voluntario = :idVoluntario";
-
+        String queryText = "SELECT id_voluntario, nombre, correo, ST_X(ubicacion) as longitud, ST_Y(ubicacion) as latitud FROM voluntario WHERE id_voluntario = :idVoluntario";
         try(Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
                     .addParameter("idVoluntario", idVoluntario)
@@ -65,7 +65,7 @@ public class VoluntarioRepository implements IVoluntarioRepository{
 
     @Override
     public List<Voluntario> getAllVoluntarios() {
-        String queryText = "SELECT id_voluntario, nombre, correo FROM voluntario";
+        String queryText = "SELECT id_voluntario, nombre, correo, ST_X(ubicacion) as longitud, ST_Y(ubicacion) as latitud FROM voluntario";
 
         try(Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
@@ -83,7 +83,8 @@ public class VoluntarioRepository implements IVoluntarioRepository{
         String queryText = "UPDATE voluntario SET " +
                 "nombre = COALESCE(:nombre, nombre), " +
                 "correo = COALESCE(:correo, correo), " +
-                "password = COALESCE(:password, password) " +
+                "password = COALESCE(:password, password), " +
+                "ubicacion = COALESCE(ST_SetSRID(ST_Point(:longitud, :latitud), 4326), ubicacion)"+
                 "WHERE id_voluntario = :idVoluntario";
 
         try(Connection connection = sql2o.open()){
@@ -91,6 +92,8 @@ public class VoluntarioRepository implements IVoluntarioRepository{
                     .addParameter("nombre", voluntario.getNombre())
                     .addParameter("correo", voluntario.getCorreo())
                     .addParameter("password", voluntario.getPassword())
+                    .addParameter("longitud", voluntario.getLongitud())
+                    .addParameter("latitud", voluntario.getLatitud())
                     .addParameter("idVoluntario", voluntario.getIdVoluntario());
             query.executeUpdate();
         }
