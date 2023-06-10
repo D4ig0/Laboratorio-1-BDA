@@ -70,13 +70,30 @@ public class TareaController {
     }
 
     @GetMapping("/tareas/gtbe/{idE}")
-    public Integer getTotalTareasByEmergencia(@PathVariable("idE") Integer idEmergencia){
-        return tareaService.getTotalTareasByEmergencia(idEmergencia);
+    public ResponseEntity<Integer> getTotalTareasByEmergencia(@PathVariable("idE") Integer idEmergencia){
+        try {
+             Integer totalTareas = tareaService.getTotalTareasByEmergencia(idEmergencia);
+            return ResponseEntity.ok(totalTareas);
+        }
+        catch (IllegalArgumentException e){
+            return ResponseEntity.notFound().header("message", e.getMessage()).build();
+        }
+        catch (RuntimeException e){
+            return ResponseEntity.internalServerError().header("message", e.getMessage()).build();
+        }
     }
 
     @GetMapping("/tareas/gtr/{idR}")
-    public List<Tarea> getTareasEnRegion(@PathVariable("idR") Integer idRegion){
-        return tareaService.getTareasEnRegion(idRegion);
+    public ResponseEntity<List<Tarea>> getTareasEnRegion(@PathVariable("idR") Integer idRegion){
+         try {
+             List<Tarea> Tareas =  tareaService.getTareasEnRegion(idRegion);;
+             return ResponseEntity.ok(Tareas);
+        }
+        catch (IllegalArgumentException e){
+            return ResponseEntity.notFound().header("message", e.getMessage()).build();
+         }
+        catch (RuntimeException e){
+            return ResponseEntity.internalServerError().header("message", e.getMessage()).build();
+         }
     }
-
 }

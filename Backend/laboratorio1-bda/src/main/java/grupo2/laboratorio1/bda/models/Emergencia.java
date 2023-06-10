@@ -19,10 +19,8 @@ public class Emergencia {
     private Date fecha_termino;
     private Boolean activo;
     private Integer idInstitucion;
-
     private String nombreInstitucion;
     private Integer tareasActivas;
-
 
     private Double longitud;
     private Double latitud;
