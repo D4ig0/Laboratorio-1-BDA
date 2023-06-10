@@ -30,8 +30,21 @@ import type Emergencia from "@/models/Emergencia";
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "EmergenciasTable",
+  data() {
+    return{
+      headers: [
+        "ID",
+        "INSTITUCIÓN",
+        "NOMBRE",
+        "DESCRIPCIÓN",
+        "FECHA INICIO",
+        "FECHA TERMINO",
+        "ESTADO",
+        "TAREAS ACTIVAS",
+      ]
+    }
+  },
   props: {
-    headers: { type: Array<String>, required: true },
     dataSet: { type: Array<Emergencia>, required: true },
   },
   methods: {
@@ -54,7 +67,7 @@ export default defineComponent({
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
+  text-align: left;
   font-family: "Open Sans";
   font-size: 18px;
 }
@@ -63,7 +76,6 @@ export default defineComponent({
   background-color: #ff5c39;
   color: white;
   border-bottom: 1px solid #ababab;
-  text-align: left;
 }
 
 .data-table thead tr th {
