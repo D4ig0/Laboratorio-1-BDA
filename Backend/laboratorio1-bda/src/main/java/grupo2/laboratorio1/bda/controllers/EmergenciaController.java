@@ -2,7 +2,6 @@ package grupo2.laboratorio1.bda.controllers;
 
 import java.util.List;
 
-import org.locationtech.jts.geom.Geometry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.postgis.Point;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,5 +24,6 @@ public class Emergencia {
     private String nombreInstitucion;
     private Integer tareasActivas;
 
-    private String ubicacion;
+    private String ubicacion_str;
+    private Point ubicacion;
 }

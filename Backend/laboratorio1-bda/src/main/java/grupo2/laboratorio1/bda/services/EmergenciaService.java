@@ -3,11 +3,7 @@ package grupo2.laboratorio1.bda.services;
 import java.sql.Date;
 import java.util.List;
 
-import grupo2.laboratorio1.bda.repositories.IVolHabilidadRepository;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKTReader;
+import org.postgis.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
