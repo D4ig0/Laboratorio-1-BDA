@@ -2,7 +2,6 @@ package grupo2.laboratorio1.bda.repositories;
 
 import java.util.List;
 
-import org.postgis.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.sql2o.Connection;
 import org.sql2o.Query;

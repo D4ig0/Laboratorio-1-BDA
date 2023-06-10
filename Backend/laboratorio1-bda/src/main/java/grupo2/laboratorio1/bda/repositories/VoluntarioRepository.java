@@ -17,7 +17,6 @@ public class VoluntarioRepository implements IVoluntarioRepository{
     @Override
     public void createVoluntario(Voluntario voluntario,Double longitud, Double latitud) {
         String queryText = "INSERT INTO voluntario (nombre, correo, password,ubicacion) values (:nombre, :correo, :password, ST_SetSRID(ST_Point(:longitud, :latitud), 4326))";
-        String point = "POINT("+voluntario.getLongitud()+" "+voluntario.getLatitud()+")";
         try(Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
                     .addParameter("nombre", voluntario.getNombre())
@@ -145,4 +144,28 @@ public class VoluntarioRepository implements IVoluntarioRepository{
             throw new RuntimeException("Ocurrio un error al realizar la query");
         }
     }
+
+    @Override
+    public List<Voluntario> findVoluntarioForEmergencia(Double radio, Integer idEmergencia){
+        String queryText = "SELECT v.id_voluntario, v.nombre, v.correo, ST_X(v.ubicacion) as longitud, ST_Y(v.ubicacion) as latitud " +
+                "FROM voluntario v , emergencia e, vol_habilidad vh, eme_habilidad eh " +
+                "WHERE e.id_emergencia = :idEmergencia "+
+                "AND vh.id_voluntario = v.id_voluntario " +
+                "AND eh.id_emergencia = e.id_emergencia " +
+                "AND vh.id_habilidad = eh.id_habilidad " +
+                "AND ST_DISTANCE(v.ubicacion, e.ubicacion, true) <= :radio";
+
+        try(Connection connection = sql2o.open()){
+            Query query = connection.createQuery(queryText)
+                    .addParameter("radio", radio)
+                    .addParameter("idEmergencia", idEmergencia)
+                    .addColumnMapping("ID_VOLUNTARIO", "idVoluntario");
+            List<Voluntario> voluntarios = query.executeAndFetch(Voluntario.class);
+            return voluntarios;
+        }
+        catch (Exception e){
+            throw new RuntimeException("Ocurrio un error al obtener los voluntarios");
+        }
+    }
+
 }

@@ -104,4 +104,8 @@ public class VoluntarioService {
         Matcher matcher = pattern.matcher(correo);
         return matcher.matches();
     }
+
+    public List<Voluntario> findVoluntarioForEmergencia(Double radio, Integer idEmergencia){
+        return voluntarioRepository.findVoluntarioForEmergencia(radio,idEmergencia);
+    }
 }

@@ -73,4 +73,18 @@ public class VoluntarioController {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
+
+    @GetMapping("/voluntarios/emergencia/{id}/{radio}")
+    public ResponseEntity<List<Voluntario>> getVoluntario(@PathVariable("id") Integer idEmergencia, @PathVariable("radio") Double radio){
+        try {
+            List<Voluntario> voluntarios = voluntarioService.findVoluntarioForEmergencia(radio, idEmergencia);
+            return ResponseEntity.ok(voluntarios);
+        }
+        catch (IllegalArgumentException e){
+            return ResponseEntity.notFound().header("message", e.getMessage()).build();
+        }
+        catch (RuntimeException e){
+            return ResponseEntity.internalServerError().header("message", e.getMessage()).build();
+        }
+    }
 }

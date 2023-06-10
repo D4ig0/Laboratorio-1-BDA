@@ -14,5 +14,6 @@ public interface IVoluntarioRepository {
     void deleteVoluntario(Integer idVoluntario);
     boolean existsVoluntario(Integer idVoluntario);
     boolean existsVoluntarioByCorreo(String correo);
+    List<Voluntario> findVoluntarioForEmergencia(Double radio, Integer idEmergencia);
 }
 
