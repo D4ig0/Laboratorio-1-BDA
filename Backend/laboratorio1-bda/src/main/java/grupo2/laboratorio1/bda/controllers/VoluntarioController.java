@@ -75,7 +75,7 @@ public class VoluntarioController {
     }
 
     @GetMapping("/voluntarios/emergencia/{id}/{radio}")
-    public ResponseEntity<List<Voluntario>> getVoluntario(@PathVariable("id") Integer idEmergencia, @PathVariable("radio") Double radio){
+    public ResponseEntity<List<Voluntario>> voluntariosEnRadioEmergencia(@PathVariable("id") Integer idEmergencia, @PathVariable("radio") Double radio){
         try {
             List<Voluntario> voluntarios = voluntarioService.findVoluntarioForEmergencia(radio, idEmergencia);
             return ResponseEntity.ok(voluntarios);
