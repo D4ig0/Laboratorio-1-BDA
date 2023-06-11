@@ -116,7 +116,7 @@ export default {
   font-family: "Open Sans", sans-serif;
 }
 
-.header .titulo {
+.register .header .titulo {
   margin-bottom: 1rem;
   font-weight: bold;
   font-size: 1.5rem;
@@ -124,7 +124,7 @@ export default {
   color: #363225;
 }
 
-.header h3 {
+.register .header h3 {
   font-size: 1rem;
   font-weight: 500;
   color: #363225;

@@ -4,7 +4,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import EmergenciasView from '../views/EmergenciasView.vue'
-
+import TareasView from '@/views/TareasView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +28,11 @@ const router = createRouter({
       path: '/emergencias',
       name: 'emergencias',
       component: EmergenciasView
+    },
+    {
+      path: '/tareas',
+      name: 'tareas',
+      component: TareasView
     }
   ]
 })

@@ -3,6 +3,7 @@
     <div class="links left">
       <LinkContainer text="INICIO" path="/" direction="left" />
       <LinkContainer v-if="authStore.isAuthenticated" text="EMERGENCIAS" path="/emergencias" direction="left" />
+      <LinkContainer v-if="authStore.isAuthenticated" text="TAREAS" path="/tareas" direction="left" />
     </div>
     <div v-if="!authStore.isAuthenticated" class="links right">
       <LinkContainer text="INICIAR SESIÓN" path="/login" direction="right" />
