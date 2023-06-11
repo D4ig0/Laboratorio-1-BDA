@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IVoluntarioRepository {
-    void createVoluntario(Voluntario voluntario);
+    void createVoluntario(Voluntario voluntario, Double longitud, Double latitud);
     Voluntario getVoluntario(Integer idVoluntario);
     Optional<Voluntario> getVoluntarioByCorreo(String correo);
     List<Voluntario> getAllVoluntarios();
@@ -14,5 +14,6 @@ public interface IVoluntarioRepository {
     void deleteVoluntario(Integer idVoluntario);
     boolean existsVoluntario(Integer idVoluntario);
     boolean existsVoluntarioByCorreo(String correo);
+    List<Voluntario> findVoluntarioForEmergencia(Double radio, Integer idEmergencia);
 }
 

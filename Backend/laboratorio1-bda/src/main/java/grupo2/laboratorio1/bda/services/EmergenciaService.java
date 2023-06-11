@@ -3,7 +3,6 @@ package grupo2.laboratorio1.bda.services;
 import java.sql.Date;
 import java.util.List;
 
-import grupo2.laboratorio1.bda.repositories.IVolHabilidadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,14 @@ public class EmergenciaService {
     @Autowired
     ITareaHabilidadRepository tareaHabilidadRepository;
 
-    public Emergencia createEmergencia(String nombre, String descripcion, String fecha_inicio, String fecha_termino, String activo, Integer id_institucion){
+    public Emergencia createEmergencia(String nombre,
+                                       String descripcion,
+                                       String fecha_inicio,
+                                       String fecha_termino,
+                                       String activo,
+                                       Integer id_institucion,
+                                       double latitud,
+                                       double longitud){
         Emergencia emergencia = new Emergencia();
         emergencia.setNombre(nombre);
         emergencia.setDescripcion(descripcion);
@@ -29,7 +35,7 @@ public class EmergenciaService {
         emergencia.setFecha_termino(Date.valueOf(fecha_termino));
         emergencia.setActivo(Boolean.valueOf(activo));
         emergencia.setIdInstitucion(Integer.valueOf(id_institucion));
-        return emergenciaRepository.createEmergencia(emergencia);
+        return emergenciaRepository.createEmergencia(emergencia, latitud, longitud);
     }
 
     public Emergencia getEmergencia(Integer id_emergencia){
@@ -54,4 +60,9 @@ public class EmergenciaService {
         }
         return emergenciaRepository.deleteEmergencia(id_emergencia);
     }
+
+    public List<Emergencia> getAllEmergenciasExtraData(){
+        return emergenciaRepository.getAllEmergenciasExtraData();
+    }
+
 }

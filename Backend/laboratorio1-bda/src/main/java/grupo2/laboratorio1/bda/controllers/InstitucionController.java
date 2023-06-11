@@ -4,6 +4,7 @@ import grupo2.laboratorio1.bda.models.Institucion;
 import grupo2.laboratorio1.bda.services.InstitucionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,28 +16,46 @@ public class InstitucionController {
     @Autowired
     InstitucionService institucionService;
 
+    @PostMapping
+    public ResponseEntity createInstitucion(@RequestParam String nombre){
+        try{
+            Institucion institucion = institucionService.createInstitucion(nombre);
+            return ResponseEntity.ok(institucion);
+        }
+        catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        catch (RuntimeException e){
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
     @GetMapping
-    public List<Institucion> getAllInstituciones(){
-        return institucionService.getAllInstituciones();
+    public ResponseEntity<List<Institucion>> getAllInstituciones(){
+        return ResponseEntity.ok(institucionService.getAllInstituciones());
     }
 
     @GetMapping("/{id}")
-    public Institucion getInstitucion(@PathVariable("id") Integer id){
-        return institucionService.getInstitucion(id);
-    }
-
-    @PostMapping
-    public Institucion createInstitucion(@RequestParam String nombre){
-        return institucionService.createInstitucion(nombre);
+    public ResponseEntity<Institucion> getInstitucion(@PathVariable("id") Integer id){
+        return ResponseEntity.ok(institucionService.getInstitucion(id));
     }
 
     @PutMapping("/{id}")
-    public Institucion updateInstitucion(@PathVariable("id") Integer id,  @RequestBody Institucion institucion){
-        return institucionService.updateInstitucion(id, institucion);
+    public ResponseEntity updateInstitucion(@PathVariable("id") Integer id,  @RequestBody Institucion institucion){
+        try {
+            Institucion institucionActualizada = institucionService.updateInstitucion(id, institucion);
+            return ResponseEntity.ok(institucionActualizada);
+        }
+        catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        catch (RuntimeException e){
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
-    public boolean deleteInstitucio(@PathVariable("id") Integer id){
-        return institucionService.deleteInstitucion(id);
+    public ResponseEntity deleteInstitucio(@PathVariable("id") Integer id){
+        institucionService.deleteInstitucion(id);
+        return ResponseEntity.ok().build();
     }
 }

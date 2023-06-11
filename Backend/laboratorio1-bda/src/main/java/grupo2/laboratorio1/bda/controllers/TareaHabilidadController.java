@@ -16,9 +16,9 @@ public class TareaHabilidadController {
     TareaHabilidadService tareaHabilidadService;
 
     @PostMapping("/tareaHabilidades")
-    public ResponseEntity createTareaHabilidad(@RequestParam Integer idEmergencia, @RequestParam Integer idHabilidad, @RequestParam Integer idTarea){
+    public ResponseEntity createTareaHabilidad(@RequestParam Integer idHabilidad, @RequestParam Integer idTarea){
         try{
-            tareaHabilidadService.createTareaHabilidad(idEmergencia,  idHabilidad, idTarea);
+            tareaHabilidadService.createTareaHabilidad(idHabilidad, idTarea);
             return ResponseEntity.ok(null);
         }
         catch (IllegalArgumentException e){

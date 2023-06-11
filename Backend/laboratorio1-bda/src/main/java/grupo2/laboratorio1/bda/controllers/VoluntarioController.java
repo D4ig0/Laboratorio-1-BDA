@@ -5,7 +5,6 @@ import grupo2.laboratorio1.bda.models.Voluntario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -15,9 +14,9 @@ public class VoluntarioController {
     VoluntarioService voluntarioService;
 
     @PostMapping("/voluntarios")
-    public ResponseEntity createVoluntario(@RequestParam String nombre, @RequestParam String correo, @RequestParam String password){
+    public ResponseEntity createVoluntario(@RequestParam String nombre, @RequestParam String correo, @RequestParam String password, @RequestParam Double longitud, @RequestParam Double latitud){
         try{
-            voluntarioService.createVoluntario(nombre, correo, password);
+            voluntarioService.createVoluntario(nombre, correo, password, longitud, latitud);
             return ResponseEntity.ok(null);
         }
         catch (IllegalArgumentException e){
@@ -72,6 +71,20 @@ public class VoluntarioController {
         }
         catch (RuntimeException e){
             return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/voluntarios/emergencia/{id}/{radio}")
+    public ResponseEntity<List<Voluntario>> voluntariosEnRadioEmergencia(@PathVariable("id") Integer idEmergencia, @PathVariable("radio") Double radio){
+        try {
+            List<Voluntario> voluntarios = voluntarioService.findVoluntarioForEmergencia(radio, idEmergencia);
+            return ResponseEntity.ok(voluntarios);
+        }
+        catch (IllegalArgumentException e){
+            return ResponseEntity.notFound().header("message", e.getMessage()).build();
+        }
+        catch (RuntimeException e){
+            return ResponseEntity.internalServerError().header("message", e.getMessage()).build();
         }
     }
 }

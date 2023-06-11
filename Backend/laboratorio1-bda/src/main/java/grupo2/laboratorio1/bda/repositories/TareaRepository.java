@@ -4,6 +4,7 @@ import grupo2.laboratorio1.bda.models.Tarea;
 
 import java.util.List;
 
+import grupo2.laboratorio1.bda.models.Voluntario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
@@ -136,7 +137,7 @@ public class TareaRepository implements ITareaRepository{
 
     @Override
     public Integer getTotalTareasByEmergencia(Integer idEmergencia){
-        String queryText = "SELECT totalTareasActivasPorEmergencia(:idEmergencia)";
+        String queryText = "SELECT total_tareas_activas_por_emergencia(:idEmergencia)";
 
         try(Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
@@ -147,6 +148,37 @@ public class TareaRepository implements ITareaRepository{
             throw new RuntimeException("Ocurrio un error al buscar las tareas activas");
         }
     }
+
+    @Override
+    public List<Tarea> getTareasEnRegion(Integer idRegion) {
+        String queryText = "SELECT t.*, ST_X(e.ubicacion) AS latitud, ST_Y(e.ubicacion) AS longitud " +
+                "FROM tarea t, division_regional r, emergencia e " +
+                "WHERE e.id_emergencia = t.id_emergencia " +
+                "AND r.gid = :idRegion " +
+                "AND ST_CONTAINS(r.geom, e.ubicacion)";
+        try (Connection connection = sql2o.open()) {
+            List<Tarea> tareas = connection.createQuery(queryText)
+                    .addParameter("idRegion", idRegion)
+                    .addColumnMapping("id_tarea", "idTarea")
+                    .addColumnMapping("id_emergencia", "idEmergencia")
+                    .addColumnMapping("nombre", "nombre")
+                    .addColumnMapping("descripcion", "descripcion")
+                    .addColumnMapping("cant_vol_requeridos", "cantVolRequeridos")
+                    .addColumnMapping("cant_vol_inscritos", "cantVolInscritos")
+                    .addColumnMapping("fecha_inicio", "fechaInicio")
+                    .addColumnMapping("fecha_fin", "fechaFin")
+                    .addColumnMapping("estado_actual", "estadoActual")
+                    .addColumnMapping("latitud", "latitud")
+                    .addColumnMapping("longitud", "longitud")
+                    .executeAndFetch(Tarea.class);
+            return tareas;
+        } catch (Exception e) {
+            throw new RuntimeException("Ocurrió un error al obtener las tareas", e);
+        }
+    }
+
+
+
 }
 
 

@@ -11,4 +11,5 @@ public interface ITareaRepository {
      boolean existsTarea(Integer idTarea);
      void deleteTarea(Integer idTarea) ;
      Integer getTotalTareasByEmergencia(Integer idEmergencia);
+     List<Tarea> getTareasEnRegion(Integer idRegion);
 }

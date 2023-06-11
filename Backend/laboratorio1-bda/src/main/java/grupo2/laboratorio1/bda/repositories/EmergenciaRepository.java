@@ -18,18 +18,21 @@ public class EmergenciaRepository implements IEmergenciaRepository{
     private Sql2o sql2o;
 
     @Override
-    public Emergencia createEmergencia(Emergencia emergencia){
-        String queryText = "INSERT INTO emergencia (nombre, descripcion, fecha_inicio, fecha_termino, activo, id_institucion) values (:nombre, :descripcion, :fecha_inicio, :fecha_termino, :activo, :id_institucion)";
-        try(Connection conn = sql2o.open()){
+    public Emergencia createEmergencia(Emergencia emergencia, double y, double x){
+        String queryText = "INSERT INTO emergencia (nombre, descripcion, fecha_inicio, fecha_termino, activo, id_institucion, ubicacion) values (:nombre, :descripcion, :fecha_inicio, :fecha_termino, :activo, :id_institucion, ST_SetSRID(ST_Point(:x, :y), 4326))";
+        try (Connection conn = sql2o.open()) {
             Query query = conn.createQuery(queryText)
-                .addParameter("nombre", emergencia.getNombre())
-                .addParameter("descripcion", emergencia.getDescripcion())
-                .addParameter("fecha_inicio", emergencia.getFecha_inicio())
-                .addParameter("fecha_termino", emergencia.getFecha_termino())
-                .addParameter("activo", emergencia.getActivo())
-                .addParameter("id_institucion", emergencia.getIdInstitucion());
-                query.executeUpdate();
+                    .addParameter("nombre", emergencia.getNombre())
+                    .addParameter("descripcion", emergencia.getDescripcion())
+                    .addParameter("fecha_inicio", emergencia.getFecha_inicio())
+                    .addParameter("fecha_termino", emergencia.getFecha_termino())
+                    .addParameter("activo", emergencia.getActivo())
+                    .addParameter("id_institucion", emergencia.getIdInstitucion())
+                    .addParameter("x", x)
+                    .addParameter("y", y);
+            query.executeUpdate();
         }
+
         catch (Exception e) {
             throw new RuntimeException("Ocurrio un error al registrar la emergencia");
         }
@@ -38,7 +41,7 @@ public class EmergenciaRepository implements IEmergenciaRepository{
 
     @Override
     public Emergencia getEmergencia(Integer id_emergencia){
-        String query = "SELECT * FROM emergencia WHERE id_emergencia = :id_emergencia";
+        String query = "SELECT id_emergencia, nombre, descripcion, fecha_inicio, fecha_termino, activo, ST_X(ubicacion) as longitud, ST_Y(ubicacion) as latitud, id_institucion FROM emergencia WHERE id_emergencia = :id_emergencia";
         try(Connection conn = sql2o.open()){
             Emergencia emergencia = conn.createQuery(query)
                 .addParameter("id_emergencia", id_emergencia)
@@ -49,6 +52,8 @@ public class EmergenciaRepository implements IEmergenciaRepository{
                 .addColumnMapping("fecha_termino", "fecha_termino")
                 .addColumnMapping("activo", "activo")
                 .addColumnMapping("id_institucion", "idInstitucion")
+                .addColumnMapping("longitud", "longitud")
+                .addColumnMapping("latitud", "latitud")
                 .executeAndFetchFirst(Emergencia.class);
             return emergencia;
         }
@@ -59,7 +64,7 @@ public class EmergenciaRepository implements IEmergenciaRepository{
     }
 
     public List<Emergencia> getAllEmergencias(){
-        String query = "SELECT * FROM emergencia";
+        String query = "SELECT id_emergencia, nombre, descripcion, fecha_inicio, fecha_termino, activo, ST_X(ubicacion) as longitud, ST_Y(ubicacion) as latitud, id_institucion FROM emergencia";
         try(Connection conn = sql2o.open()){
             List<Emergencia> emergencias = conn.createQuery(query)
                 .addColumnMapping("id_emergencia", "idEmergencia")
@@ -68,6 +73,8 @@ public class EmergenciaRepository implements IEmergenciaRepository{
                 .addColumnMapping("fecha_inicio", "fecha_inicio")
                 .addColumnMapping("fecha_termino", "fecha_termino")
                 .addColumnMapping("activo", "activo")
+                .addColumnMapping("longitud", "longitud")
+                .addColumnMapping("latitud", "latitud")
                 .addColumnMapping("id_institucion", "idInstitucion")
                 .executeAndFetch(Emergencia.class);
             return emergencias;
@@ -86,7 +93,8 @@ public class EmergenciaRepository implements IEmergenciaRepository{
                         "fecha_inicio = COALESCE(:fecha_inicio, fecha_inicio), "+
                         "fecha_termino = COALESCE(:fecha_termino, fecha_termino), "+
                         "activo = COALESCE(:activo, activo), "+
-                        "id_institucion = COALESCE(:id_institucion, id_institucion) "+
+                        "id_institucion = COALESCE(:id_institucion, id_institucion), "+
+                        "ubicacion = COALESCE(ST_SetSRID(ST_Point(:longitud, :latitud), 4326), ubicacion) "+
                         "WHERE id_emergencia = :id_emergencia";
         try(Connection conn = sql2o.open()){
             conn.createQuery(query)
@@ -97,6 +105,8 @@ public class EmergenciaRepository implements IEmergenciaRepository{
                 .addParameter("activo", emergencia.getActivo())
                 .addParameter("id_institucion", emergencia.getIdInstitucion())
                 .addParameter("id_emergencia", emergencia.getIdEmergencia())
+                .addParameter("longitud", emergencia.getLongitud())
+                .addParameter("latitud", emergencia.getLatitud())
                 .executeUpdate();
             return emergencia;
         }
@@ -118,6 +128,36 @@ public class EmergenciaRepository implements IEmergenciaRepository{
         catch(Exception e){
             System.out.println(e.getMessage());
             return false;
+        }
+    }
+
+    public List<Emergencia> getAllEmergenciasExtraData() {
+        String query = "SELECT e.id_emergencia," +
+                        " i.nombre as nombre_institucion," +
+                        " e.nombre," +
+                        " e.descripcion," +
+                        " e.fecha_inicio," +
+                        " e.fecha_termino," +
+                        " e.activo," +
+                        " total_tareas_activas_por_emergencia(e.id_emergencia) as tareas_activas" +
+                        " FROM emergencia e," +
+                             " institucion i" +
+                        " WHERE e.id_institucion = i.id_institucion";
+        try(Connection conn = sql2o.open()){
+            List<Emergencia> emergencias = conn.createQuery(query)
+                    .addColumnMapping("id_emergencia", "idEmergencia")
+                    .addColumnMapping("nombre", "nombre")
+                    .addColumnMapping("descripcion", "descripcion")
+                    .addColumnMapping("fecha_inicio", "fecha_inicio")
+                    .addColumnMapping("fecha_termino", "fecha_termino")
+                    .addColumnMapping("activo", "activo")
+                    .addColumnMapping("nombre_institucion", "nombreInstitucion")
+                    .addColumnMapping("tareas_activas", "tareasActivas")
+                    .executeAndFetch(Emergencia.class);
+            return emergencias;
+        }
+        catch(Exception e){
+            throw new RuntimeException("Ocurrio un error al obtener las emergencias");
         }
     }
 }

@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,4 +17,6 @@ public class Voluntario {
     private String correo;
     @JsonProperty(value = "password", access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+    private Double longitud;
+    private Double latitud;
 }

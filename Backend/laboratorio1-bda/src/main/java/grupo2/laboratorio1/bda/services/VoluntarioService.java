@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,11 +19,11 @@ public class VoluntarioService {
     @Autowired
     IVolHabilidadRepository volHabilidadRepository;
 
-    public void createVoluntario(@NonNull String nombre, @NonNull String correo, @NonNull String password){
+    public void createVoluntario(@NonNull String nombre, @NonNull String correo, @NonNull String password, @NonNull Double longitud, @NonNull Double latitud){
         String encodedPasssword = generateEncodedPassword(password);
-        Voluntario voluntario = new Voluntario(null, nombre, correo, encodedPasssword);
+        Voluntario voluntario = new Voluntario(null, nombre, correo, encodedPasssword, longitud, latitud);
         vaildateVoluntario(voluntario);
-        voluntarioRepository.createVoluntario(voluntario);
+        voluntarioRepository.createVoluntario(voluntario, longitud, latitud);
     }
 
     public Voluntario getVoluntario(@NonNull Integer idVoluntario){
@@ -104,5 +103,9 @@ public class VoluntarioService {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(correo);
         return matcher.matches();
+    }
+
+    public List<Voluntario> findVoluntarioForEmergencia(Double radio, Integer idEmergencia){
+        return voluntarioRepository.findVoluntarioForEmergencia(radio,idEmergencia);
     }
 }

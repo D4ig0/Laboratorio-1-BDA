@@ -80,14 +80,14 @@ export default defineComponent({
   font-family: "Open Sans", sans-serif;
 }
 
-.header .titulo {
+.login .header .titulo {
   margin-bottom: 1rem;
   font-weight: bold;
   font-size: 1.5rem;
   color: #363225;
 }
 
-.header h3 {
+.login .header h3 {
   font-size: 1rem;
   font-weight: 500;
   color: #363225;

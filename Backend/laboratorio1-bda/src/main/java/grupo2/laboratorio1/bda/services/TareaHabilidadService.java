@@ -24,23 +24,15 @@ public class TareaHabilidadService {
     @Autowired
     IEmergenciaRepository emergenciaRepository;
 
-    public void createTareaHabilidad(Integer idEmergencia, Integer idHabilidad, Integer idTarea){
-        try{
-            emergenciaRepository.getEmergencia(idEmergencia);
-        } catch ( Exception e){
-            throw new RuntimeException("No se ha encontrado en la base de datos emergencia");
+    public void createTareaHabilidad(Integer idHabilidad, Integer idTarea){
+        if(habilidadRepository.getHabilidad(idHabilidad) == null) {
+            throw new RuntimeException("No se ha encontrado la habilidad");
         }
-        try {
-            habilidadRepository.getHabilidad(idHabilidad);
-        } catch (Exception e ){
-            throw new RuntimeException("No se ha encontrado en la base de datos habilidad");
+        if(tareaRepository.getTarea(idTarea) == null){
+            throw new RuntimeException("No se ha encontrado la tarea");
         }
-        try{
-            tareaRepository.getTarea(idTarea);
-        } catch ( Exception e){
-            throw new RuntimeException("No se ha encontrado en la base de datos tarea");
-        }
-        TareaHabilidad tarea_habilidad = new TareaHabilidad(null, idEmergencia, idHabilidad, idTarea);
+
+        TareaHabilidad tarea_habilidad = new TareaHabilidad(null, idHabilidad, idTarea);
         tareaHabilidadRepository.createTareaHabilidad(tarea_habilidad);
     }
 
@@ -59,20 +51,16 @@ public class TareaHabilidadService {
 
 
     public TareaHabilidad updateTareaHabilidad(Integer idTareaHabilidad, TareaHabilidad tareaHabilidad){
-        try{
-            getTareaHabilidad(idTareaHabilidad);
-        } catch (Exception e){
-            throw new RuntimeException("No se ha encontrado en la base de datos  tarea_habilidad");
+        if(getTareaHabilidad(idTareaHabilidad) == null){
+            throw new IllegalArgumentException("La tarea habilidad no existe");
         }
+
         return tareaHabilidadRepository.updateTareaHabilidad(idTareaHabilidad, tareaHabilidad);
     }
 
     public void deleteTareaHabilidad(Integer idTareaHabilidad){
-
-        try{
-            getTareaHabilidad(idTareaHabilidad);
-        } catch (Exception e){
-            throw new RuntimeException("No se ha encontrado en la base de datos  tarea_habilidad");
+        if(getTareaHabilidad(idTareaHabilidad) == null){
+            throw new IllegalArgumentException("La tarea habilidad no existe");
         }
 
         tareaHabilidadRepository.deleteTareaHabilidad(idTareaHabilidad);
