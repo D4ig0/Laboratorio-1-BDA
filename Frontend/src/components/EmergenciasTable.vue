@@ -68,7 +68,7 @@ export default defineComponent({
     },
 
     redirect(id: number) {
-      router.replace(`/emergencias/${id}`);
+      router.push(`/emergencias/${id}`);
     },
   },
 });
@@ -103,6 +103,7 @@ export default defineComponent({
   text-align: left;
   font-family: "Open Sans";
   font-size: 18px;
+  margin-bottom: 60px;
 }
 
 .data-table thead {

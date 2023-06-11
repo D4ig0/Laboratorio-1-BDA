@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
+import router from "@/router";
 import { useAuthStore } from "@/stores/auth";
 import ErrorMessage from "@/components/ErrorMessage.vue";
 import PasswordField from "@/components/PasswordField.vue";
@@ -51,9 +51,11 @@ export default defineComponent({
           this.tableDataSet = this.jsonArrayToVoluntarios(response.data);
         });
     },
+    
     setRadio(radio: number) {
       this.radio = radio;
     },
+
     jsonArrayToVoluntarios(json: Array<any>): Array<Voluntario> {
       const voluntarios: Array<Voluntario> = [];
       for (let i = 0; i < json.length; i++) {
@@ -69,6 +71,20 @@ export default defineComponent({
 
       return voluntarios;
     },
+  },
+  beforeCreate() {
+    const authStore = useAuthStore();
+    const token = authStore.token;
+    axios
+      .get(`/api/voluntarios/${this.$route.params.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {})
+      .catch((error) => {
+        router.replace("/emergencias");
+      });
   },
 });
 </script>
