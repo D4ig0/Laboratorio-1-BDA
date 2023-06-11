@@ -18,10 +18,9 @@ public class TareaHabilidadRepository implements ITareaHabilidadRepository{
 
     @Override
     public void createTareaHabilidad(TareaHabilidad tareaHabilidad){
-        String queryText = "INSERT INTO tarea_habilidad (id_emergencia, id_habilidad, id_tarea) VALUES (:id_emergencia, :id_habilidad, :id_tarea)";
+        String queryText = "INSERT INTO tarea_habilidad (id_habilidad, id_tarea) VALUES (:id_habilidad, :id_tarea)";
         try (Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
-                    .addParameter("id_emergencia", tareaHabilidad.getIdEmergencia())
                     .addParameter("id_habilidad", tareaHabilidad.getIdHabilidad())
                     .addParameter("id_tarea", tareaHabilidad.getIdTarea());
             query.executeUpdate();
@@ -68,10 +67,9 @@ public class TareaHabilidadRepository implements ITareaHabilidadRepository{
 
     @Override
     public TareaHabilidad updateTareaHabilidad(Integer idTareaHabilidad, TareaHabilidad tareaHabilidad){
-        String queryText = "UPDATE tarea_habilidad SET id_emergencia = coalesce(:idEmergencia, id_emergencia), id_habilidad = coalesce(:idHabilidad, id_habilidad), id_tarea = coalesce(:idTarea, id_tarea) WHERE id_tarea_habilidad = :idTareaHabilidad";
+        String queryText = "UPDATE tarea_habilidad SET id_habilidad = coalesce(:idHabilidad, id_habilidad), id_tarea = coalesce(:idTarea, id_tarea) WHERE id_tarea_habilidad = :idTareaHabilidad";
         try (Connection connection = sql2o.open()){
             Query query = connection.createQuery(queryText)
-                    .addParameter("idEmergencia", tareaHabilidad.getIdEmergencia())
                     .addParameter("idHabilidad", tareaHabilidad.getIdHabilidad())
                     .addParameter("idTarea", tareaHabilidad.getIdTarea())
                     .addParameter("idTareaHabilidad", idTareaHabilidad);

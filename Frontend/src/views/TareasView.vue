@@ -13,7 +13,7 @@
 import { defineComponent } from "vue";
 import SelectField from "@/components/SelectField.vue";
 import L from "leaflet";
-import icon from "leaflet/dist/images/marker-icon.png";
+import icon from "../assets/location.png";
 import { useAuthStore } from "@/stores/auth";
 import axios from "axios";
 import "leaflet/dist/leaflet.css";
@@ -32,9 +32,9 @@ export default defineComponent({
     myIcon() {
       return L.icon({
         iconUrl: icon,
-        iconSize: [25, 41],
+        iconSize: [32, 32],
         iconAnchor: [12, 41],
-        popupAnchor: [-3, -41],
+        popupAnchor: [5, -41],
       });
     },
   },
@@ -117,7 +117,7 @@ export default defineComponent({
     L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 14,
+      maxZoom: 18,
     }).addTo(this.mymap);
 
     this.getRegiones();

@@ -70,13 +70,10 @@ export default defineComponent({
             },
           }
         )
-        .then(() => {
-          // console.log(response)
-          // Agregar despues cuando se arregle el backend
-          // if(response.status == 200 && response.data) {
-          //   this.tableDataSet[key].activo = response.data.activo
-          // }
-          this.getEmergencias();
+        .then((response) => {
+          if(response.status == 200 && response.data) {
+            this.tableDataSet[key].activo = response.data.activo
+          }
         });
     },
   },

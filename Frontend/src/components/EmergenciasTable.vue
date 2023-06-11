@@ -4,7 +4,6 @@
     <thead>
       <tr>
         <th v-for="(header, key) in headers" :key="key">{{ header }}</th>
-
       </tr>
     </thead>
     <tbody>
@@ -17,13 +16,18 @@
         <td>{{ data.fecha_termino }}</td>
 
         <td class="status">
-          <button @click="changeStatus(data.id, data.activo)" :class="statusByBoolean(data.activo)">
+          <button
+            @click="changeStatus(data.id, data.activo, key)"
+            :class="statusByBoolean(data.activo)"
+          >
             {{ statusByBoolean(data.activo).toUpperCase() }}
           </button>
         </td>
         <td>{{ data.tareas_activas }}</td>
-        <td>
-          <span @click="redirect(data.id)" class="material-symbols-rounded"> arrow_forward_ios </span>
+        <td class="span-td">
+          <span @click="redirect(data.id)" class="material-symbols-rounded">
+            arrow_forward_ios
+          </span>
         </td>
       </tr>
     </tbody>
@@ -47,9 +51,9 @@ export default defineComponent({
         "FECHA TERMINO",
         "ESTADO",
         "TAREAS ACTIVAS",
-        ""
-      ]
-    }
+        "",
+      ],
+    };
   },
   props: {
     dataSet: { type: Array<Emergencia>, required: true },
@@ -59,34 +63,35 @@ export default defineComponent({
       return bool ? "activa" : "inactiva";
     },
 
-    changeStatus(id: number, status: boolean) {
-      this.$emit("changeStatus", id, status)
+    changeStatus(id: number, status: boolean, key: number) {
+      this.$emit("changeStatus", id, status, key);
     },
 
-    redirect(id:number) {
+    redirect(id: number) {
       router.replace(`/emergencias/${id}`);
-
-    }
-
-  }
-
+    },
+  },
 });
 </script>
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 
-span.material-symbols-rounded{
+.data-table span.material-symbols-rounded {
   font-family: "Material Symbols Rounded";
+  font-weight: 600;
   font-size: 24px;
   cursor: pointer;
-  justify-items: center;
-  align-items:center;
-  
-  
+  margin-top: 5px;
 }
-span.material-symbols-rounded:hover{
-  color: #ff5c39;
+
+.data-table .span-td {
+  padding: 0 !important;
+  justify-items: center;
+}
+
+.data-table span.material-symbols-rounded:hover {
+  color: #ec411a;
 }
 
 .data-table {
@@ -128,6 +133,10 @@ td {
   background-color: #f3f3f3;
 }
 
+.status {
+  min-width: 140px;
+}
+
 .status button {
   padding: 4px 10px;
   border: none;
@@ -154,13 +163,5 @@ td {
 
 .data-table tbody .inactiva:hover {
   background: rgb(200, 0, 0);
-}
-
-.clickEmergency {
-  cursor: pointer;
-}
-
-.data-table .clickEmergency:hover {
-  background: #f17c62;
 }
 </style>

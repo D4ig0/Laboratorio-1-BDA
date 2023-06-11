@@ -76,11 +76,9 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.habilidad (
 
 CREATE TABLE IF NOT EXISTS desastresdb.public.tarea_habilidad (
     id_tarea_habilidad SERIAL NOT NULL,
-    id_emergencia INT,
     id_habilidad INT,
     id_tarea INT,
     PRIMARY KEY(id_tarea_habilidad),
-    FOREIGN KEY (id_emergencia) REFERENCES desastresdb.public.emergencia(id_emergencia),
     FOREIGN KEY (id_habilidad) REFERENCES desastresdb.public.habilidad(id_habilidad),
     FOREIGN KEY (id_tarea) REFERENCES desastresdb.public.tarea(id_tarea)
 );

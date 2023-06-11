@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 public class TareaHabilidad {
 
     private Integer idTareaHabilidad;
-    private Integer idEmergencia;
     private Integer idHabilidad;
     private Integer idTarea;
 }
