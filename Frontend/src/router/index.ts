@@ -5,6 +5,7 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import EmergenciasView from '../views/EmergenciasView.vue'
 import TareasView from '@/views/TareasView.vue';
+import VoluntariosRadioVue from '@/views/VoluntariosRadio.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,7 +34,14 @@ const router = createRouter({
       path: '/tareas',
       name: 'tareas',
       component: TareasView
+    },
+    {
+      path: '/emergencias/:id',
+      name: 'voluntariosRadio',
+      component: VoluntariosRadioVue
+
     }
+
   ]
 })
 

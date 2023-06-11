@@ -4,6 +4,7 @@
     <thead>
       <tr>
         <th v-for="(header, key) in headers" :key="key">{{ header }}</th>
+
       </tr>
     </thead>
     <tbody>
@@ -14,15 +15,16 @@
         <td>{{ data.descripcion }}</td>
         <td>{{ data.fecha_inicio }}</td>
         <td>{{ data.fecha_termino }}</td>
+
         <td class="status">
-          <button
-            @click="changeStatus(data.id, data.activo, key)"
-            :class="statusByBoolean(data.activo)"
-          >
+          <button @click="changeStatus(data.id, data.activo)" :class="statusByBoolean(data.activo)">
             {{ statusByBoolean(data.activo).toUpperCase() }}
           </button>
         </td>
         <td>{{ data.tareas_activas }}</td>
+        <td>
+          <span @click="redirect(data.id)" class="material-symbols-rounded"> arrow_forward_ios </span>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -30,6 +32,7 @@
 
 <script lang="ts">
 import type Emergencia from "@/models/Emergencia";
+import router from "@/router";
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "EmergenciasTable",
@@ -44,8 +47,9 @@ export default defineComponent({
         "FECHA TERMINO",
         "ESTADO",
         "TAREAS ACTIVAS",
-      ],
-    };
+        ""
+      ]
+    }
   },
   props: {
     dataSet: { type: Array<Emergencia>, required: true },
@@ -55,14 +59,36 @@ export default defineComponent({
       return bool ? "activa" : "inactiva";
     },
 
-    changeStatus(id: number, status: boolean, key: number) {
-      this.$emit("changeStatus", id, status, key);
+    changeStatus(id: number, status: boolean) {
+      this.$emit("changeStatus", id, status)
     },
-  },
+
+    redirect(id:number) {
+      router.replace(`/emergencias/${id}`);
+
+    }
+
+  }
+
 });
 </script>
 
-<style>
+<style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+
+span.material-symbols-rounded{
+  font-family: "Material Symbols Rounded";
+  font-size: 24px;
+  cursor: pointer;
+  justify-items: center;
+  align-items:center;
+  
+  
+}
+span.material-symbols-rounded:hover{
+  color: #ff5c39;
+}
+
 .data-table {
   min-width: 1000px;
   border-collapse: collapse;
@@ -90,7 +116,6 @@ td {
 }
 
 .data-table tbody tr {
-  background-color: #e2e2e2;
   border-bottom: 1px solid #ababab;
 }
 
@@ -103,17 +128,12 @@ td {
   background-color: #f3f3f3;
 }
 
-.status {
-  min-width: 140px;
-}
-
 .status button {
   padding: 4px 10px;
   border: none;
   text-decoration: none;
   border-radius: 2px;
   cursor: pointer;
-
   font-family: "Open Sans";
   font-weight: 600;
   font-size: 14px;
@@ -134,5 +154,13 @@ td {
 
 .data-table tbody .inactiva:hover {
   background: rgb(200, 0, 0);
+}
+
+.clickEmergency {
+  cursor: pointer;
+}
+
+.data-table .clickEmergency:hover {
+  background: #f17c62;
 }
 </style>
