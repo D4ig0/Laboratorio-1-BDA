@@ -55,9 +55,6 @@ public class EmergenciaService {
         if(emeHabilidadRepository.getEmeHabilidadByIdEmergencia(id_emergencia).size() > 0){
             throw new IllegalArgumentException("No se puede eliminar la emergencia porque tiene habilidades asociadas");
         }
-        if(tareaHabilidadRepository.getTareaHabilidadByIdEmergencia(id_emergencia).size() > 0){
-            throw new IllegalArgumentException("No se puede eliminar la emergencia porque tiene tareas asociadas");
-        }
         return emergenciaRepository.deleteEmergencia(id_emergencia);
     }
 

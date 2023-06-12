@@ -160,5 +160,7 @@ export default defineComponent({
   padding-right: 15px;
   padding-top: 20px;
   box-shadow: 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.411);
+  margin-bottom: 2rem;
+
 }
 </style>
