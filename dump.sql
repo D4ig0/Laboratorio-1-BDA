@@ -22,7 +22,7 @@ INSERT INTO desastresdb.public.voluntario (nombre, correo, password, ubicacion) 
 ('Usuario 19','usuario19@gmail.com','$2a$10$NzG5CMdJLiuWkQ7Q1iFca.YNGljx34WltEV90dkz0wEAJc1YgaBdK','0101000020E610000001000044874F52C03AB902E7DDE743C0'),
 ('Usuario 20','usuario20@gmail.com','$2a$10$zc7FFAib2wfu8CuI2pYJgeRcchxGdLbX/wezTLlJf6T8aWaFdwgLa','0101000020E6100000010000BF6F4652C0048BEFF53B6342C0');
 
--- Instrituciones
+-- Instituciones
 INSERT INTO desastresdb.public.institucion (nombre) VALUES
     ('Cruz Roja'),
     ('Bomberos'),
