@@ -26,7 +26,6 @@ export default defineComponent({
     loader.importLibrary("places").then((places) => {
       const autocompleteElement = this.$refs["origin"] as HTMLInputElement;
       const autocomplete = new places.Autocomplete(autocompleteElement, {
-        types: ["address"],
         componentRestrictions: { country: "CL" }
       });
       autocomplete.addListener("place_changed", () => {

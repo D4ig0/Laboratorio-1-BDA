@@ -87,7 +87,7 @@ export default defineComponent({
           })
           .then((response) => {
             this.clearMarkers();
-            if(response.data && response.data.length != 0){
+            if (response.data && response.data.length != 0) {
               this.points = this.tareasToPoints(response.data);
               this.setMarkers();
               const latlng = this.points[0].getLatLng()
@@ -121,10 +121,10 @@ export default defineComponent({
     }).addTo(this.mymap);
 
     this.getRegiones();
-    this.mymap.on("click", function (e: any) {
-      console.log(e.latlng.lat);
-      console.log(e.latlng.lng);
-    });
+    // this.mymap.on("click", function (e: any) {
+    // console.log(e.latlng.lat);
+    // console.log(e.latlng.lng);
+    // });
   },
 });
 </script>
