@@ -104,6 +104,7 @@ export default defineComponent({
   font-family: "Open Sans";
   font-size: 18px;
   margin-bottom: 60px;
+  margin: 0 150px 60px 150px;
 }
 
 .data-table thead {
@@ -122,9 +123,9 @@ td {
 }
 
 .data-table tbody tr {
+  background-color: #dadada;
   border-bottom: 1px solid #ababab;
 }
-
 .data-table tbody tr td {
   font-weight: 600;
   font-size: 16px;

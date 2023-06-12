@@ -125,18 +125,27 @@ CREATE TABLE IF NOT EXISTS desastresdb.public.logs (
 
 CREATE OR REPLACE FUNCTION desastresdb.public.trigger_function()
 RETURNS TRIGGER AS $trigger_function$
+DECLARE
+    user_id TEXT;
 BEGIN
+    BEGIN
+        SELECT current_setting('app.user.id') INTO user_id;
+    EXCEPTION
+        WHEN undefined_object THEN
+            user_id := 'ADMIN';
+    END;
+
     IF(TG_OP = 'INSERT') THEN 
         INSERT INTO desastresdb.public.logs (tabla, datos_nuevos, fecha_modificacion, usuario_modificador, accion)
-        VALUES (TG_TABLE_NAME, NEW, NOW(), current_setting('app.user.id'), 'CREATE');
+        VALUES (TG_TABLE_NAME, NEW, NOW(), user_id, 'CREATE');
         RETURN NEW;
     ELSIF(TG_OP = 'UPDATE') THEN
         INSERT INTO desastresdb.public.logs (tabla, datos_nuevos, datos_anteriores, fecha_modificacion, usuario_modificador, accion)
-        VALUES (TG_TABLE_NAME, NEW, OLD, NOW(), current_setting('app.user.id'), 'UPDATE');
+        VALUES (TG_TABLE_NAME, NEW, OLD, NOW(), user_id, 'UPDATE');
         RETURN NEW;
     ELSIF(TG_OP = 'DELETE') THEN
         INSERT INTO desastresdb.public.logs (tabla, datos_anteriores, fecha_modificacion, usuario_modificador, accion)
-        VALUES (TG_TABLE_NAME, OLD, NOW(), current_setting('app.user.id'), 'DELETE');
+        VALUES (TG_TABLE_NAME, OLD, NOW(), user_id, 'DELETE');
         RETURN OLD;
     END IF;
 END;
