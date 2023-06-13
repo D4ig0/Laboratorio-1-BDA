@@ -38,9 +38,14 @@ Ademas tener en consideración, que se debe crear dentro de la raíz de la carpe
 
 Para crear la base de datos, está el script [dbCreate.sql][10] donde se detallan las intrucciones de uso dentro del mismo archivo.
 
-El archivo encargado de  poblar la base de datos **_desastresdb_** es [dump.sql][11] para lo cual es necesario es crear una query tool en pgadmin o directamente hacerlo mediante SQL Shell estando en la base de datos **_desastresdb_**. 
+El archivo responsable de poblar la base de datos _desastresdb_ es [dump.sql][11]. Para lograr esto, es necesario crear una query tool en **pgAdmin** o ejecutar directamente las instrucciones en _SQL Shell_ mientras se encuentra en la base de datos _desastresdb_.
+
+
+Es **importante** destacar que, para la correcta ejecución del proyecto, se debe contar con el API key correspondiente a la variable de entorno **"GOOGLE_MAPS_API_KEY"** en el archivo **config.json**. Por lo tanto, se debe solicitar y se enviará a la brevedad. En este caso, no se incluye en el proyecto debido a que el uso del API key es limitado y podría generar gastos no contemplados.
 
 # Funcionalidades realizadas
+
+
 ---
 **1.-**   Crear formulario de registro de usuario y autenticación (JWT u otros).
 

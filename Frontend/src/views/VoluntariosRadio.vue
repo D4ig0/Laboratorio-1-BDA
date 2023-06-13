@@ -4,7 +4,7 @@
     <div class="input-container">
       <InputField
         @inputData="setRadio"
-        fieldName="Ingrese el radio para analizar los voluntarios cercanos"
+        fieldName="Ingrese el radio en metros"
         inputType="text"
       />
       <span class="material-symbols-rounded" @click="getVoluntariosRadio">
