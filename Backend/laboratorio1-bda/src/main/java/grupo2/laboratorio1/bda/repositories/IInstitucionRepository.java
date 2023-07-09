@@ -5,7 +5,7 @@ import java.util.List;
 import grupo2.laboratorio1.bda.models.Institucion;
 
 public interface IInstitucionRepository {
-    Institucion createInstitucion(Institucion institucion);
+    void createInstitucion(Institucion institucion);
     Institucion getInstitucion(Integer id_institucion);
     List<Institucion> getAllInstituciones();
     Institucion updateInstitucion(Institucion institucion);

@@ -1,8 +1,8 @@
 package grupo2.laboratorio1.bda.repositories;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Query;
@@ -12,27 +12,19 @@ import grupo2.laboratorio1.bda.models.Institucion;
 
 @Repository
 public class InstitucionRepository implements IInstitucionRepository{
+    final String collecionName = "Institucion";
     @Autowired
-    private Sql2o sql2o;
+    Sql2o sql2o;
 
-    // Creacion CRUD
-    // Create
-    @Override
-    public Institucion createInstitucion(Institucion institucion) {
-        String queryText = "INSERT INTO institucion (nombre) values (:nombre)";
-        try(Connection conn = sql2o.open()){
-            Query query = conn.createQuery(queryText)
-            .addParameter("nombre", institucion.getNombre());
-            query.executeUpdate();
-        }
-        catch (Exception e) {
-            throw new RuntimeException("Ocurrio un error al registrar la institucion");
-        }
-        return institucion;
+    @Autowired
+    MongoTemplate mongo;
+
+    public void createInstitucion(Institucion institucion) {
+        mongo.insert(institucion, collecionName);
+        System.out.println(institucion);
     }
 
     // Read
-    @Override
     public Institucion getInstitucion(Integer id_institucion) {
         try(Connection conn = sql2o.open()){
             return conn.createQuery("select * from institucion where id_institucion = :id_institucion")
@@ -46,7 +38,7 @@ public class InstitucionRepository implements IInstitucionRepository{
         }
     }
 
-    @Override 
+
     public List<Institucion> getAllInstituciones() {
         try(Connection conn = sql2o.open()){
             return conn.createQuery("select * from institucion")
@@ -60,7 +52,7 @@ public class InstitucionRepository implements IInstitucionRepository{
     }
 
     // Update
-    @Override
+
     public Institucion updateInstitucion(Institucion institucion) {
         try(Connection conn = sql2o.open()){
             conn.createQuery("UPDATE institucion SET nombre = COALESCE(:nombre,nombre) WHERE id_institucion = :id_institucion")
@@ -75,7 +67,7 @@ public class InstitucionRepository implements IInstitucionRepository{
     }
 
     // Delete
-    @Override
+
     public boolean deleteInstitucion(Integer id_institucion) {
         try(Connection conn = sql2o.open()){
             conn.createQuery("DELETE FROM institucion WHERE id_institucion = :id_institucion")

@@ -19,8 +19,8 @@ public class InstitucionController {
     @PostMapping
     public ResponseEntity createInstitucion(@RequestParam String nombre){
         try{
-            Institucion institucion = institucionService.createInstitucion(nombre);
-            return ResponseEntity.ok(institucion);
+            institucionService.createInstitucion(nombre);
+            return ResponseEntity.ok("oke");
         }
         catch (IllegalArgumentException e){
             return ResponseEntity.badRequest().body(e.getMessage());

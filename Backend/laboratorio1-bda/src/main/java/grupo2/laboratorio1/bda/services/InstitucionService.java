@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import grupo2.laboratorio1.bda.models.Institucion;
-import grupo2.laboratorio1.bda.repositories.IInstitucionRepository;
+import grupo2.laboratorio1.bda.repositories.InstitucionRepository;
 
 @Service
 public class InstitucionService {
 
     @Autowired
-    IInstitucionRepository institucionRepository;
+    InstitucionRepository institucionRepository;
 
     public List<Institucion> getAllInstituciones() {
         return institucionRepository.getAllInstituciones();
@@ -22,10 +22,10 @@ public class InstitucionService {
         return institucionRepository.getInstitucion(id_institucion);
     }
 
-    public Institucion createInstitucion(String nombre){
+    public void createInstitucion(String nombre){
         Institucion institucion = new Institucion();
         institucion.setNombre(nombre);
-        return institucionRepository.createInstitucion(institucion);
+        institucionRepository.createInstitucion(institucion);
     }
 
     public Institucion updateInstitucion(Integer id, Institucion institucion){
